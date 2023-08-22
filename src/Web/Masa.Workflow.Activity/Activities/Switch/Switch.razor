@@ -1,0 +1,94 @@
+﻿@using Masa.Blazor
+@using Masa.Blazor.Presets
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.JSInterop
+
+@inject IJSRuntime jsRuntime 
+
+<MButton OnClick="OpenModal">Show Modal</MButton>
+
+<PDrawer @bind-Value="value"
+         FormModel="_switchMeta"
+         Persistent
+         Title="Title"
+         Width="500"
+         OnSave="HandleOnSave"
+         OnCancel="HandleOnCancel">
+    <MRow>
+        <MCol Cols="12">
+            <MTextField @bind-Value="_switchMeta.Property"
+                        Label="Name"
+                        Disabled
+                        Dense
+                        Outlined
+                        Prefix="Msg."
+                        HideDetails="@("auto")" />
+        </MCol>
+        <MCol Cols=12>
+            <MDragZone>
+                <MDragItem>
+                    <div class="white-color item">item1.1</div>
+                </MDragItem>
+                <MDragItem>
+                    <div class="white-color item">item1.2</div>
+                </MDragItem>
+            </MDragZone>
+        </MCol>
+        <MCol Cols="12">
+            <EnumSelect @bind-Value=_switchMeta.EnforceRule TValue="EnforceRule" Clearable=false Label="EnforceRule" />
+        </MCol>
+    </MRow>
+</PDrawer>
+
+@code {
+    readonly List<string> favorites = new() { "Basketball", "Football", "Ping-pong", "Badminton" };
+
+    SwitchActivityMeta _switchMeta = new();
+
+    private bool value;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await jsRuntime.InvokeAsync<IJSObjectReference>("import", "https://cdn.masastack.com/npm/sortable/Sortable.min.js");
+        }
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private void OpenModal()
+    {
+        value = true;
+    }
+
+    private async Task HandleOnSave(ModalActionEventArgs args)
+    {
+
+    }
+
+    private void HandleOnCancel()
+    {
+        value = false;
+    }
+
+    class SwitchMeta : SwitchActivityMeta,IActivityMeta
+    {
+        public string Name { get; set; } = "";
+
+        public string Description { get; set; } = "";
+
+        public string Type { get ; set; } = "";
+
+        public bool Disabled { get ; set ; }
+
+        public string Icon { get; set; } = "mdi-shuffle";
+
+        public bool ShowLabel { get; set; } = true;
+
+        public List<string> InputLabels { get; set; } = new();
+
+        public List<string> OutputLabels { get; set; } = new();
+
+        public int Output { get; set; }
+    }
+}
