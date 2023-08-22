@@ -1,0 +1,92 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{92F40AFA-8416-40BE-9893-D35E1924C69D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{4A1D2DFA-D091-4CD2-B9CB-D7AAA795ABD9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dapr", "dapr", "{E011B243-0389-468B-B903-83445BED69A4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{FBFB499A-7022-4417-881B-68F63DBDB7F4}"
+	ProjectSection(SolutionItems) = preProject
+		dapr\components\pubsub.yaml = dapr\components\pubsub.yaml
+		dapr\components\statestore.yaml = dapr\components\statestore.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{88AD0A79-5286-4C1C-8A58-AAC9E6870CCD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{F3986DD3-0372-4929-B72A-09D93196541E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution items", "{C64F965A-C695-416C-95F2-F9DEC98EF414}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Service", "src\Services\Masa.Workflow.Service\Masa.Workflow.Service.csproj", "{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Web", "src\Web\Masa.Workflow.Client\Masa.Workflow.Web.csproj", "{C5E6D573-0A91-42E3-8810-EBACA73B41D8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Activity", "src\Web\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj", "{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Workflow.Protos", "src\Contracts\Masa.Workflow.Protos\Masa.Workflow.Protos.csproj", "{62084A31-28C3-4ED7-B395-73D92EBCC7E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}.Debug|x86.Build.0 = Debug|Any CPU
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}.Release|x86.ActiveCfg = Release|Any CPU
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}.Release|x86.Build.0 = Release|Any CPU
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8}.Debug|x86.Build.0 = Debug|Any CPU
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8}.Release|x86.ActiveCfg = Release|Any CPU
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8}.Release|x86.Build.0 = Release|Any CPU
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Debug|x86.Build.0 = Debug|Any CPU
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Release|x86.ActiveCfg = Release|Any CPU
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Release|x86.Build.0 = Release|Any CPU
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Debug|x86.Build.0 = Debug|Any CPU
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Release|x86.ActiveCfg = Release|Any CPU
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4A1D2DFA-D091-4CD2-B9CB-D7AAA795ABD9} = {92F40AFA-8416-40BE-9893-D35E1924C69D}
+		{FBFB499A-7022-4417-881B-68F63DBDB7F4} = {E011B243-0389-468B-B903-83445BED69A4}
+		{88AD0A79-5286-4C1C-8A58-AAC9E6870CCD} = {92F40AFA-8416-40BE-9893-D35E1924C69D}
+		{F3986DD3-0372-4929-B72A-09D93196541E} = {92F40AFA-8416-40BE-9893-D35E1924C69D}
+		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D} = {4A1D2DFA-D091-4CD2-B9CB-D7AAA795ABD9}
+		{C5E6D573-0A91-42E3-8810-EBACA73B41D8} = {F3986DD3-0372-4929-B72A-09D93196541E}
+		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978} = {F3986DD3-0372-4929-B72A-09D93196541E}
+		{62084A31-28C3-4ED7-B395-73D92EBCC7E9} = {88AD0A79-5286-4C1C-8A58-AAC9E6870CCD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B83BA2BA-19E5-41FB-A92A-16A03DA229E4}
+	EndGlobalSection
+EndGlobal

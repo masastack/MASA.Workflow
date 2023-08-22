@@ -1,0 +1,89 @@
+﻿syntax = "proto3"; 
+
+option csharp_namespace = "Masa.Workflow.Protos"; 
+
+package masa.workflow; 
+
+import "google/protobuf/timestamp.proto"; 
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+
+service WorkflowService
+{
+	rpc GetList (WorkflowRequest) returns (WorkflowReply);
+
+	rpc GetDetail (WorkflowId) returns (WorkflowDetail){
+		option (google.api.http) = {
+			get: "/v1/workflow/{id}"
+		};
+	}
+
+	rpc Create (CreateWorkflowRequest) returns (WorkflowId);
+} 
+
+message WorkflowId{
+	string guid = 1;
+}
+
+message WorkflowRequest { 
+	int32 page = 1; 
+	int32 page_size = 2; 
+	string name = 3;
+	repeated Node nodes=20;
+} 
+
+message CreateWorkflowRequest { 
+	string name = 1;
+	string description = 2;
+	bool disabled = 3;
+} 
+
+message WorkflowReply { 
+	repeated WorkflowItem Workflows = 1; 
+} 
+
+message WorkflowItem { 
+	google.protobuf.Timestamp dateTimeStamp = 1; 
+	int32 temperatureC = 2; 
+	string summary = 3; 
+}
+
+message WorkflowDetail { 
+	google.protobuf.Timestamp create_dateTime_stamp = 1; 
+	google.protobuf.Timestamp update_dateTime_stamp = 2; 
+	string name = 3; 
+	string description = 4; 
+	map<string, google.protobuf.Any> environment_variables = 5;
+	repeated Node nodes = 6;
+}
+
+message Node{
+	string name = 1;
+	string description = 2;
+	bool disabled = 3;
+	Point point =4;
+	Wire wires = 10;
+	google.protobuf.Any meta = 20;
+
+	message Point {
+		int32 x = 1;
+		int32 y = 2;
+	}
+
+	message Wire{
+		message WireList {
+			repeated string guids = 1;
+		}
+		repeated WireList guid_lists = 1;
+	}
+}
+
+enum Corpus {
+    UNIVERSAL = 0;
+    WEB = 1;
+    IMAGES = 2;
+    LOCAL = 3;
+    NEWS = 4;
+    PRODUCTS = 5;
+    VIDEO = 6;
+}
