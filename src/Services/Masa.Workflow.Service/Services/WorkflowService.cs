@@ -1,6 +1,4 @@
-﻿using Grpc.Core;
-
-namespace Masa.Workflow.Service.Services;
+﻿namespace Masa.Workflow.Service.Services;
 
 public class WorkflowService : ServiceBase
 {
@@ -24,7 +22,7 @@ public class WorkflowService : ServiceBase
     }
 }
 
-public class WorkflowGrpcService : Protos.WorkflowService.WorkflowServiceBase
+public class WorkflowGrpcService : WorkflowServiceBase
 {
     public override Task<WorkflowDetail> GetDetail(WorkflowId request, ServerCallContext context)
     {

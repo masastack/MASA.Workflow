@@ -1,12 +1,13 @@
 ﻿syntax = "proto3"; 
 
-option csharp_namespace = "Masa.Workflow.Protos"; 
+option csharp_namespace = "Masa.Workflow"; 
 
 package masa.workflow; 
 
 import "google/protobuf/timestamp.proto"; 
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 
 service WorkflowService
 {
@@ -19,10 +20,12 @@ service WorkflowService
 	}
 
 	rpc Create (CreateWorkflowRequest) returns (WorkflowId);
+
+	rpc Delete(WorkflowId) returns (google.protobuf.Empty);
 } 
 
 message WorkflowId{
-	string guid = 1;
+	string id = 1;
 }
 
 message WorkflowRequest { 
