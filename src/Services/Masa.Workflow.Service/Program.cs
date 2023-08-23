@@ -7,7 +7,8 @@ builder.Services.AddGrpc(options =>
     options.EnableDetailedErrors = true;
     options.MaxSendMessageSize = 5 * 1024 * 1024; // 5 MB
     options.MaxReceiveMessageSize = 3 * 1024 * 1024;
-});
+    options.EnableDetailedErrors = !builder.Environment.IsProduction();
+}).AddJsonTranscoding();
 
 // If this service does not need to call other services, you can delete the following line.
 builder.Services.AddDaprClient();
@@ -27,6 +28,7 @@ builder.Services
 var app = builder.Services
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     .AddEndpointsApiExplorer()
+    .AddGrpcSwagger()
     .AddSwaggerGen(options =>
     {
         options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
@@ -52,6 +54,11 @@ var app = builder.Services
                 new string[] {}
             }
         });
+
+        var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+        var filePath = Path.Combine(System.AppContext.BaseDirectory, xmlFilename);
+        options.IncludeXmlComments(filePath);
+        options.IncludeGrpcXmlComments(filePath, includeControllerXmlComments: true);
     })
     .AddFluentValidation(options =>
     {
@@ -85,18 +92,15 @@ if (app.Environment.IsDevelopment())
 }
 app.UseRouting();
 
-app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
-
 app.UseAuthentication();
 app.UseAuthorization();
 
 // Used for Dapr Pub/Sub.
 app.UseCloudEvents();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapGrpcService<WorkflowGrpcService>();
-    endpoints.MapSubscribeHandler();
-});
+app.MapSubscribeHandler();
+
+app.MapGrpcService<WorkflowGrpcService>();
+
 app.UseHttpsRedirection();
 
 app.Run();
