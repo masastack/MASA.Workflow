@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <LangVersion>preview</LangVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <SupportedPlatform Include="browser"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <!--    <PackageReference Include="Masa.Blazor" Version="$(MASABlazorVersion)" />-->
+        <PackageReference Include="Grpc.Net.Client.Web" Version="2.55.0"/>
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.55.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj"/>
+        <ProjectReference Include="..\..\Contracts\Masa.Workflow.Protos\Masa.Workflow.Protos.csproj"/>
+        <ProjectReference Include="..\Masa.Workflow.ActivityCore\Masa.Workflow.ActivityCore.csproj" />
+        <ProjectReference Include="..\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <UpToDateCheckInput Remove="Components\Diagram.razor" />
+      <UpToDateCheckInput Remove="Components\DragNode1.razor" />
+      <UpToDateCheckInput Remove="Components\HttpRequestDiagram.razor" />
+      <UpToDateCheckInput Remove="Components\HttpResponsiveDiagram.razor" />
+    </ItemGroup>
+
+</Project>

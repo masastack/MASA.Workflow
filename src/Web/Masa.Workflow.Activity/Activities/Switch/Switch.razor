@@ -1,51 +1,13 @@
-﻿@using Masa.Blazor
-@using Masa.Blazor.Presets
-@using System.ComponentModel.DataAnnotations
-@using Microsoft.JSInterop
+﻿@using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Components.Rendering
 
-@inject IJSRuntime jsRuntime 
+@inherits Masa.Workflow.ActivityCore.ActivityNode<SwitchActivityMeta>
 
-<MButton OnClick="OpenModal">Show Modal</MButton>
+@inject IJSRuntime jsRuntime
 
-<PDrawer @bind-Value="value"
-         FormModel="_switchMeta"
-         Persistent
-         Title="Title"
-         Width="500"
-         OnSave="HandleOnSave"
-         OnCancel="HandleOnCancel">
-    <MRow>
-        <MCol Cols="12">
-            <MTextField @bind-Value="_switchMeta.Property"
-                        Label="Name"
-                        Disabled
-                        Dense
-                        Outlined
-                        Prefix="Msg."
-                        HideDetails="@("auto")" />
-        </MCol>
-        <MCol Cols=12>
-            <MDragZone>
-                <MDragItem>
-                    <div class="white-color item">item1.1</div>
-                </MDragItem>
-                <MDragItem>
-                    <div class="white-color item">item1.2</div>
-                </MDragItem>
-            </MDragZone>
-        </MCol>
-        <MCol Cols="12">
-            <EnumSelect @bind-Value=_switchMeta.EnforceRule TValue="EnforceRule" Clearable=false Label="EnforceRule" />
-        </MCol>
-    </MRow>
-</PDrawer>
+@base.BuildRenderTree
 
 @code {
-    readonly List<string> favorites = new() { "Basketball", "Football", "Ping-pong", "Badminton" };
-
-    SwitchActivityMeta _switchMeta = new();
-
-    private bool value;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,30 +18,44 @@
         await base.OnAfterRenderAsync(firstRender);
     }
 
-    private void OpenModal()
+    protected override void DrawerContent(RenderTreeBuilder __builder)
     {
-        value = true;
+        <MRow>
+            <MCol Cols="12">
+                <MTextField @bind-Value="FromModel.Property"
+                            Label="Name"
+                            Disabled
+                            Dense
+                            Outlined
+                            Prefix="Msg."
+                            HideDetails="@("auto")" />
+            </MCol>
+            <MCol Cols=12>
+                <MDragZone>
+                    <MDragItem>
+                        <div class="white-color item">item1.1</div>
+                    </MDragItem>
+                    <MDragItem>
+                        <div class="white-color item">item1.2</div>
+                    </MDragItem>
+                </MDragZone>
+            </MCol>
+            <MCol Cols="12">
+                <EnumSelect @bind-Value="FromModel.EnforceRule" TValue="EnforceRule" Clearable=false Label="EnforceRule" />
+            </MCol>
+        </MRow>
     }
 
-    private async Task HandleOnSave(ModalActionEventArgs args)
-    {
 
-    }
-
-    private void HandleOnCancel()
-    {
-        value = false;
-    }
-
-    class SwitchMeta : SwitchActivityMeta,IActivityMeta
+    class SwitchMeta : SwitchActivityMeta, IActivityMeta
     {
         public string Name { get; set; } = "";
 
         public string Description { get; set; } = "";
 
-        public string Type { get ; set; } = "";
+        public string Type { get; set; } = "";
 
-        public bool Disabled { get ; set ; }
+        public bool Disabled { get; set; }
 
         public string Icon { get; set; } = "mdi-shuffle";
 
@@ -91,4 +67,5 @@
 
         public int Output { get; set; }
     }
+
 }

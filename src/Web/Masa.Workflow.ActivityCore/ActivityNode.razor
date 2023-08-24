@@ -1,0 +1,15 @@
+﻿@typeparam TModel
+@attribute [JSCustomElement]
+
+<Node Name="@Name"
+      Color="@Color"
+      Icon="@Icon"
+      IconRight="@IconRight"
+      @ondblclick="@OnDblClick">
+</Node>
+
+<PDrawer @bind-Value="_drawer"
+         FormModel="@FromModel"
+         OnSave="@OnSave">
+    @(ChildContent ?? (builder => DrawerContent(builder)))
+</PDrawer>
