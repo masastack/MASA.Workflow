@@ -1,7 +1,4 @@
-﻿using Masa.Blazor.Presets;
-using Microsoft.AspNetCore.Components.Rendering;
-
-namespace Masa.Workflow.ActivityCore;
+﻿namespace Masa.Workflow.ActivityCore;
 
 public partial class ActivityNode<TModel> : ComponentBase where TModel : class, new()
 {

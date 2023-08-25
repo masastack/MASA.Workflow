@@ -1,5 +1,4 @@
 ﻿using BlazorComponent.I18n;
-using Masa.Blazor;
 
 namespace Masa.Workflow.Activity;
 
