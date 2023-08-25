@@ -36,6 +36,8 @@ public class Node : ComponentBase
 
     private Block Block => new("mw-activity-node");
 
+    public ElementReference ElementReference { get; private set; }
+
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
@@ -55,7 +57,7 @@ public class Node : ComponentBase
         {
             builder.OpenElement(0, "div");
         }
-        
+
         builder.AddMultipleAttributes(1, AdditionalAttributes);
 
         builder.AddAttribute(2, "class", Block.Modifier("draggable", _draggable).Build());
@@ -90,12 +92,14 @@ public class Node : ComponentBase
             builder.AddContent(4, childContent);
         }
 
+
         if (_draggable)
         {
             builder.CloseComponent();
         }
         else
         {
+            builder.AddElementReferenceCapture(6, e => ElementReference = e);
             builder.CloseElement();
         }
     }

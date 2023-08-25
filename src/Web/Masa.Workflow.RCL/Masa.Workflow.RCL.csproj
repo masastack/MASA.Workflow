@@ -25,11 +25,4 @@
         <ProjectReference Include="..\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <UpToDateCheckInput Remove="Components\Diagram.razor" />
-      <UpToDateCheckInput Remove="Components\DragNode1.razor" />
-      <UpToDateCheckInput Remove="Components\HttpRequestDiagram.razor" />
-      <UpToDateCheckInput Remove="Components\HttpResponsiveDiagram.razor" />
-    </ItemGroup>
-
 </Project>

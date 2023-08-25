@@ -2,6 +2,7 @@
 
 global using System.Reflection;
 global using BemIt;
+global using BlazorComponent;
 global using Masa.Workflow.ActivityCore;
 global using Microsoft.AspNetCore.Components;
 global using Microsoft.AspNetCore.Components.Web;

@@ -1,6 +1,6 @@
 ﻿namespace Masa.Workflow.Activity.Activities.Switch;
 
-public class SwitchActivityMeta
+public class SwitchMeta
 {
     public string Property { get; set; } = "Payload";
 

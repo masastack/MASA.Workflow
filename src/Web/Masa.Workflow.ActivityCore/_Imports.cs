@@ -1,5 +1,6 @@
 ﻿// Global using directives
 
+global using System.ComponentModel.DataAnnotations;
 global using BemIt;
 global using BlazorComponent;
 global using Masa.Blazor;

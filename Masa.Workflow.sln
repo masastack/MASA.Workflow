@@ -28,8 +28,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Service", "sr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Activity", "src\Web\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj", "{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Protos", "src\Contracts\Masa.Workflow.Protos\Masa.Workflow.Protos.csproj", "{62084A31-28C3-4ED7-B395-73D92EBCC7E9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Blazor", "..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj", "{581C8A81-D51D-4E01-8BFC-6DB376F877D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Server", "src\Web\Masa.Workflow.Server\Masa.Workflow.Server.csproj", "{2E5D7D53-809B-487D-8629-6F8A44DD2A3C}"
@@ -40,7 +38,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.RCL", "src\We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorComponent", "..\MASA.Blazor\src\BlazorComponent\src\Component\BlazorComponent\BlazorComponent.csproj", "{4563A3D6-CFBE-4DC9-90AC-F68C41B15696}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Workflow.ActivityCore", "src\Web\Masa.Workflow.ActivityCore\Masa.Workflow.ActivityCore.csproj", "{96168F63-000F-49CA-A1A8-A0A6D5BC0F9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.ActivityCore", "src\Web\Masa.Workflow.ActivityCore\Masa.Workflow.ActivityCore.csproj", "{96168F63-000F-49CA-A1A8-A0A6D5BC0F9F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -66,14 +64,6 @@ Global
 		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Release|x86.ActiveCfg = Release|Any CPU
 		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}.Release|x86.Build.0 = Release|Any CPU
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Debug|x86.Build.0 = Debug|Any CPU
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Release|x86.ActiveCfg = Release|Any CPU
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9}.Release|x86.Build.0 = Release|Any CPU
 		{581C8A81-D51D-4E01-8BFC-6DB376F877D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{581C8A81-D51D-4E01-8BFC-6DB376F877D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{581C8A81-D51D-4E01-8BFC-6DB376F877D8}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -133,7 +123,6 @@ Global
 		{F3986DD3-0372-4929-B72A-09D93196541E} = {92F40AFA-8416-40BE-9893-D35E1924C69D}
 		{63FFF880-FE34-4E4E-A35F-35AFB47EE82D} = {4A1D2DFA-D091-4CD2-B9CB-D7AAA795ABD9}
 		{C0E6E30C-313B-43BD-A7DE-C9AC3A186978} = {F3986DD3-0372-4929-B72A-09D93196541E}
-		{62084A31-28C3-4ED7-B395-73D92EBCC7E9} = {88AD0A79-5286-4C1C-8A58-AAC9E6870CCD}
 		{581C8A81-D51D-4E01-8BFC-6DB376F877D8} = {F3986DD3-0372-4929-B72A-09D93196541E}
 		{2E5D7D53-809B-487D-8629-6F8A44DD2A3C} = {F3986DD3-0372-4929-B72A-09D93196541E}
 		{A117ABEA-4F20-4175-8F99-657F7C6B724F} = {F3986DD3-0372-4929-B72A-09D93196541E}

@@ -1,38 +1,59 @@
-﻿namespace Masa.Workflow.ActivityCore;
+﻿using System.Text.Json;
+using Force.DeepCloner;
+using Microsoft.JSInterop;
 
-public partial class ActivityNode<TModel> : ComponentBase where TModel : class, new()
+namespace Masa.Workflow.ActivityCore;
+
+public partial class ActivityNode<TMeta, T> : ComponentBase
+    where TMeta : class, new()
+    where T : ActivityMeta<TMeta>, new()
 {
-    [Parameter]
-    [EditorRequired]
-    public string? Color { get; set; }
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; } = null!;
 
     [Parameter]
-    [EditorRequired]
-    public string? Name { get; set; }
+    public string Value { get; set; } = null!;
 
     [Parameter]
-    public string? Icon { get; set; }
+    public string TagName { get; set; } = null!;
 
     [Parameter]
-    public bool IconRight { get; set; }
+    public string Color { get; set; } = null!;
 
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     private bool _drawer;
+    private StringNumber? _tab;
+    private T _cachedModel = new();
 
-    protected TModel FromModel { get; set; } = new();
+    private Node? _node;
 
-    private async Task OnDblClick()
+    protected T FormModel { get; set; } = new();
+
+    protected override void OnInitialized()
     {
+        base.OnInitialized();
+
+        _cachedModel = JsonSerializer.Deserialize<T>(Value)!;
+    }
+
+    private void OnDblClick()
+    {
+        FormModel = _cachedModel.DeepClone();
+
         _drawer = true;
     }
 
-    protected virtual Task OnSave(ModalActionEventArgs args)
+    protected void OnSave(ModalActionEventArgs args)
     {
         _drawer = false;
 
-        return Task.CompletedTask;
+        _cachedModel = FormModel.DeepClone();
+
+        _cachedModel.Meta = JsonSerializer.Serialize(_cachedModel.MetaData);
+
+        _ = JSRuntime.InvokeVoidAsync("UpdateCustomElementValue", _node?.ElementReference, JsonSerializer.Serialize(_cachedModel));
     }
 
     protected virtual void DrawerContent(RenderTreeBuilder __builder)

@@ -1,7 +1,7 @@
 ﻿@using Microsoft.JSInterop
 @using Microsoft.AspNetCore.Components.Rendering
 
-@inherits Masa.Workflow.ActivityCore.ActivityNode<SwitchActivityMeta>
+@inherits Masa.Workflow.ActivityCore.ActivityNode<SwitchMeta, SwitchActivityMeta>
 
 @inject IJSRuntime jsRuntime
 
@@ -22,7 +22,7 @@
     {
         <MRow>
             <MCol Cols="12">
-                <MTextField @bind-Value="FromModel.Property"
+                <MTextField @bind-Value="FormModel.Property"
                             Label="Name"
                             Disabled
                             Dense
@@ -41,31 +41,9 @@
                 </MDragZone>
             </MCol>
             <MCol Cols="12">
-                <EnumSelect @bind-Value="FromModel.EnforceRule" TValue="EnforceRule" Clearable=false Label="EnforceRule" />
+                <EnumSelect @bind-Value="FormModel.MetaData.EnforceRule" TValue="EnforceRule" Clearable=false Label="EnforceRule" />
             </MCol>
         </MRow>
-    }
-
-
-    class SwitchMeta : SwitchActivityMeta, IActivityMeta
-    {
-        public string Name { get; set; } = "";
-
-        public string Description { get; set; } = "";
-
-        public string Type { get; set; } = "";
-
-        public bool Disabled { get; set; }
-
-        public string Icon { get; set; } = "mdi-shuffle";
-
-        public bool ShowLabel { get; set; } = true;
-
-        public List<string> InputLabels { get; set; } = new();
-
-        public List<string> OutputLabels { get; set; } = new();
-
-        public int Output { get; set; }
     }
 
 }

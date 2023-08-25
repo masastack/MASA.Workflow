@@ -4,14 +4,14 @@ using System.Linq.Expressions;
 
 namespace Masa.Workflow.Activity.Activities;
 
-public class SwitchActivity : MasaWorkflowActivity<SwitchActivityMeta, List<Guid>>
+public class SwitchActivity : MasaWorkflowActivity<SwitchMeta, List<Guid>>
 {
     public SwitchActivity(WorkflowHub workflowHub)
         : base(workflowHub)
     {
     }
 
-    public override Task<List<Guid>> RunAsync(Msg<SwitchActivityMeta> msg)
+    public override Task<List<Guid>> RunAsync(Msg<SwitchMeta> msg)
     {
         //todo get Msg.Payload
         ConstantExpression switchValue = Expression.Constant(3);

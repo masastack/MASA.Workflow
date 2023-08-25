@@ -11,12 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.DataAnnotations.Validation" Version="3.2.0-rc1.20223.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj" />
   </ItemGroup>
-
 
 </Project>

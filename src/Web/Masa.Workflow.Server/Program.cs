@@ -1,17 +1,12 @@
-using Masa.Workflow.Activity.Activities.Switch;
-using Microsoft.AspNetCore.Components.Web;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddMasaBlazor();
 
-builder.Services.AddServerSideBlazor(options =>
-{
-    options.RootComponents.RegisterCustomElementsUsedJSCustomElementAttribute();
-});
+builder.Services.AddMasaWorkflowUI();
+
+builder.Services.AddServerSideBlazor(options => { options.RootComponents.RegisterCustomElementsUsedJSCustomElementAttribute(); });
 
 var app = builder.Build();
 

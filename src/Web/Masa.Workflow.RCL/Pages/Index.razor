@@ -30,7 +30,7 @@
     <div class="@Block.Element("workspace")"
          style="width: calc(100% - 600px)">
         <MDrawflow Style="height: calc(100vh - 124px); background: white; background-size: 24px 24px; background-image: linear-gradient(to right, #f1f1f1 1px, transparent 1px),linear-gradient(to bottom, #f1f1f1 1px, transparent 1px)"
-                   OnDrop="Drop"
+                   OnDrop="@Drop"
                    @ref="_drawflow" />
     </div>
     <div class="@Block.Element("sidebar")" style="width: 352px;">
@@ -64,7 +64,7 @@
     // TODO: fetch nodes from http
             _nodes = new List<Node>()
             {
-                new("Switch", "switch", "#e2d96e", "mdi-format-list-numbered-rtl", "func"),
+                new("Switch", "switch", "#e2d96e", "mdi-shuffle", "func"),
                 new("Http Request", "http-request", "#e7e7ae", "mdi-earth", "net"),
             };
 
@@ -84,7 +84,6 @@
         }
 
         var nodeId = args.DataTransfer.Data.Value;
-        Console.Out.WriteLine($"{args.OffsetX} {args.OffsetY}");
 
         await AddCard(nodeId, args.ClientX, args.ClientY, args.DataTransfer.Data.OffsetX, args.DataTransfer.Data.OffsetY);
     }
@@ -95,12 +94,35 @@
 
         var node = _nodes.FirstOrDefault(u => u.Id == nodeId);
 
-        var id = await _drawflow.AddNodeAsync(nodeId, 0, 1, clientX, clientY, offsetX, offsetY, "",
-            new { data = JsonSerializer.Serialize(new { Method = "get", Url = "www.bing.com" }) },
-            $"<{tagName} name='{node.Name}' color='{node.Color}' icon='{node.Icon}' icon-right='{node.IconRight}' df-data></{tagName}>");
-        await JSRuntime.InvokeVoidAsync("updateCustomElementIdFromDrawflow", tagName, id);
+    // TODO: get init meta of node
+        
+        
+
+        var input = 1;
+        var output = 1;
+        Node2 metaNode = new Node2(node.Name, node.Icon, node.IconRight, input, output, new string[] { }, new string[] { }, "");
+
+        var str = JsonSerializer.Serialize(metaNode);
+
+        Console.Out.WriteLine(str);
+
+        await _drawflow.AddNodeAsync(
+            nodeId,
+            input,
+            output,
+            clientX,
+            clientY,
+            offsetX,
+            offsetY,
+            "",
+            new { data = JsonSerializer.Serialize(metaNode) },
+            $"<{tagName} tag='{tagName}' color='{node.Color}' df-data></{tagName}>");
+
+    // await JSRuntime.InvokeVoidAsync("updateCustomElementIdFromDrawflow", tagName, id);
     }
 
     public record Node(string Name, string Id, string Color, string? Icon = null, string? Tag = null, bool IconRight = false);
+
+    public record Node2(string Name, string? Icon, bool IconRight, int Input, int Output, string[] Inputs, string[] Outputs, string Meta);
 
 }
