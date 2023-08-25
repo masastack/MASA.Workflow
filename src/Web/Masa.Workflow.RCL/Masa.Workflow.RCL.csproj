@@ -20,7 +20,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj"/>
-        <ProjectReference Include="..\..\Contracts\Masa.Workflow.Protos\Masa.Workflow.Protos.csproj"/>
         <ProjectReference Include="..\Masa.Workflow.ActivityCore\Masa.Workflow.ActivityCore.csproj" />
         <ProjectReference Include="..\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj" />
     </ItemGroup>

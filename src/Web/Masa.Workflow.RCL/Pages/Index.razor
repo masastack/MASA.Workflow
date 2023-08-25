@@ -1,6 +1,4 @@
 ﻿@page "/"
-@using System.Text.Json
-@inject IJSRuntime JSRuntime
 
 <div class="d-flex">
     <MSpacer />
@@ -17,8 +15,8 @@
                     <MExpansionPanelContent>
                         @foreach (var node in group)
                         {
-                            <DragNode NodeId="@node.Id"
-                                      Name="@node.Name"
+                            <DragNode Name="@node.Id"
+                                      Label="@node.Name"
                                       Color="@node.Color"
                                       Icon="@node.Icon" />
                         }
@@ -29,100 +27,8 @@
     </div>
     <div class="@Block.Element("workspace")"
          style="width: calc(100% - 600px)">
-        <MDrawflow Style="height: calc(100vh - 124px); background: white; background-size: 24px 24px; background-image: linear-gradient(to right, #f1f1f1 1px, transparent 1px),linear-gradient(to bottom, #f1f1f1 1px, transparent 1px)"
-                   OnDrop="@Drop"
-                   @ref="_drawflow" />
+        <MDrawflow OnDrop="@Drop" @ref="_drawflow" />
     </div>
     <div class="@Block.Element("sidebar")" style="width: 352px;">
     </div>
 </div>
-
-
-@code {
-
-    private MDrawflow _drawflow = null!;
-
-    private List<StringNumber> _selectedGroups;
-
-    private Block Block => new("mw-flow");
-
-    private async Task Export()
-    {
-        var res = await _drawflow.ExportAsync(withoutData: false);
-        Console.WriteLine($"export result: {res}");
-    }
-
-    private List<Node> _nodes = new();
-    private List<IGrouping<string?, Node>> _nodeGroups = new();
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-
-        if (firstRender)
-        {
-    // TODO: fetch nodes from http
-            _nodes = new List<Node>()
-            {
-                new("Switch", "switch", "#e2d96e", "mdi-shuffle", "func"),
-                new("Http Request", "http-request", "#e7e7ae", "mdi-earth", "net"),
-            };
-
-            _nodeGroups = _nodes.GroupBy(u => u.Tag).ToList();
-
-            _selectedGroups = _nodeGroups.Select(g => (StringNumber)g.Key).ToList();
-
-            StateHasChanged();
-        }
-    }
-
-    private async Task Drop(ExDragEventArgs args)
-    {
-        if (string.IsNullOrWhiteSpace(args.DataTransfer.Data.Value))
-        {
-            throw new InvalidOperationException("data-value cannot be found in DataTransfer.");
-        }
-
-        var nodeId = args.DataTransfer.Data.Value;
-
-        await AddCard(nodeId, args.ClientX, args.ClientY, args.DataTransfer.Data.OffsetX, args.DataTransfer.Data.OffsetY);
-    }
-
-    private async Task AddCard(string nodeId, double clientX, double clientY, double offsetX, double offsetY, string? tagName = null)
-    {
-        tagName ??= $"{nodeId}-node";
-
-        var node = _nodes.FirstOrDefault(u => u.Id == nodeId);
-
-    // TODO: get init meta of node
-        
-        
-
-        var input = 1;
-        var output = 1;
-        Node2 metaNode = new Node2(node.Name, node.Icon, node.IconRight, input, output, new string[] { }, new string[] { }, "");
-
-        var str = JsonSerializer.Serialize(metaNode);
-
-        Console.Out.WriteLine(str);
-
-        await _drawflow.AddNodeAsync(
-            nodeId,
-            input,
-            output,
-            clientX,
-            clientY,
-            offsetX,
-            offsetY,
-            "",
-            new { data = JsonSerializer.Serialize(metaNode) },
-            $"<{tagName} tag='{tagName}' color='{node.Color}' df-data></{tagName}>");
-
-    // await JSRuntime.InvokeVoidAsync("updateCustomElementIdFromDrawflow", tagName, id);
-    }
-
-    public record Node(string Name, string Id, string Color, string? Icon = null, string? Tag = null, bool IconRight = false);
-
-    public record Node2(string Name, string? Icon, bool IconRight, int Input, int Output, string[] Inputs, string[] Outputs, string Meta);
-
-}

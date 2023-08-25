@@ -38,7 +38,7 @@ public class ActivityMeta
 
     public bool IconRight { get; set; }
 
-    public bool ShowLabel { get; set; }
+    public bool HideLabel { get; set; }
 
     public int Input
     {
@@ -52,7 +52,14 @@ public class ActivityMeta
                 _input = MinInput;
             }
 
-            InputLabels = InputLabels.Take(_input).ToList();
+            if (_input < InputLabels.Count)
+            {
+                InputLabels = InputLabels.Take(_input).ToList();
+            }
+            else
+            {
+                InputLabels.AddRange(Enumerable.Repeat<string?>(null, _input - InputLabels.Count));
+            }
         }
     }
 
@@ -68,7 +75,14 @@ public class ActivityMeta
                 _output = MinOutput;
             }
 
-            OutputLabels = OutputLabels.Take(_output).ToList();
+            if (_output < OutputLabels.Count)
+            {
+                OutputLabels = OutputLabels.Take(_output).ToList();
+            }
+            else if (_output > OutputLabels.Count)
+            {
+                OutputLabels.AddRange(Enumerable.Repeat<string?>(null, _output - OutputLabels.Count));
+            }
         }
     }
 

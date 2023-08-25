@@ -2,8 +2,9 @@
 @typeparam T
 @attribute [JSCustomElement]
 
-<Node Name="@_cachedModel.DisplayName"
+<Node Label="@_cachedModel.DisplayName"
       Color="@Color"
+      HideLabel="@_cachedModel.HideLabel"
       Icon="@_cachedModel.Icon"
       IconRight="@_cachedModel.IconRight"
       @ondblclick="@OnDblClick"
@@ -14,6 +15,7 @@
          Title="edit-node"
          BodyClass="pa-0"
          FormModel="@FormModel"
+         OnDelete="@OnDelete"
          OnSave="@OnSave">
     <ObjectGraphDataAnnotationsValidator />
     <MTabs @bind-Value="@_tab">
@@ -29,9 +31,9 @@
                 <MTextField @bind-Value="@FormModel.Name"
                             Label="name">
                 </MTextField>
-                <MSwitch @bind-Value="@FormModel.ShowLabel"
+                <MSwitch @bind-Value="@FormModel.HideLabel"
                          Inset
-                         Label="show-label">
+                         Label="hide-label">
                 </MSwitch>
 
                 @{

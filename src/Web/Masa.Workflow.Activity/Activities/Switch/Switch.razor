@@ -1,49 +1,35 @@
-﻿@using Microsoft.JSInterop
-@using Microsoft.AspNetCore.Components.Rendering
-
-@inherits Masa.Workflow.ActivityCore.ActivityNode<SwitchMeta, SwitchActivityMeta>
-
-@inject IJSRuntime jsRuntime
+﻿@inherits Masa.Workflow.ActivityCore.ActivityNode<SwitchMeta, SwitchActivityMeta>
 
 @base.BuildRenderTree
 
 @code {
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await jsRuntime.InvokeAsync<IJSObjectReference>("import", "https://cdn.masastack.com/npm/sortable/Sortable.min.js");
-        }
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
     protected override void DrawerContent(RenderTreeBuilder __builder)
     {
-        <MRow>
-            <MCol Cols="12">
-                <MTextField @bind-Value="FormModel.Property"
-                            Label="Name"
-                            Disabled
-                            Dense
-                            Outlined
-                            Prefix="Msg."
-                            HideDetails="@("auto")" />
-            </MCol>
-            <MCol Cols=12>
-                <MDragZone>
-                    <MDragItem>
-                        <div class="white-color item">item1.1</div>
-                    </MDragItem>
-                    <MDragItem>
-                        <div class="white-color item">item1.2</div>
-                    </MDragItem>
-                </MDragZone>
-            </MCol>
-            <MCol Cols="12">
-                <EnumSelect @bind-Value="FormModel.MetaData.EnforceRule" TValue="EnforceRule" Clearable=false Label="EnforceRule" />
-            </MCol>
-        </MRow>
+        <MTextField @bind-Value="FormModel.Property"
+                    Label="Name"
+                    Disabled
+                    Dense
+                    Outlined
+                    Prefix="Msg."
+                    HideDetails="@("auto")" />
+        <OutlineCard Title="i18n.rules">
+            @foreach (var rule in FormModel.MetaData.Rules)
+            {
+                <div class="white-color item">@rule.Key, @rule.Value</div>
+            }
+
+            <div class="white-color item">item1.1</div>
+            <MButton Outlined Block OnClick="AddNewRule">i18n.new-rule</MButton>
+        </OutlineCard>
+
+        <EnumSelect @bind-Value="FormModel.MetaData.EnforceRule" TValue="EnforceRule" Clearable=false Label="EnforceRule" />
+    }
+
+    private void AddNewRule()
+    {
+        FormModel.MetaData.Rules.Add(new KeyValuePair<Operator, object>(default, default));
+        FormModel.Output++;
     }
 
 }
