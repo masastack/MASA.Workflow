@@ -1,0 +1,50 @@
+﻿/* remove this after using stack.components*/
+.m-application.theme--light {
+  background-color: #f0f3fa;
+}
+
+.drawflow .drawflow-node, .drawflow .drawflow-node.selected {
+    background: none;
+}
+
+.drawflow .drawflow-node.selected .mw-activity-node {
+    box-shadow: 0 0 4px 1px #4f34fa;
+}
+
+/* flow */
+.mw-flow {
+  display: flex;
+}
+
+.mw-flow__nodes {
+  background-color: white;
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.mw-flow__nodes .m-expansion-panel-header {
+  background-color: #F6F8FD;
+  border-radius: 12px;
+  padding: 0 24px !important;
+  margin-bottom: 8px;
+}
+
+.mw-flow__nodes .m-expansion-panel--active > .m-expansion-panel-header {
+  min-height: 56px;
+}
+
+.mw-flow__nodes .m-expansion-panel-content__wrap {
+  padding: 0;
+}
+
+.mw-flow__sidebar {
+  background-color: white;
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.mw-flow__workspace {
+  border-radius: 24px;
+  margin: 0 16px;
+  width: 100%;
+}

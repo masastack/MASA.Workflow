@@ -1,6 +1,4 @@
 ﻿using BlazorComponent.I18n;
-using Masa.Blazor;
-using Microsoft.AspNetCore.Components;
 
 namespace Masa.Workflow.Activity;
 
