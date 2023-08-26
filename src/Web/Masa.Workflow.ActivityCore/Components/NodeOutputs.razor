@@ -1,0 +1,9 @@
+﻿@typeparam TItem where TItem : new()
+@implements INodeOutputs
+
+<OutlineCard Title="@Title"
+             Class="@Class"
+             Style="@Style"
+             TitleClass="@TitleClass">
+    @ChildContent?.Invoke((RemoveItem, AddNew))
+</OutlineCard>

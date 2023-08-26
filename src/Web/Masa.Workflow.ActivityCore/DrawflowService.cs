@@ -25,28 +25,28 @@ public class DrawflowService
         await _drawflow.RemoveNodeAsync(id).ConfigureAwait(false);
     }
 
-    public async Task AddInputAsync(int id)
+    public async Task AddNodeInputAsync(int id)
     {
         EnsureDrawflow();
 
         await _drawflow.AddInputAsync(id).ConfigureAwait(false);
     }
 
-    public async Task AddOutputAsync(int id)
+    public async Task AddNodeOutputAsync(int id)
     {
         EnsureDrawflow();
 
         await _drawflow.AddOutputAsync(id).ConfigureAwait(false);
     }
 
-    public async Task RemoveInputAsync(int id, string inputClass)
+    public async Task RemoveNodeInputAsync(int id, string inputClass)
     {
         EnsureDrawflow();
 
         await _drawflow.RemoveInputAsync(id, inputClass).ConfigureAwait(false);
     }
 
-    public async Task RemoveOutputAsync(int id, string inputClass)
+    public async Task RemoveNodeOutputAsync(int id, string inputClass)
     {
         EnsureDrawflow();
 

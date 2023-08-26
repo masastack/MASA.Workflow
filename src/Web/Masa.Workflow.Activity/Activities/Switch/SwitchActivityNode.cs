@@ -2,7 +2,11 @@
 
 public class SwitchActivityMeta : ActivityMeta<SwitchMeta>
 {
-    public SwitchActivityMeta() : base("switch", "mdi-shuffle", 1, 1)
+    public SwitchActivityMeta()
     {
+        if (MetaData.Rules.Count == 0)
+        {
+            MetaData.Rules.Add(new Rule(Operator.Eq, null));
+        }
     }
 }

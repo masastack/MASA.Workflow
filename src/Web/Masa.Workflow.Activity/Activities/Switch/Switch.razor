@@ -13,23 +13,48 @@
                     Outlined
                     Prefix="Msg."
                     HideDetails="@("auto")" />
-        <OutlineCard Title="i18n.rules">
-            @foreach (var rule in FormModel.MetaData.Rules)
-            {
-                <div class="white-color item">@rule.Key, @rule.Value</div>
-            }
+        <NodeOutputs Title="i18n.rule" TItem="Rule"
+                     Items="FormModel.MetaData.Rules">
+            <ChildContent>
+                @foreach (var item in FormModel.MetaData.Rules)
+                {
+                    <div class="d-flex align-center mb-2">
+                        <EnumSelect @bind-Value="item.Operator"
+                                    TValue="Operator"
+                                    Dense
+                                    Filled
+                                    Clearable=false
+                                    Label="Operator"
+                                    Class="mr-2"
+                                    Style="max-width: 156px"
+                                    HideDetails="true" />
+                        <MTextField @bind-Value="item.Value"
+                                    Dense
+                                    Label="Value"
+                                    HideDetails="true" />
+                        <MButton Icon OnClick="@(() => RemoveRule(item, context.RemoveItem))">
+                            <MIcon>$cancel</MIcon>
+                        </MButton>
+                    </div>
+                }
+                <MButton Color="primary" Outlined Block OnClick="@(() => AddNewRule(context.AddNew))">i18n.new-rule</MButton>
+            </ChildContent>
 
-            <div class="white-color item">item1.1</div>
-            <MButton Outlined Block OnClick="AddNewRule">i18n.new-rule</MButton>
-        </OutlineCard>
+        </NodeOutputs>
 
         <EnumSelect @bind-Value="FormModel.MetaData.EnforceRule" TValue="EnforceRule" Clearable=false Label="EnforceRule" />
     }
 
-    private void AddNewRule()
+    private void AddNewRule(Action addNew)
     {
-        FormModel.MetaData.Rules.Add(new KeyValuePair<Operator, object>(default, default));
-        FormModel.Output++;
+        FormModel.MetaData.Rules.Add(new Rule(Operator.Empty, default));
+        addNew();
+    }
+
+    private void RemoveRule(Rule rule, Action<Rule> removeItem)
+    {
+        FormModel.MetaData.Rules.Remove(rule);
+        removeItem(rule);
     }
 
 }

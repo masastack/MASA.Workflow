@@ -2,7 +2,4 @@
 
 public class HttpRequestActivityMeta : ActivityMeta<HttpRequestMeta>
 {
-    public HttpRequestActivityMeta() : base("http-request", "mdi-earth", 1, 1)
-    {
-    }
 }

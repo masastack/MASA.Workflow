@@ -5,17 +5,19 @@
   border-radius: 8px;
   cursor: move;
   display: flex;
-  height: 40px;
+  height: 100%;
   line-height: 40px;
+  min-height: 40px;
   user-select: none;
   width: 100%;
 }
 
 .mw-activity-node__icon {
   background-color: rgb(0 0 0 / 5%);
+  border-radius: 8px 0 0 8px;
+  height: 100%;
   text-align: center;
   width: 56px;
-  border-radius: 8px 0 0 8px;
 }
 
 .mw-activity-node__icon.mw-activity-node__right {
@@ -23,6 +25,7 @@
 }
 
 .mw-activity-node__icon .m-icon {
+  height: 100%;
   line-height: 40px;
 }
 

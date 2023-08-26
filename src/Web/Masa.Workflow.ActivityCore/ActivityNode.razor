@@ -14,7 +14,9 @@
 <PDrawer @bind-Value="_drawer"
          Title="edit-node"
          BodyClass="pa-0"
+         Width="480"
          FormModel="@FormModel"
+         OnCancel="@OnCancel"
          OnDelete="@OnDelete"
          OnSave="@OnSave">
     <ObjectGraphDataAnnotationsValidator />
@@ -25,56 +27,20 @@
     <MDefaultsProvider Defaults="GlobalConfig.ComponentDefaults">
         <MWindow Value="@_tab" Class="pa-6">
             <MWindowItem Transition="">
-                @(ChildContent ?? (builder => DrawerContent(builder)))
+                <CascadingValue Value="this" IsFixed>
+                    <CascadingValue Name="ActivityNodeDrawer" Value="_drawer">
+                        @(ChildContent ?? (builder => DrawerContent(builder)))
+                    </CascadingValue>
+                </CascadingValue>
             </MWindowItem>
             <MWindowItem Transition="">
                 <MTextField @bind-Value="@FormModel.Name"
-                            Label="name">
+                            Label="i18n.name">
                 </MTextField>
                 <MSwitch @bind-Value="@FormModel.HideLabel"
                          Inset
-                         Label="hide-label">
+                         Label="i18n.hide-label">
                 </MSwitch>
-
-                @{
-                    var hasInput = FormModel.Input > 0;
-                    var hasOutput = FormModel.Output > 0;
-                }
-
-                @if (hasInput || hasOutput)
-                {
-                    <OutlineCard Title="node-label" Class="mb-4">
-                        @if (hasInput)
-                        {
-                            <OutlineCard Title="input">
-                                @for (var index = 0; index < FormModel.Input; index++)
-                                {
-                                    var i = index;
-                                    <MTextField Value="@FormModel.InputLabels[i]"
-                                                ValueChanged="v => FormModel.InputLabels[i] = v"
-                                                TValue="string"
-                                                Label="@((i + 1).ToString())">
-                                    </MTextField>
-                                }
-                            </OutlineCard>
-                        }
-                        @if (hasOutput)
-                        {
-                            <OutlineCard Title="Output">
-                                @for (var index = 0; index < FormModel.Output; index++)
-                                {
-                                    var i = index;
-                                    <MTextField Value="@FormModel.OutputLabels[i]"
-                                                ValueChanged="v => FormModel.OutputLabels[i] = v"
-                                                TValue="string"
-                                                Label="@((i + 1).ToString())">
-                                    </MTextField>
-                                }
-                            </OutlineCard>
-                        }
-                    </OutlineCard>
-                }
-
                 <MTextarea @bind-Value="FormModel.Description" Label="description"></MTextarea>
             </MWindowItem>
         </MWindow>

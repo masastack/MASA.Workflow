@@ -23,7 +23,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchMeta, List<Guid>>
             var wires = msg.Meta.Wires[i] ?? new();
             switchCaseList.Add(Expression.SwitchCase(
                         Expression.Constant(wires),
-                        GetExpression(rule.Key, rule.Value)
+                        GetExpression(rule.Operator, rule.Value)
                     ));
             i++;
         }

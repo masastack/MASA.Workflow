@@ -1,11 +1,12 @@
 ﻿using System.Text.Json;
 using Force.DeepCloner;
+using Masa.Workflow.ActivityCore.Components;
 using Masa.Workflow.RCL;
 using Microsoft.JSInterop;
 
 namespace Masa.Workflow.ActivityCore;
 
-public partial class ActivityNode<TMeta, T> : ComponentBase
+public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
     where TMeta : class, new()
     where T : ActivityMeta<TMeta>, new()
 {
@@ -41,9 +42,15 @@ public partial class ActivityNode<TMeta, T> : ComponentBase
 
     private void OnDblClick()
     {
+        BeforeDrawerOpen();
+
         FormModel = _cachedModel.DeepClone();
 
         _drawer = true;
+    }
+
+    protected virtual void BeforeDrawerOpen()
+    {
     }
 
     protected async Task OnSave(ModalActionEventArgs args)
@@ -54,7 +61,28 @@ public partial class ActivityNode<TMeta, T> : ComponentBase
 
         _cachedModel.Meta = JsonSerializer.Serialize(_cachedModel.MetaData);
 
+        await _inputOutputs.ForEachAsync(async item =>
+        {
+            if (item.OutputsToRemove.Any())
+            {
+                await item.OutputsToRemove.OrderByDescending(u => u).ToList().ForEachAsync(async id =>
+                {
+                    _ = DrawflowService.RemoveNodeOutputAsync(NodeId, "output_" + id);
+                });
+            }
+
+            for (int i = 0; i < item.NewOutputsCount; i++)
+            {
+                _ = DrawflowService.AddNodeOutputAsync(NodeId);
+            }
+        });
+
         await DrawflowService.UpdateNodeDataFromIdAsync(NodeId, _cachedModel);
+    }
+
+    private void OnCancel()
+    {
+        _drawer = false;
     }
 
     private async Task OnDelete()
@@ -67,31 +95,10 @@ public partial class ActivityNode<TMeta, T> : ComponentBase
     {
     }
 
-    protected async Task AddInputAsync()
+    private readonly List<INodeOutputs> _inputOutputs = new();
+
+    public void RegisterInputOutput(INodeOutputs comp)
     {
-        FormModel.Input++;
-
-        await DrawflowService.AddInputAsync(NodeId);
-    }
-
-    protected async Task AddOutputAsync()
-    {
-        FormModel.Output++;
-
-        await DrawflowService.AddOutputAsync(NodeId);
-    }
-
-    protected async Task RemoveInputAsync()
-    {
-        FormModel.Input--;
-
-        // await DrawflowService.RemoveInputAsync(NodeId);
-    }
-    
-    protected async Task RemoveOutputAsync()
-    {
-        FormModel.Output--;
-
-        // await DrawflowService.RemoveOutputAsync(NodeId);
+        _inputOutputs.Add(comp);
     }
 }

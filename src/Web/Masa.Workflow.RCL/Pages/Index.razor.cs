@@ -58,20 +58,14 @@ public partial class Index
         var node = _nodes.FirstOrDefault(u => u.Id == nodeName);
 
         // TODO: get init meta of node
-
-
-        var input = 1;
-        var output = 1;
-        Node2 metaNode = new Node2(node.Name, node.Icon, node.IconRight, false, input, output, new string[] { }, new string[] { }, "");
-
-        var str = JsonSerializer.Serialize(metaNode);
-
-        Console.Out.WriteLine(str);
+        var minInput = 1;
+        var minOutput = 1;
+        var metaNode = new Node2(node.Name, node.Icon, node.IconRight, false, minInput, minOutput, "");
 
         var id = await _drawflow.AddNodeAsync(
             nodeName,
-            input,
-            output,
+            minInput,
+            minOutput,
             clientX: args.ClientX,
             clientY: args.ClientY,
             offsetX: args.DataTransfer.Data.OffsetX,
@@ -86,6 +80,5 @@ public partial class Index
 
     public record Node(string Name, string Id, string Color, string? Icon = null, string? Tag = null, bool IconRight = false);
 
-    public record Node2(string Name, string? Icon, bool IconRight, bool HideLabel, int Input, int Output, string[] Inputs, string[] Outputs,
-        string Meta);
+    public record Node2(string Name, string? Icon, bool IconRight, bool HideLabel, int MinInput, int MinOutput, string Meta);
 }
