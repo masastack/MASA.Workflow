@@ -35,28 +35,7 @@ public class Activity : Entity<Guid>
         Name = name;
         Description = description;
         Type = type;
-        Input = intput;
-        Output = output;
-
-        InputLabels = Enumerable.Repeat("", Input).ToList();
-        OutputLabels = Enumerable.Repeat("", Output).ToList();
     }
-
-    #region UI Style
-
-    public string Icon { get; private set; } = string.Empty;
-
-    public bool ShowLabel { get; private set; }
-
-    public List<string> InputLabels { get; private set; }
-
-    public List<string> OutputLabels { get; private set; }
-
-    public int Output { get; private set; }
-
-    public int Input { get; private set; }
-
-    #endregion
 }
 
 public class MetaData : Dictionary<string, object>

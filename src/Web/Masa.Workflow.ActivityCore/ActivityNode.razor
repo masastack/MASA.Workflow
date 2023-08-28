@@ -1,15 +1,48 @@
-﻿@typeparam TModel
+﻿@typeparam TMeta
+@typeparam T
 @attribute [JSCustomElement]
 
-<Node Name="@Name"
+<Node Label="@_cachedModel.DisplayName"
       Color="@Color"
-      Icon="@Icon"
-      IconRight="@IconRight"
-      @ondblclick="@OnDblClick">
+      HideLabel="@_cachedModel.HideLabel"
+      Icon="@_cachedModel.Icon"
+      IconRight="@_cachedModel.IconRight"
+      @ondblclick="@OnDblClick"
+      @ref="_node">
 </Node>
 
 <PDrawer @bind-Value="_drawer"
-         FormModel="@FromModel"
+         Title="edit-node"
+         BodyClass="pa-0"
+         Width="480"
+         FormModel="@FormModel"
+         OnCancel="@OnCancel"
+         OnDelete="@OnDelete"
          OnSave="@OnSave">
-    @(ChildContent ?? (builder => DrawerContent(builder)))
+    <ObjectGraphDataAnnotationsValidator />
+    <MTabs @bind-Value="@_tab">
+        <MTab>Meta</MTab>
+        <MTab>Node</MTab>
+    </MTabs>
+    <MDefaultsProvider Defaults="GlobalConfig.ComponentDefaults">
+        <MWindow Value="@_tab" Class="pa-6">
+            <MWindowItem Transition="">
+                <CascadingValue Value="this" IsFixed>
+                    <CascadingValue Name="ActivityNodeDrawer" Value="_drawer">
+                        @(ChildContent ?? (builder => DrawerContent(builder)))
+                    </CascadingValue>
+                </CascadingValue>
+            </MWindowItem>
+            <MWindowItem Transition="">
+                <MTextField @bind-Value="@FormModel.Name"
+                            Label="i18n.name">
+                </MTextField>
+                <MSwitch @bind-Value="@FormModel.HideLabel"
+                         Inset
+                         Label="i18n.hide-label">
+                </MSwitch>
+                <MTextarea @bind-Value="FormModel.Description" Label="description"></MTextarea>
+            </MWindowItem>
+        </MWindow>
+    </MDefaultsProvider>
 </PDrawer>

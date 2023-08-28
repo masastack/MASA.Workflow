@@ -13,35 +13,30 @@ public class Node : ComponentBase
         _draggable = draggable;
     }
 
-    [Parameter]
-    [EditorRequired]
-    public string? Color { get; set; }
+    [Parameter] [EditorRequired] public string? Color { get; set; }
 
-    [Parameter]
-    [EditorRequired]
-    public string? Name { get; set; }
+    [Parameter] public string? Label { get; set; }
 
-    [Parameter]
-    // [EditorRequired]
-    public string? NodeId { get; set; }
+    [Parameter] public bool HideLabel { get; set; }
 
-    [Parameter]
-    public string? Icon { get; set; }
+    [Parameter] public string? Name { get; set; }
 
-    [Parameter]
-    public bool IconRight { get; set; }
+    [Parameter] public string? Icon { get; set; }
+
+    [Parameter] public bool IconRight { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object?> AdditionalAttributes { get; set; }
 
     private Block Block => new("mw-activity-node");
 
+    public ElementReference ElementReference { get; private set; }
+
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
 
-        ArgumentException.ThrowIfNullOrEmpty(nameof(Name));
-        // ArgumentException.ThrowIfNullOrEmpty(nameof(NodeId));
+        ArgumentException.ThrowIfNullOrEmpty(nameof(Label));
         ArgumentException.ThrowIfNullOrEmpty(nameof(Color));
     }
 
@@ -55,7 +50,7 @@ public class Node : ComponentBase
         {
             builder.OpenElement(0, "div");
         }
-        
+
         builder.AddMultipleAttributes(1, AdditionalAttributes);
 
         builder.AddAttribute(2, "class", Block.Modifier("draggable", _draggable).Build());
@@ -74,15 +69,18 @@ public class Node : ComponentBase
             });
             builder2.CloseElement();
 
-            builder2.OpenElement(3, "div");
-            builder2.AddAttribute(4, "class", Block.Element("name").Build());
-            builder2.AddContent(5, Name);
-            builder2.CloseElement();
+            if (!HideLabel)
+            {
+                builder2.OpenElement(3, "div");
+                builder2.AddAttribute(4, "class", Block.Element("name").Build());
+                builder2.AddContent(5, Label);
+                builder2.CloseElement();
+            }
         };
 
         if (_draggable)
         {
-            builder.AddAttribute(4, nameof(MDrag.DataValue), NodeId);
+            builder.AddAttribute(4, nameof(MDrag.DataValue), Name);
             builder.AddAttribute(5, "ChildContent", childContent);
         }
         else
@@ -90,12 +88,14 @@ public class Node : ComponentBase
             builder.AddContent(4, childContent);
         }
 
+
         if (_draggable)
         {
             builder.CloseComponent();
         }
         else
         {
+            builder.AddElementReferenceCapture(6, e => ElementReference = e);
             builder.CloseElement();
         }
     }

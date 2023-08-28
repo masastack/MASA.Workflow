@@ -3,12 +3,23 @@
   background-color: #f0f3fa;
 }
 
-.drawflow .drawflow-node, .drawflow .drawflow-node.selected {
-    background: none;
+.drawflow .drawflow-node {
+  background: none;
+  padding: 0;
+  border: none;
+  width: auto;
+}
+
+.drawflow .drawflow-node.selected {
+  background: none;
 }
 
 .drawflow .drawflow-node.selected .mw-activity-node {
-    box-shadow: 0 0 4px 1px #4f34fa;
+  box-shadow: 0 0 4px 1px #4f34fa;
+}
+
+.drawflow .drawflow-node .drawflow_content_node {
+  align-self: stretch;
 }
 
 /* flow */
@@ -47,4 +58,20 @@
   border-radius: 24px;
   margin: 0 16px;
   width: 100%;
+}
+
+.mw-flow__workspace .m-drawflow {
+  background: linear-gradient(to right, #f1f1f1 1px, transparent 1px), linear-gradient(to bottom, #f1f1f1 1px, transparent 1px);
+  background-color: white;
+  background-size: 24px 24px;
+  border-radius: 24px;
+  height: calc(100vh - 124px);
+}
+
+.mw-flow__workspace .inputs>.input, .mw-flow__workspace .outputs>.output {
+  height: 12px;
+  margin-bottom: 4px;
+  width: 12px;
+  left: -6px;
+  top: 2px;
 }

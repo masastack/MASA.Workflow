@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Components.Rendering
-@inherits Masa.Workflow.ActivityCore.ActivityNode<HttpRequestMeta>
+@inherits Masa.Workflow.ActivityCore.ActivityNode<HttpRequestMeta, HttpRequestActivityMeta>
 
 @base.BuildRenderTree
 
@@ -7,7 +7,7 @@
 
     protected override void DrawerContent(RenderTreeBuilder __builder)
     {
-        <MTextField @bind-Value="FromModel.Url" Label="URL" Filled></MTextField>
+        <MTextField @bind-Value="@FormModel.MetaData.Url" Label="URL"></MTextField>
     }
 
 }

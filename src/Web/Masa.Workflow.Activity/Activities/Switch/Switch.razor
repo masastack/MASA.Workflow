@@ -1,71 +1,60 @@
-﻿@using Microsoft.JSInterop
-@using Microsoft.AspNetCore.Components.Rendering
-
-@inherits Masa.Workflow.ActivityCore.ActivityNode<SwitchActivityMeta>
-
-@inject IJSRuntime jsRuntime
+﻿@inherits Masa.Workflow.ActivityCore.ActivityNode<SwitchMeta, SwitchActivityMeta>
 
 @base.BuildRenderTree
 
 @code {
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await jsRuntime.InvokeAsync<IJSObjectReference>("import", "https://cdn.masastack.com/npm/sortable/Sortable.min.js");
-        }
-        await base.OnAfterRenderAsync(firstRender);
-    }
-
     protected override void DrawerContent(RenderTreeBuilder __builder)
     {
-        <MRow>
-            <MCol Cols="12">
-                <MTextField @bind-Value="FromModel.Property"
-                            Label="Name"
-                            Disabled
-                            Dense
-                            Outlined
-                            Prefix="Msg."
-                            HideDetails="@("auto")" />
-            </MCol>
-            <MCol Cols=12>
-                <MDragZone>
-                    <MDragItem>
-                        <div class="white-color item">item1.1</div>
-                    </MDragItem>
-                    <MDragItem>
-                        <div class="white-color item">item1.2</div>
-                    </MDragItem>
-                </MDragZone>
-            </MCol>
-            <MCol Cols="12">
-                <EnumSelect @bind-Value="FromModel.EnforceRule" TValue="EnforceRule" Clearable=false Label="EnforceRule" />
-            </MCol>
-        </MRow>
+        <MTextField @bind-Value="FormModel.Property"
+                    Label="Name"
+                    Disabled
+                    Dense
+                    Outlined
+                    Prefix="Msg."
+                    HideDetails="@("auto")" />
+        <NodeOutputs Title="i18n.rule" TItem="Rule"
+                     Items="FormModel.MetaData.Rules">
+            <ChildContent>
+                @foreach (var item in FormModel.MetaData.Rules)
+                {
+                    <div class="d-flex align-center mb-2">
+                        <EnumSelect @bind-Value="item.Operator"
+                                    TValue="Operator"
+                                    Dense
+                                    Filled
+                                    Clearable=false
+                                    Label="Operator"
+                                    Class="mr-2"
+                                    Style="max-width: 156px"
+                                    HideDetails="true" />
+                        <MTextField @bind-Value="item.Value"
+                                    Dense
+                                    Label="Value"
+                                    HideDetails="true" />
+                        <MButton Icon OnClick="@(() => RemoveRule(item, context.RemoveItem))">
+                            <MIcon>$cancel</MIcon>
+                        </MButton>
+                    </div>
+                }
+                <MButton Color="primary" Outlined Block OnClick="@(() => AddNewRule(context.AddNew))">i18n.new-rule</MButton>
+            </ChildContent>
+
+        </NodeOutputs>
+
+        <EnumSelect @bind-Value="FormModel.MetaData.EnforceRule" TValue="EnforceRule" Clearable=false Label="EnforceRule" />
     }
 
-
-    class SwitchMeta : SwitchActivityMeta, IActivityMeta
+    private void AddNewRule(Action addNew)
     {
-        public string Name { get; set; } = "";
+        FormModel.MetaData.Rules.Add(new Rule(Operator.Empty, default));
+        addNew();
+    }
 
-        public string Description { get; set; } = "";
-
-        public string Type { get; set; } = "";
-
-        public bool Disabled { get; set; }
-
-        public string Icon { get; set; } = "mdi-shuffle";
-
-        public bool ShowLabel { get; set; } = true;
-
-        public List<string> InputLabels { get; set; } = new();
-
-        public List<string> OutputLabels { get; set; } = new();
-
-        public int Output { get; set; }
+    private void RemoveRule(Rule rule, Action<Rule> removeItem)
+    {
+        FormModel.MetaData.Rules.Remove(rule);
+        removeItem(rule);
     }
 
 }
