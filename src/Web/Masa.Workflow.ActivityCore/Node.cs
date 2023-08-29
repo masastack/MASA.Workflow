@@ -15,6 +15,8 @@ public class Node : ComponentBase
 
     [Parameter] [EditorRequired] public string? Color { get; set; }
 
+    [Parameter] public bool Inactive { get; set; }
+
     [Parameter] public string? Label { get; set; }
 
     [Parameter] public bool HideLabel { get; set; }
@@ -53,7 +55,7 @@ public class Node : ComponentBase
 
         builder.AddMultipleAttributes(1, AdditionalAttributes);
 
-        builder.AddAttribute(2, "class", Block.Modifier("draggable", _draggable).Build());
+        builder.AddAttribute(2, "class", Block.Modifier("draggable", _draggable).Add(Inactive).Build());
         builder.AddAttribute(3, "style", $"background-color:{Color}");
 
         RenderFragment childContent = builder2 =>

@@ -3,6 +3,7 @@
   background-color: #f0f3fa;
 }
 
+/*TODO: padding and width 影响了import时的连接线位置 */
 .drawflow .drawflow-node {
   background: none;
   padding: 0;

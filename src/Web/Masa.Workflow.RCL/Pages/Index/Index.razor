@@ -1,0 +1,68 @@
+﻿@namespace Masa.Workflow.RCL.Pages
+
+@page "/{ActivityId:guid?}"
+
+<div class="d-flex">
+    <MSpacer />
+    <MButton OnClick="() => Import(_data)">Import</MButton>
+    <MButton OnClick="Export">Export</MButton>
+</div>
+
+<div class="@Block">
+    <div class="@Block.Element("nodes")" style="width: 248px;">
+        <MExpansionPanels Multiple Flat @bind-Values="_selectedGroups">
+            @foreach (var group in _nodeGroups)
+            {
+                <MExpansionPanel Value="@group.Key">
+                    <MExpansionPanelHeader>@group.Key</MExpansionPanelHeader>
+                    <MExpansionPanelContent>
+                        @foreach (var node in group)
+                        {
+                            <DragNode Name="@node.Id"
+                                      Label="@node.Name"
+                                      Color="@node.Color"
+                                      Icon="@node.Icon" />
+                        }
+                    </MExpansionPanelContent>
+                </MExpansionPanel>
+            }
+        </MExpansionPanels>
+    </div>
+    <div class="@Block.Element("workspace")"
+         style="width: calc(100% - 600px)">
+        <MDrawflow OnDrop="@Drop"
+                   OnNodeCreated="@NodeCreated"
+                   OnNodeRemoved="@NodeRemoved"
+                   OnNodeDataChanged="@NodeDataChanged"
+                   @ref="_drawflow" />
+    </div>
+    <div class="@Block.Element("sidebar")" style="width: 352px;">
+        <MTabs @bind-Value="_node">
+            <MTab>i18n.node-info</MTab>
+            <MTab>i18n.node-help</MTab>
+            <MTab>i18n.node-debug</MTab>
+        </MTabs>
+        <MTabsItems Value="_node">
+            <MTabItem Transition="">
+                <MTreeview Items="_tree"
+                           ItemText="t => t.Label"
+                           ItemKey="t => t.Key"
+                           ItemChildren="t => t.Children"
+                           Dense
+                           OpenAll
+                           OpenOnClick>
+                    <LabelContent>
+                        <ActiveNode Data="@context.Item"
+                                    Drawflow="_drawflow"/>
+                    </LabelContent>
+                </MTreeview>
+            </MTabItem>
+            <MTabItem Transition="">
+                Help
+            </MTabItem>
+            <MTabItem Transition="">
+                Debug
+            </MTabItem>
+        </MTabsItems>
+    </div>
+</div>

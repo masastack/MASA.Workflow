@@ -3,8 +3,9 @@
 @attribute [JSCustomElement]
 
 <Node Label="@_cachedModel.DisplayName"
-      Color="@Color"
-      HideLabel="@_cachedModel.HideLabel"
+      Color="@_cachedModel.Color"
+      Inactive="@(!_cachedModel.Active)"
+      HideLabel="@(!_cachedModel.ShowLabel)"
       Icon="@_cachedModel.Icon"
       IconRight="@_cachedModel.IconRight"
       @ondblclick="@OnDblClick"
@@ -35,13 +36,17 @@
             </MWindowItem>
             <MWindowItem Transition="">
                 <MTextField @bind-Value="@FormModel.Name"
-                            Label="i18n.name">
+                            Label="i18n.node.name">
                 </MTextField>
-                <MSwitch @bind-Value="@FormModel.HideLabel"
+                <MSwitch @bind-Value="@FormModel.ShowLabel"
                          Inset
-                         Label="i18n.hide-label">
+                         Label="i18n.node.show-label">
                 </MSwitch>
                 <MTextarea @bind-Value="FormModel.Description" Label="description"></MTextarea>
+                <MSwitch @bind-Value="FormModel.Active"
+                         Inset
+                         Label="i18n.node.active">
+                </MSwitch>
             </MWindowItem>
         </MWindow>
     </MDefaultsProvider>
