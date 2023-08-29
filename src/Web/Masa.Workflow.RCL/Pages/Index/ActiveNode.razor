@@ -1,0 +1,56 @@
+﻿@namespace Masa.Workflow.RCL.Pages
+@inject IJSRuntime JSRuntime
+
+<div class="d-flex align-center"
+     @onclick="@OnClick"
+     @ondblclick="@OnDblclick">
+    <div>
+        <MIcon Class="rounded" Dark
+               Style="@($"background-color: {@Data.Color}")">
+            @Data.Icon
+        </MIcon>
+        @Data.Label
+    </div>
+    @if (Data.Type == TreeNodeType.Node)
+    {
+        <MSpacer />
+        <div>
+            <MButton OnClick="@CenterNode" Icon Small>
+                <MIcon Small>mdi-crosshairs</MIcon>
+            </MButton>
+        </div>
+    }
+</div>
+
+@code {
+
+    [Parameter]
+    [EditorRequired]
+    public TreeNode Data { get; set; } = null!;
+
+    [Parameter]
+    [EditorRequired]
+    public MDrawflow Drawflow { get; set; } = null!;
+
+    private async Task OnClick()
+    {
+        if (Data.Type == TreeNodeType.Node)
+        {
+            await Drawflow.FocusNodeAsync(Data.Key);
+        }
+    }
+
+    private async Task OnDblclick()
+    {
+        if (Data.Type == TreeNodeType.Node)
+        {
+            await JSRuntime.InvokeVoidAsync(JSInteropConstants.DblclickDrawflowNode, Data.Key);
+        }
+    }
+
+    private async Task CenterNode()
+    {
+        await Drawflow.CenterNodeAsync(Data.Key);
+    }
+
+}

@@ -6,10 +6,15 @@
   cursor: move;
   display: flex;
   height: 100%;
-  line-height: 40px;
   min-height: 40px;
   user-select: none;
   width: 100%;
+}
+
+.mw-activity-node--inactive {
+  opacity: 0.5;
+  border-style: dashed;
+  border-width: thin;
 }
 
 .mw-activity-node__icon {
@@ -26,7 +31,6 @@
 
 .mw-activity-node__icon .m-icon {
   height: 100%;
-  line-height: 40px;
 }
 
 .mw-activity-node__name {

@@ -14,8 +14,6 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
 
     [Inject] private DrawflowService DrawflowService { get; set; } = null!;
 
-    [Parameter] public string Color { get; set; } = null!;
-
     [Parameter] public int NodeId { get; set; }
 
     /// <summary>
@@ -77,7 +75,7 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
             }
         });
 
-        await DrawflowService.UpdateNodeDataFromIdAsync(NodeId, _cachedModel);
+        await DrawflowService.UpdateNodeDataFromIdAsync(NodeId, new { data =  JsonSerializer.Serialize(_cachedModel) });
     }
 
     private void OnCancel()

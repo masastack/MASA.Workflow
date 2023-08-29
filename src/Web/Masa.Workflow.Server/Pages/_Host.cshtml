@@ -35,15 +35,7 @@
     </div>
 
     <script src="_framework/blazor.server.js"></script>
-<script src="_content/BlazorComponent/js/blazor-component.js"></script>
-<script src="_content/Masa.Workflow.ActivityCore/js/core.js"></script>
-<script src="_content/Masa.Workflow.RCL/js/drag.js"></script>
-    <script>
-        function updateCustomElementIdFromDrawflow(elementName, nodeId) {
-            var customElement = document.querySelector(`#node-${nodeId} ${elementName}`);
-           console.log('customElement', customElement);
-           customElement.setAttribute("node-id", nodeId);
-        }
-    </script>
+    <script src="_content/BlazorComponent/js/blazor-component.js"></script>
+    <script src="_content/Masa.Workflow.RCL/js/rcl.js"></script>
 </body>
 </html>

@@ -6,11 +6,13 @@ public class ActivityMeta
 {
     public string? Name { get; set; }
 
+    public string? Color { get; set; }
+
     public string? Description { get; set; }
 
     public string Type { get; set; } = null!;
 
-    public bool Disabled { get; set; }
+    public bool Active { get; set; } = true;
 
     public string? Property { get; set; }
 
@@ -20,7 +22,7 @@ public class ActivityMeta
 
     public bool IconRight { get; set; }
 
-    public bool HideLabel { get; set; }
+    public bool ShowLabel { get; set; } = true;
 
     public int MinInput { get; set; }
 
