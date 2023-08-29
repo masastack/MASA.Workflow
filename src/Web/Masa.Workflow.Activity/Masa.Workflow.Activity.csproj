@@ -14,12 +14,13 @@
   <ItemGroup>
     <PackageReference Include="Dapr.Workflow" Version="1.11.0" />
     <PackageReference Include="Masa.BuildingBlocks.Data.Contracts" Version="1.0.0" />
+    <PackageReference Include="Masa.Contrib.RulesEngine.MicrosoftRulesEngine" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.Json" Version="7.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Activities\Debug\" />
+    <Folder Include="Activities\Completed\" />
   </ItemGroup>
 
 

@@ -26,7 +26,7 @@ public abstract class MasaWorkflowActivity<TMeta, TOut> : WorkflowActivity<Msg<T
         return result;
     }
 
-    public abstract Task<TOut> RunAsync(Msg<TMeta> msg);
+    public abstract Task<TOut?> RunAsync(Msg<TMeta> msg);
 
     public virtual async Task ActivityExecuting(Guid activityId)
     {

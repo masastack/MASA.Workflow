@@ -16,7 +16,11 @@ public class Rule
     public Rule()
     {
     }
-    
+
+    public Rule(Operator @operator) : this(@operator, null)
+    {
+    }
+
     public Rule(Operator @operator, string? value)
     {
         Operator = @operator;

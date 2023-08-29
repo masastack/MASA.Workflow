@@ -1,6 +1,13 @@
 ﻿global using Dapr.Workflow;
-global using Microsoft.AspNetCore.SignalR;
-global using System.Dynamic;
 global using Masa.Blazor;
+global using Masa.BuildingBlocks.RulesEngine;
+global using Masa.Workflow.Activity.Activities.Switch;
 global using Masa.Workflow.ActivityCore;
 global using Microsoft.AspNetCore.Components;
+global using Microsoft.AspNetCore.SignalR;
+global using Microsoft.Extensions.DependencyInjection;
+global using System.Collections;
+global using System.ComponentModel;
+global using System.Dynamic;
+global using System.Text.Json;
+global using System.Text.RegularExpressions;

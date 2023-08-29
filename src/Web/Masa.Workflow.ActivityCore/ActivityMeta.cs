@@ -12,7 +12,7 @@ public class ActivityMeta
 
     public bool Disabled { get; set; }
 
-    public string? Property { get; set; }
+    public string? Property { get; set; } = "Payload";
 
     public List<List<Guid>>? Wires { get; set; }
 
