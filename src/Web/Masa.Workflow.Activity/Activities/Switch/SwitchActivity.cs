@@ -1,115 +1,98 @@
-﻿using Masa.Workflow.Activity.Activities.Switch;
-using System.Collections;
-using System.Linq.Expressions;
+﻿namespace Masa.Workflow.Activity.Activities;
 
-namespace Masa.Workflow.Activity.Activities;
-
-public class SwitchActivity : MasaWorkflowActivity<SwitchMeta, List<Guid>>
+public class SwitchActivity : MasaWorkflowActivity<SwitchMeta, List<List<Guid>>>
 {
-    public SwitchActivity(WorkflowHub workflowHub)
+    IRulesEngineClient _rulesEngineClient;
+
+    public SwitchActivity(WorkflowHub workflowHub, IRulesEngineClient rulesEngineClient)
         : base(workflowHub)
     {
+        _rulesEngineClient = rulesEngineClient;
     }
 
-    public override Task<List<Guid>> RunAsync(Msg<SwitchMeta> msg)
+    public override async Task<List<List<Guid>>?> RunAsync(Msg<SwitchMeta> msg)
     {
-        //todo get Msg.Payload
-        ConstantExpression switchValue = Expression.Constant(3);
-
-        var switchCaseList = new List<SwitchCase>();
+        var _rules = new List<object>();
         int i = 0;
         foreach (var rule in msg.Meta.Rules)
         {
-            var wires = msg.Meta.Wires[i] ?? new();
-            switchCaseList.Add(Expression.SwitchCase(
-                        Expression.Constant(wires),
-                        GetExpression(rule.Operator, rule.Value)
-                    ));
+            _rules.Add(new
+            {
+                RuleName = rule.Operator.ToString(),
+                //LocalParams = new List<object> {
+                //    new {
+                //        Name ="i",
+                //        Expression=$"{i}"
+                //    }
+                //},
+                Expression = GetExpressionString(msg.Meta.Property, rule),
+                Actions = new
+                {
+                    OnSuccess = new
+                    {
+                        Name = "OutputExpression",
+                        Context = new
+                        {
+                            Expression = $"Meta.Wires[{i}]"
+                        }
+                    },
+                    //OnFailure = new
+                    //{
+                    //    Name = "",
+                    //    Context = new
+                    //    {
+
+                    //    }
+                    //}
+                }
+            });
             i++;
         }
-
-        var switchExpr = Expression.Switch(switchValue, Expression.Constant(new List<Guid> { Guid.Empty }), switchCaseList.ToArray());
-        var result = Expression.Lambda<Func<List<Guid>>>(switchExpr).Compile()();
-
-        Expression GetExpression(Operator _operator, object? value)
+        var ruleRaw = JsonSerializer.Serialize(new
         {
-            Expression? expression = null;
-            if (_operator == Operator.Null)
-            {
-                expression = Expression.Equal(switchValue, Expression.Constant(null, switchValue.Type));
-            }
-            else if (_operator == Operator.NotNull)
-            {
-                expression = Expression.NotEqual(switchValue, Expression.Constant(null, switchValue.Type));
-            }
-            else if (_operator == Operator.Empty)
-            {
-                expression = GetEmptyExpression(switchValue, value, true);
-            }
-            else if (_operator == Operator.NotEmpty)
-            {
-                expression = GetEmptyExpression(switchValue, value, false);
-            }
-            else if (_operator == Operator.IsType)
-            {
-                expression = Expression.TypeIs(switchValue, value!.GetType());
-            }
-            else if (_operator == Operator.True)
-            {
-                expression = Expression.IsTrue(switchValue);
-            }
-            else if (_operator == Operator.False)
-            {
-                expression = Expression.IsFalse(switchValue);
-            }
+            Rules = _rules
+        });
+        var ruleResults = await _rulesEngineClient.ExecuteAsync(ruleRaw, msg);
 
-            if (expression != null)
+        var otherwise = ruleResults.FirstOrDefault(r => r.IsValid && r.RuleName == Operator.Otherwise.ToString());
+        var passResults = ruleResults.Where(r => r.IsValid && r.RuleName != Operator.Otherwise.ToString()).Select(r => r.ActionResult.Output as List<Guid>).ToList();
+
+        if (passResults.Count > 0)
+        {
+            if (msg.Meta.EnforceRule == EnforceRule.FirstMatch)
             {
-                return expression;
+                return new List<List<Guid>> { passResults.First()! };
             }
-
-            var expressionType = _operator switch
-            {
-                Operator.Eq => ExpressionType.Equal,
-                Operator.Neq => ExpressionType.NotEqual,
-                Operator.Lt => ExpressionType.LessThan,
-                Operator.Lte => ExpressionType.LessThanOrEqual,
-                Operator.Gt => ExpressionType.GreaterThan,
-                Operator.Gte => ExpressionType.GreaterThanOrEqual,
-                _ => throw new ArgumentException("Invalid operator: " + _operator)
-            };
-
-            //正则
-
-            //method = typeof(string).GetMethod("StartsWith", new[] { typeof(string) });
-            //condition = Expression.Call(property, method, value);
-
-            return Expression.MakeBinary(ExpressionType.Equal, switchValue, Expression.Constant(value));
-
-            Expression GetEmptyExpression(Expression switchValue, object? value, bool isEmpty)
-            {
-                if (value is string)
-                {
-                    return isEmpty
-                        ? Expression.Equal(switchValue, Expression.Constant(string.Empty, typeof(string)))
-                        : Expression.NotEqual(switchValue, Expression.Constant(string.Empty, typeof(string)));
-                }
-                else if (value is ICollection collectionValue)
-                {
-                    var countValue = Expression.Property(Expression.Constant(collectionValue), "Count");
-                    var zeroValue = Expression.Constant(0);
-                    return isEmpty
-                        ? Expression.Equal(countValue, zeroValue)
-                        : Expression.NotEqual(countValue, zeroValue);
-                }
-                else
-                {
-                    throw new ArgumentException("Value should be a string or collection for operator: " + _operator);
-                }
-            }
-
+            return passResults;
         }
+        if (otherwise != null)
+        {
+            return new List<List<Guid>> { otherwise.ActionResult.Output as List<Guid> };
+        }
+        return null;
 
-        return Task.FromResult(result ?? new());
+        string GetExpressionString(string property, Rule rule)
+        {
+            return rule.Operator switch
+            {
+                Operator.Eq => $"{property} == Convert.ChangeType({rule.Value},{property}.GetType())",
+                Operator.Neq => $"{property} != Convert.ChangeType({rule.Value},{property}.GetType())",
+                Operator.Lt => $"{property}.ToString() < \"{rule.Value}\"",
+                Operator.Lte => $"{property}.ToString() <= \"{rule.Value}\"",
+                Operator.Gt => $"{property}.ToString() > \"{rule.Value}\"",
+                Operator.Gte => $"{property}.ToString() >= \"{rule.Value}\"",
+                Operator.True => $"Ruler.IsTrue({property})",
+                Operator.False => $"!Ruler.IsTrue({property})",
+                Operator.Null => $"{property} == null",
+                Operator.NotNull => $"{property} != null",
+                Operator.Empty => $"Ruler.IsEmpty({property})",
+                Operator.NotEmpty => $"!Ruler.IsEmpty({property})",
+                Operator.IsType => $"{property}.GetType().Name.ToLower() == \"{rule.Value}\"",
+                Operator.Contains => $"{property}.ToString().Contains(\"{rule.Value}\")",
+                Operator.Regex => $"new Regex({rule.Value}).IsMatch({property})",
+                Operator.Otherwise => "true",
+                _ => throw new NotImplementedException(),
+            };
+        }
     }
 }

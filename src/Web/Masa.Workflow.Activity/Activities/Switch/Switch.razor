@@ -29,7 +29,8 @@
                                     Style="max-width: 156px"
                                     HideDetails="true" />
                         <MTextField @bind-Value="item.Value"
-                                    Dense
+                                    Dense 
+                                    Style="@HidenValue(item.Operator)"
                                     Label="Value"
                                     HideDetails="true" />
                         <MButton Icon OnClick="@(() => RemoveRule(item, context.RemoveItem))">
@@ -57,4 +58,16 @@
         removeItem(rule);
     }
 
+    private string HidenValue(Operator @operator)
+    {
+        var style = "";
+        if (@operator == Operator.Empty || @operator == Operator.NotEmpty
+            || @operator == Operator.Null || @operator == Operator.NotNull 
+            || @operator == Operator.True || @operator == Operator.False
+            || @operator == Operator.Otherwise)
+        {
+            style = "visibility: hidden;";
+        }
+        return style;
+    }
 }

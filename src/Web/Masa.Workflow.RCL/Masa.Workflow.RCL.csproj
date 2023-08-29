@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
@@ -8,18 +8,18 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <SupportedPlatform Include="browser"/>
+        <SupportedPlatform Include="browser" />
     </ItemGroup>
 
     <ItemGroup>
-        <!--    <PackageReference Include="Masa.Blazor" Version="$(MASABlazorVersion)" />-->
-        <PackageReference Include="Grpc.Net.Client.Web" Version="2.55.0"/>
-        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.55.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9"/>
+        <PackageReference Include="Grpc.Net.Client.Web" Version="2.56.0" />
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.56.0" />
+        <PackageReference Include="Masa.Stack.Components" Version="0.0.426" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj"/>
+        <ProjectReference Include="..\..\..\..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj" />
         <ProjectReference Include="..\Masa.Workflow.ActivityCore\Masa.Workflow.ActivityCore.csproj" />
         <ProjectReference Include="..\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj" />
     </ItemGroup>
