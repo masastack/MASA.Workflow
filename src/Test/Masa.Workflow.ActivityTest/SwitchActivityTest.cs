@@ -1,8 +1,4 @@
-﻿using Masa.BuildingBlocks.RulesEngine;
-using Masa.Workflow.Activity.Activities.Switch;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace Masa.Workflow.ActivityTest
+﻿namespace Masa.Workflow.ActivityTest
 {
     public class SwitchActivityTest
     {
