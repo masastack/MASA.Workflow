@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using Force.DeepCloner;
 using Masa.Workflow.ActivityCore.Components;
-using Masa.Workflow.RCL;
 using Microsoft.JSInterop;
 
 namespace Masa.Workflow.ActivityCore;

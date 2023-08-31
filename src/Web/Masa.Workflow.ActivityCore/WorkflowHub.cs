@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Activity;
+﻿namespace Masa.Workflow.ActivityCore;
 
 public class WorkflowHub : Hub
 {

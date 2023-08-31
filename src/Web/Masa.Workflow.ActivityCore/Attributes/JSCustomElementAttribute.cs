@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.ActivityCore;
+﻿namespace Masa.Workflow.ActivityCore.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
 public class JSCustomElementAttribute : Attribute

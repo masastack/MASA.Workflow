@@ -1,32 +1,33 @@
-﻿namespace Masa.Workflow.Activity;
+﻿namespace Masa.Workflow.ActivityCore;
 
-public abstract class MasaWorkflowActivity<TMeta, TOut> : WorkflowActivity<Msg<TMeta>, TOut?> where TMeta : new()
+public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, List<List<Guid>>> where TMeta : MetaBase
 {
-    //todo TMeta 修改为全局配置读取
     readonly WorkflowHub _workflowHub;
+    protected readonly Msg _msg;
 
-    public MasaWorkflowActivity(WorkflowHub workflowHub)
+    public MasaWorkflowActivity(WorkflowHub workflowHub, Msg msg)
     {
         _workflowHub = workflowHub;
+        _msg = msg;
     }
 
-    public sealed override async Task<TOut?> RunAsync(WorkflowActivityContext context, Msg<TMeta> msg)
+    public sealed override async Task<List<List<Guid>>> RunAsync(WorkflowActivityContext context, TMeta meta)
     {
-        TOut? result = default;
-        await ActivityExecuting(msg.ActivityId);
+        List<List<Guid>> result = new();
+        await ActivityExecuting(meta.ActivityId);
         try
         {
-            result = await RunAsync(msg);
+            result = await RunAsync(meta);
         }
         catch (Exception)
         {
-            await _workflowHub.BroadcastStepAsync(new ExecuteStep(msg.ActivityId, ExecuteStatus.Fail));
+            await _workflowHub.BroadcastStepAsync(new ExecuteStep(meta.ActivityId, ExecuteStatus.Fail));
         }
-        await ActivityExecuted(msg.ActivityId);
+        await ActivityExecuted(meta.ActivityId);
         return result;
     }
 
-    public abstract Task<TOut?> RunAsync(Msg<TMeta> msg);
+    public abstract Task<List<List<Guid>>> RunAsync(TMeta meta);
 
     public virtual async Task ActivityExecuting(Guid activityId)
     {
