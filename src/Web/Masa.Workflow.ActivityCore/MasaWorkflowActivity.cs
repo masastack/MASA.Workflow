@@ -27,7 +27,10 @@ public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, List
         return result;
     }
 
-    public abstract Task<List<List<Guid>>> RunAsync(TMeta meta);
+    public virtual Task<List<List<Guid>>> RunAsync(TMeta meta)
+    {
+        return Task.FromResult(meta.Wires);
+    }
 
     public virtual async Task ActivityExecuting(Guid activityId)
     {

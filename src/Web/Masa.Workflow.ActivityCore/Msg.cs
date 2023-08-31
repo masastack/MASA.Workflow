@@ -3,6 +3,8 @@
 public abstract class MetaBase
 {
     public Guid ActivityId { get; set; }
+
+    public List<List<Guid>> Wires { get; set; } = new();
 }
 
 public sealed class Msg : DynamicObject
