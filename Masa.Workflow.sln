@@ -40,7 +40,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorComponent", "..\MASA.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.ActivityCore", "src\Web\Masa.Workflow.ActivityCore\Masa.Workflow.ActivityCore.csproj", "{96168F63-000F-49CA-A1A8-A0A6D5BC0F9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Workflow.ActivityTest", "src\Test\Masa.Workflow.ActivityTest\Masa.Workflow.ActivityTest.csproj", "{D89998DA-2831-4831-A8BA-892E1DDE51C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.ActivityTest", "src\Test\Masa.Workflow.ActivityTest\Masa.Workflow.ActivityTest.csproj", "{D89998DA-2831-4831-A8BA-892E1DDE51C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

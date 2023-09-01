@@ -1,4 +1,6 @@
-﻿namespace Masa.Workflow.RCL;
+﻿using Masa.Workflow.ActivityCore.Attributes;
+
+namespace Masa.Workflow.RCL;
 
 public static class IJSComponentConfigurationExtensions
 {

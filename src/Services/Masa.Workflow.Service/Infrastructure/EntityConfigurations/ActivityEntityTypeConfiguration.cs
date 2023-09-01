@@ -31,16 +31,16 @@ public class ActivityEntityTypeConfiguration : IEntityTypeConfiguration<Activity
                 ownedNavigationBuilder.Property(p => p.RetryTimeout).HasConversion<string>();
                 ownedNavigationBuilder.Property(p => p.MaxRetryInterval).HasConversion<string>();
             });
-        builder.OwnsOne(
-            a => a.InputLabels, ownedNavigationBuilder =>
-            {
-                ownedNavigationBuilder.ToJson();
-            });
+        //builder.OwnsOne(
+        //    a => a.InputLabels, ownedNavigationBuilder =>
+        //    {
+        //        ownedNavigationBuilder.ToJson();
+        //    });
 
-        builder.OwnsOne(
-            a => a.OutputLabels, ownedNavigationBuilder =>
-            {
-                ownedNavigationBuilder.ToJson();
-            });
+        //builder.OwnsOne(
+        //    a => a.OutputLabels, ownedNavigationBuilder =>
+        //    {
+        //        ownedNavigationBuilder.ToJson();
+        //    });
     }
 }

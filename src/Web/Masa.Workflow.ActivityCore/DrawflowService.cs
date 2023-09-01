@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace Masa.Workflow.RCL;
+namespace Masa.Workflow.ActivityCore;
 
 public class DrawflowService
 {
