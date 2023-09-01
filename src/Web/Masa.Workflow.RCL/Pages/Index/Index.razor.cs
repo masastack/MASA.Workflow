@@ -14,6 +14,8 @@ public partial class Index
 
     private List<StringNumber>? _selectedGroups;
     private StringNumber? _node;
+    private bool _helpDrawer;
+    private List<string> _treeActives = new();
 
     private List<TreeNode> _tree = new()
     {
@@ -22,10 +24,23 @@ public partial class Index
 
     private string _data;
 
-    private Block Block => new("mw-flow");
-
     private List<Node> _nodes = new();
     private List<IGrouping<string?, Node>> _nodeGroups = new();
+
+    private TreeNode? ActiveTreeNode
+    {
+        get
+        {
+            var activeKey = _treeActives.FirstOrDefault();
+            // TODO: 节点的数据从哪里来？
+            if (_tree.Count > 0)
+            {
+                return _tree[0].Children?.FirstOrDefault(u => u.Key == activeKey);
+            }
+
+            return null;
+        }
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -50,7 +65,6 @@ public partial class Index
             };
 
             _nodeGroups = _nodes.GroupBy(u => u.Tag).ToList();
-
             _selectedGroups = _nodeGroups.Select(g => (StringNumber)g.Key).ToList();
 
             StateHasChanged();
@@ -115,6 +129,13 @@ public partial class Index
             using var document = JsonDocument.Parse(node.Data.Data);
             treeNode.Label = document.RootElement.GetProperty("Name").GetString();
         }
+    }
+
+    private async Task OpenHelpDrawer(string node)
+    {
+        _helpDrawer = true;
+
+        // TODO: fetch help from http
     }
 
     private async Task Export()
