@@ -11,3 +11,4 @@ global using Microsoft.AspNetCore.Components.Rendering;
 global using Microsoft.AspNetCore.SignalR;
 global using System.ComponentModel.DataAnnotations;
 global using System.Dynamic;
+global using System.Text.Json.Serialization;

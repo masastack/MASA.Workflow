@@ -18,7 +18,7 @@
                     <MExpansionPanelContent>
                         @foreach (var node in group)
                         {
-                            <DragNode Name="@node.Id"
+                            <DragNode Name="@node.Type"
                                       Label="@node.Name"
                                       Color="@node.Color"
                                       Icon="@node.Icon" />
@@ -33,6 +33,8 @@
         <MDrawflow OnDrop="@Drop"
                    OnNodeCreated="@NodeCreated"
                    OnNodeRemoved="@NodeRemoved"
+                   OnNodeSelected="@NodeSelected"
+                   OnNodeUnselected="@NodeUnselected"
                    OnNodeDataChanged="@NodeDataChanged"
                    @ref="_drawflow" />
     </div>
@@ -76,7 +78,7 @@
                                 </MButton>
                             </div>
                             <MDescriptions Column="1" Dense Bordered>
-                                <MDescriptionsItem Label="i18n.nodeid">TODO: node id</MDescriptionsItem>
+                                <MDescriptionsItem Label="i18n.nodeid">@ActiveTreeNode.Key</MDescriptionsItem>
                                 <MDescriptionsItem Label="i18n.type">TODO: type</MDescriptionsItem>
                                 <MDescriptionsItem Label="i18n.description">TODO: desc</MDescriptionsItem>
                             </MDescriptions>

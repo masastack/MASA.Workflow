@@ -2,4 +2,5 @@
 
 public class CompleteMeta : MetaBase
 {
+    public Guid[]? DependentIds { get; set; }
 }

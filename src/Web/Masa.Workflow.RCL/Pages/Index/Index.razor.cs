@@ -24,8 +24,8 @@ public partial class Index
 
     private string _data;
 
-    private List<Node> _nodes = new();
-    private List<IGrouping<string?, Node>> _nodeGroups = new();
+    private List<DragNode> _nodes = new();
+    private List<IGrouping<string?, DragNode>> _nodeGroups = new();
 
     private TreeNode? ActiveTreeNode
     {
@@ -58,11 +58,11 @@ public partial class Index
             DrawflowService.SetDrawflow(_drawflow);
 
             // TODO: fetch nodes from http
-            _nodes = new List<Node>()
+            _nodes = new List<DragNode>()
             {
-                new("Complete", "complete", "#e7e7ae", "mdi-exclamation", "Common"),
-                new("Switch", "switch", "#e2d96e", "mdi-shuffle", "func"),
-                new("Http Request", "http-request", "#e7e7ae", "mdi-earth", "net"),
+                new("complete", "Complete", "#e7e7ae", "mdi-exclamation", false, "Common"),
+                new("switch", "Switch",  "#e2d96e", "mdi-shuffle", false, "func"),
+                new("http-request", "Http Request",  "#e7e7ae", "mdi-earth", false, "net"),
             };
 
             _nodeGroups = _nodes.GroupBy(u => u.Tag).ToList();
@@ -79,19 +79,19 @@ public partial class Index
             throw new InvalidOperationException("data-value cannot be found in DataTransfer.");
         }
 
-        var nodeName = args.DataTransfer.Data.Value;
+        var nodeType = args.DataTransfer.Data.Value;
 
-        var tagName = $"{nodeName}-node";
+        var tagName = $"{nodeType}-node";
 
-        var node = _nodes.FirstOrDefault(u => u.Id == nodeName);
+        var node = _nodes.FirstOrDefault(u => u.Type == nodeType);
 
         // TODO: get init meta of node
         var minInput = 1;
         var minOutput = 1;
-        var metaNode = new Node2(node.Name, node.Color, node.Icon, node.IconRight, false, minInput, minOutput, "");
+        var metaNode = new Node2(Guid.NewGuid(), node.Type, node.Color, node.Icon, node.IconRight, false, minInput, minOutput, "");
 
         var id = await _drawflow.AddNodeAsync(
-            nodeName,
+            nodeType,
             minInput,
             minOutput,
             clientX: args.ClientX,
@@ -105,24 +105,39 @@ public partial class Index
         await _drawflow.UpdateNodeHTMLAsync(id, $"<{tagName} node-id='{id}' df-data></{tagName}>");
         await JSRuntime.InvokeVoidAsync(JSInteropConstants.SetNodeIdToCustomElement, id);
 
-        _tree[0].Children.Add(new TreeNode(id.ToString(), node.Name, node.Icon, node.Color));
+        _tree[0].Children.Add(new TreeNode(id.ToString(), node.Type, node.Icon, node.Color));
     }
 
-    private async Task NodeCreated(string nodeId)
+    private void NodeCreated(string nodeId)
     {
         Console.Out.WriteLine("NodeCreated NodeId = {0}", nodeId);
     }
 
-    private async Task NodeRemoved(string nodeId)
+    private void NodeRemoved(string nodeId)
     {
         Console.Out.WriteLine("NodeRemoved NodeId = {0}", nodeId);
+        var treeNode = _tree[0].Children.FirstOrDefault(u => u.Key == nodeId);
+        if (treeNode != null)
+        {
+            _tree[0].Children.Remove(treeNode);
+        }
+    }
+
+    private void NodeSelected(string nodeId)
+    {
+        _treeActives = new List<string>() { nodeId };
+    }
+
+    private void NodeUnselected(string nodeId)
+    {
+        _treeActives.Clear();
     }
 
     private async Task NodeDataChanged(string nodeId)
     {
         Console.Out.WriteLine("NodeDataChanged NodeId = {0}", nodeId);
 
-        var node = await _drawflow.GetNodeFromIdAsync<NodeData>(nodeId);
+        var node = await _drawflow.GetNodeFromIdAsync<JustNodeData>(nodeId);
 
         var treeNode = _tree[0].Children.FirstOrDefault(u => u.Key == node.Id);
         if (treeNode != null)
@@ -164,48 +179,28 @@ public partial class Index
             var id = e.Value.GetProperty("id").GetRawText();
             var name = e.Value.GetProperty("name").GetString();
             var data = e.Value.GetProperty("data").GetProperty("data").GetString();
-            var node = JsonSerializer.Deserialize<Node>(data);
+            var nodeData = JsonSerializer.Deserialize<FlowNodeData>(data);
 
-            if (node is null)
+            if (nodeData is null)
             {
                 continue;
             }
 
-            node.Id = id;
-            node.Name = name;
-
-            _tree[0].Children!.Add(new TreeNode(node.Id, node.Name, node.Icon, node.Color));
+            _tree[0].Children!.Add(new TreeNode(nodeData.Id.ToString(), nodeData.Name, nodeData.Icon, nodeData.Color));
         }
     }
+
+    public record DragNode(string Type, string Name, string Color, string Icon, bool IconRight, string Tag);
 
     public class Node
     {
-        public string? Name { get; set; }
+        public string? NodeId { get; set; }
 
-        public string? Id { get; set; }
+        public string? NodeType { get; set; }
 
-        public string? Color { get; init; }
+        public string? NodeName { get; set; }
 
-        public string? Icon { get; init; }
-
-        public string? Tag { get; init; }
-
-        public bool IconRight { get; init; }
-
-        public Node()
-        {
-        }
-
-        public Node(string name, string id, string color, string icon, string tag, bool iconRight = false)
-        {
-            Name = name;
-            Id = id;
-            Color = color;
-            Icon = icon;
-            Tag = tag;
-            IconRight = iconRight;
-        }
+        public FlowNodeData? Data { get; set; }
     }
-
-    public record Node2(string Name, string Color, string? Icon, bool IconRight, bool HideLabel, int MinInput, int MinOutput, string Meta);
+    public record Node2(Guid Id, string Name, string Color, string? Icon, bool IconRight, bool HideLabel, int MinInput, int MinOutput, string Meta);
 }

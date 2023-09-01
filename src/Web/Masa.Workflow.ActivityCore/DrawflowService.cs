@@ -53,6 +53,13 @@ public class DrawflowService
         await _drawflow.RemoveOutputAsync(id, inputClass).ConfigureAwait(false);
     }
 
+    public async Task<string?> ExportAsync()
+    {
+        EnsureDrawflow();
+
+        return await _drawflow.ExportAsync().ConfigureAwait(false);
+    }
+
     [MemberNotNull(nameof(_drawflow))]
     private void EnsureDrawflow()
     {

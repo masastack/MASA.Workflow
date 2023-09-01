@@ -2,9 +2,9 @@
 
 public abstract class MetaBase
 {
-    public Guid ActivityId { get; set; }
+    public Guid ActivityId { get; } =  Guid.NewGuid();
 
-    public List<List<Guid>> Wires { get; set; } = new();
+    public List<List<Guid>> Wires { get; } = new();
 }
 
 public sealed class Msg : DynamicObject
@@ -21,6 +21,7 @@ public sealed class Msg : DynamicObject
             {
                 return value;
             }
+
             return null;
         }
         set
