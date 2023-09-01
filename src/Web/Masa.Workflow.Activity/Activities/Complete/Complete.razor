@@ -1,0 +1,28 @@
+﻿@inherits Masa.Workflow.ActivityCore.ActivityNode<CompleteMeta, CompleteActivityMeta>
+
+@base.BuildRenderTree
+
+@code {
+    protected override void DrawerContent(RenderTreeBuilder __builder)
+    {
+        <MList Flat>
+        <MListItemGroup Multiple>
+            <MListItem>
+                <ItemContent>
+                    <MListItemAction>
+                        <MCheckbox Value="context.Active"
+                                   Color="primary">
+                        </MCheckbox>
+                    </MListItemAction>
+                    <MListItemContent>
+                        <MListItemTitle>Notifications</MListItemTitle>
+                    </MListItemContent>
+                    <MListItemActionText>
+                        switch
+                    </MListItemActionText>
+                </ItemContent>
+            </MListItem>
+        </MListItemGroup>
+    </MList>
+    }
+}

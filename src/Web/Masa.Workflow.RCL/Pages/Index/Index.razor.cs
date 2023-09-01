@@ -45,6 +45,7 @@ public partial class Index
             // TODO: fetch nodes from http
             _nodes = new List<Node>()
             {
+                new("Complete", "complete", "#e7e7ae", "mdi-exclamation", "Common"),
                 new("Switch", "switch", "#e2d96e", "mdi-shuffle", "func"),
                 new("Http Request", "http-request", "#e7e7ae", "mdi-earth", "net"),
             };
