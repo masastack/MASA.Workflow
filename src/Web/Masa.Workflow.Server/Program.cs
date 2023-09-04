@@ -1,5 +1,3 @@
-using Masa.Workflow.Activity;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
