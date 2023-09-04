@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace Masa.Workflow.ActivityCore;
+﻿namespace Masa.Workflow.ActivityCore;
 
 public class ActivityMeta
 {

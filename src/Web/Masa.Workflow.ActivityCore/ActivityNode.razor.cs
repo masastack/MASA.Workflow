@@ -1,7 +1,4 @@
-﻿using System.Text.Json;
-using Force.DeepCloner;
-using Masa.Workflow.ActivityCore.Components;
-using Microsoft.JSInterop;
+﻿using Force.DeepCloner;
 
 namespace Masa.Workflow.ActivityCore;
 
@@ -78,8 +75,6 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
                 _ = DrawflowService.AddNodeOutputAsync(NodeId);
             }
         });
-
-        Console.Out.WriteLine("JsonSerializer.Serialize(_cachedModel) = {0}", JsonSerializer.Serialize(_cachedModel));
 
         await DrawflowService.UpdateNodeDataFromIdAsync(NodeId, new { data = JsonSerializer.Serialize(_cachedModel) });
     }
