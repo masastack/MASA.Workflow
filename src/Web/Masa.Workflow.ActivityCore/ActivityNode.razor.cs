@@ -1,7 +1,4 @@
-﻿using System.Text.Json;
-using Force.DeepCloner;
-using Masa.Workflow.ActivityCore.Components;
-using Microsoft.JSInterop;
+﻿using Force.DeepCloner;
 
 namespace Masa.Workflow.ActivityCore;
 
@@ -11,7 +8,7 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
 {
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
 
-    [Inject] private DrawflowService DrawflowService { get; set; } = null!;
+    [Inject] protected DrawflowService DrawflowService { get; set; } = null!;
 
     [Parameter] public int NodeId { get; set; }
 
@@ -35,19 +32,24 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
         base.OnInitialized();
 
         _cachedModel = JsonSerializer.Deserialize<T>(Value)!;
+        if (!string.IsNullOrWhiteSpace(_cachedModel.Meta))
+        {
+            _cachedModel.MetaData = JsonSerializer.Deserialize<TMeta>(_cachedModel.Meta);
+        }
     }
 
-    private void OnDblClick()
+    private async Task OnDblClick()
     {
-        BeforeDrawerOpen();
+        await OnBeforeDrawerOpenAsync();
 
         FormModel = _cachedModel.DeepClone();
 
         _drawer = true;
     }
 
-    protected virtual void BeforeDrawerOpen()
+    protected virtual Task OnBeforeDrawerOpenAsync()
     {
+        return Task.CompletedTask;
     }
 
     protected async Task OnSave(ModalActionEventArgs args)
@@ -74,7 +76,7 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
             }
         });
 
-        await DrawflowService.UpdateNodeDataFromIdAsync(NodeId, new { data =  JsonSerializer.Serialize(_cachedModel) });
+        await DrawflowService.UpdateNodeDataFromIdAsync(NodeId, new { data = JsonSerializer.Serialize(_cachedModel) });
     }
 
     private void OnCancel()

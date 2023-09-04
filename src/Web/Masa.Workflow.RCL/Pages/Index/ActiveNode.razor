@@ -2,8 +2,7 @@
 @inject IJSRuntime JSRuntime
 
 <div class="d-flex align-center"
-     @onclick="@OnClick"
-     @ondblclick="@OnDblclick">
+     @onclick="@OnClick">
     <div>
         <MIcon Class="rounded" Dark
                Style="@($"background-color: {@Data.Color}")">
@@ -15,6 +14,9 @@
     {
         <MSpacer />
         <div>
+            <MButton OnClick="@EditNode" Icon Small>
+                <MIcon Small>mdi-square-edit-outline</MIcon>
+            </MButton>
             <MButton OnClick="@CenterNode" Icon Small>
                 <MIcon Small>mdi-crosshairs</MIcon>
             </MButton>
@@ -32,6 +34,20 @@
     [EditorRequired]
     public MDrawflow Drawflow { get; set; } = null!;
 
+    private string? prevDataKey;
+    private bool shouldRender;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        shouldRender = Data.Key != prevDataKey;
+
+        prevDataKey = Data.Key;
+    }
+
+    protected override bool ShouldRender() => shouldRender;
+
     private async Task OnClick()
     {
         if (Data.Type == TreeNodeType.Node)
@@ -40,7 +56,7 @@
         }
     }
 
-    private async Task OnDblclick()
+    private async Task EditNode()
     {
         if (Data.Type == TreeNodeType.Node)
         {

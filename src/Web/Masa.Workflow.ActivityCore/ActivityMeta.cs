@@ -1,9 +1,9 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Masa.Workflow.ActivityCore;
+﻿namespace Masa.Workflow.ActivityCore;
 
 public class ActivityMeta
 {
+    public Guid Id { get; set; }
+
     public string? Name { get; set; }
 
     public string? Color { get; set; }

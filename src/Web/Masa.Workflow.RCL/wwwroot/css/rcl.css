@@ -55,6 +55,21 @@
   padding: 24px;
 }
 
+.mw-flow__sidebar .m-window {
+  height: calc(100% - 48px);
+}
+
+.mw-flow__sidebar .m-window__container {
+  height: 100%;
+}
+
+.mw-flow__node-attr .header {
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  padding: 8px 0;
+}
+
 .mw-flow__workspace {
   border-radius: 24px;
   margin: 0 16px;

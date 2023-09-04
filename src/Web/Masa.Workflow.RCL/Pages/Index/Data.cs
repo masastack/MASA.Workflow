@@ -1,6 +1,6 @@
 ﻿namespace Masa.Workflow.RCL.Pages;
 
-public class NodeData
+public class JustNodeData
 {
     public string? Data { get; set; }
 }
