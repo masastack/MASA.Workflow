@@ -30,6 +30,8 @@ public class TreeNode
     public TreeNodeType Type { get; set; }
 
     public List<TreeNode>? Children { get; set; }
+
+    public Dictionary<string, string> Extra { get; set; } = new();
 }
 
 public enum TreeNodeType

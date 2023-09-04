@@ -14,10 +14,14 @@
     {
         <MSpacer />
         <div>
-            <MButton OnClick="@EditNode" Icon Small>
+            <MButton OnClick="@EditNode"
+                     OnClickStopPropagation
+                     Icon Small>
                 <MIcon Small>mdi-square-edit-outline</MIcon>
             </MButton>
-            <MButton OnClick="@CenterNode" Icon Small>
+            <MButton OnClick="@CenterNode"
+                     OnClickStopPropagation
+                     Icon Small>
                 <MIcon Small>mdi-crosshairs</MIcon>
             </MButton>
         </div>
