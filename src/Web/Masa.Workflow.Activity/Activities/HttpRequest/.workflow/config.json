@@ -1,0 +1,8 @@
+{
+  "type": "http-request",
+  "name": "Http Request",
+  "color": "#e7e7ae",
+  "icon": "mdi-earth",
+  "iconRight": false,
+  "tag": "net"
+}

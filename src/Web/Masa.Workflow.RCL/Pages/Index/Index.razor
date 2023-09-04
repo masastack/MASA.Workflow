@@ -73,7 +73,7 @@
                                 </MIcon>
                                 @ActiveTreeNode.Label
                                 <MSpacer />
-                                <MButton Icon OnClick="@(() => OpenHelpDrawer(ActiveTreeNode.Key))">
+                                <MButton Icon OnClick="@(() => OpenHelpDrawer(ActiveTreeNode.Extra["nodeType"]))">
                                     <MIcon>mdi-help-box</MIcon>
                                 </MButton>
                             </div>
@@ -97,5 +97,5 @@
 </div>
 
 <PDrawer @bind-Value="_helpDrawer">
-    Use MMarkdownIt to render markdown
+    <MMarkdownIt Source="@_helpMarkdown"></MMarkdownIt>
 </PDrawer>

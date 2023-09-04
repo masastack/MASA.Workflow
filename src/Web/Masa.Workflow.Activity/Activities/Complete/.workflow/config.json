@@ -1,0 +1,8 @@
+{
+  "type": "complete",
+  "name": "Complete",
+  "color": "#c0edc0",
+  "icon": "mdi-exclamation",
+  "iconRight": false,
+  "tag": "common"
+}

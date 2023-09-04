@@ -1,12 +1,19 @@
 ﻿using System.Text.Json;
+using BlazorComponent.I18n;
+using Masa.Workflow.RCL.Models;
+using Microsoft.Extensions.Options;
 
 namespace Masa.Workflow.RCL.Pages;
 
 public partial class Index
 {
+    [Inject] private I18n I18n { get; set; } = null!;
+
     [Inject] private DrawflowService DrawflowService { get; set; } = null!;
 
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
+
+    [Inject] private IOptions<WorkflowActivitiesRegistered> RegisteredActivities { get; set; } = null!;
 
     [Parameter] public Guid ActivityId { get; set; }
 
@@ -15,6 +22,7 @@ public partial class Index
     private List<StringNumber>? _selectedGroups;
     private StringNumber? _node;
     private bool _helpDrawer;
+    private string? _helpMarkdown;
     private List<string> _treeActives = new();
 
     private List<TreeNode> _tree = new()
@@ -24,8 +32,8 @@ public partial class Index
 
     private string _data;
 
-    private List<DragNode> _nodes = new();
-    private List<IGrouping<string?, DragNode>> _nodeGroups = new();
+    private List<ActivityNodeConfig> _nodes = new();
+    private List<IGrouping<string?, ActivityNodeConfig>> _nodeGroups = new();
 
     private TreeNode? ActiveTreeNode
     {
@@ -57,13 +65,7 @@ public partial class Index
             // TODO: 多个窗口会问题吗？共享的是同一个 drawflow 吗？
             DrawflowService.SetDrawflow(_drawflow);
 
-            // TODO: fetch nodes from http
-            _nodes = new List<DragNode>()
-            {
-                new("complete", "Complete", "#e7e7ae", "mdi-exclamation", false, "Common"),
-                new("switch", "Switch",  "#e2d96e", "mdi-shuffle", false, "func"),
-                new("http-request", "Http Request",  "#e7e7ae", "mdi-earth", false, "net"),
-            };
+            _nodes = RegisteredActivities.Value.Select(u => u.Config).ToList();
 
             _nodeGroups = _nodes.GroupBy(u => u.Tag).ToList();
             _selectedGroups = _nodeGroups.Select(g => (StringNumber)g.Key).ToList();
@@ -105,7 +107,9 @@ public partial class Index
         await _drawflow.UpdateNodeHTMLAsync(id, $"<{tagName} node-id='{id}' df-data></{tagName}>");
         await JSRuntime.InvokeVoidAsync(JSInteropConstants.SetNodeIdToCustomElement, id);
 
-        _tree[0].Children.Add(new TreeNode(id.ToString(), node.Type, node.Icon, node.Color));
+        var treeNode = new TreeNode(id.ToString(), node.Type, node.Icon, node.Color);
+        treeNode.Extra["nodeType"] = node.Type;
+        _tree[0].Children.Add(treeNode);
     }
 
     private void NodeCreated(string nodeId)
@@ -147,11 +151,25 @@ public partial class Index
         }
     }
 
-    private async Task OpenHelpDrawer(string node)
+    private async Task OpenHelpDrawer(string nodeType)
     {
-        _helpDrawer = true;
+        var activity = RegisteredActivities.Value.FirstOrDefault(u => u.Config.Type == nodeType);
+        var locale = activity.Locales.Keys.FirstOrDefault(u => u.Equals(I18n.Culture.Name, StringComparison.OrdinalIgnoreCase));
+        if (locale is null)
+        {
+            _helpMarkdown = "Locale not found.";
+        }
+        else
+        {
+            _helpMarkdown = activity.Locales[locale];
 
-        // TODO: fetch help from http
+            if (string.IsNullOrWhiteSpace(_helpMarkdown))
+            {
+                _helpMarkdown = "Help not found.";
+            }
+        }
+
+        _helpDrawer = true;
     }
 
     private async Task Export()
@@ -190,8 +208,6 @@ public partial class Index
         }
     }
 
-    public record DragNode(string Type, string Name, string Color, string Icon, bool IconRight, string Tag);
-
     public class Node
     {
         public string? NodeId { get; set; }
@@ -202,5 +218,6 @@ public partial class Index
 
         public FlowNodeData? Data { get; set; }
     }
+
     public record Node2(Guid Id, string Name, string Color, string? Icon, bool IconRight, bool HideLabel, int MinInput, int MinOutput, string Meta);
 }

@@ -1,0 +1,8 @@
+{
+  "type": "switch",
+  "name": "Switch",
+  "color": "#e2d96e",
+  "icon": "mdi-shuffle",
+  "iconRight": false,
+  "tag": "func"
+}
