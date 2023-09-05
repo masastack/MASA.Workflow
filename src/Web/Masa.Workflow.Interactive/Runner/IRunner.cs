@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Interractive.Runner;
+﻿namespace Masa.Workflow.Interactive.Runner;
 
 internal interface IRunner
 {

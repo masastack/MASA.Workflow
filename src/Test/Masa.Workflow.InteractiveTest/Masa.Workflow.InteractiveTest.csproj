@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Web\Masa.Workflow.Interractive\Masa.Workflow.Interractive.csproj" />
+    <ProjectReference Include="..\..\Web\Masa.Workflow.Interactive\Masa.Workflow.Interactive.csproj" />
   </ItemGroup>
 
 </Project>

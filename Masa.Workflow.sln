@@ -42,9 +42,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.ActivityCore"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.ActivityTest", "src\Test\Masa.Workflow.ActivityTest\Masa.Workflow.ActivityTest.csproj", "{D89998DA-2831-4831-A8BA-892E1DDE51C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Interractive", "src\Web\Masa.Workflow.Interractive\Masa.Workflow.Interractive.csproj", "{883DE6EA-0012-4A61-88C7-B0764B20D6EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Interactive", "src\Web\Masa.Workflow.Interactive\Masa.Workflow.Interactive.csproj", "{883DE6EA-0012-4A61-88C7-B0764B20D6EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Masa.Workflow.InterractiveTest", "src\Test\Masa.Workflow.InterractiveTest\Masa.Workflow.InterractiveTest.csproj", "{7A9CCD94-18B6-4D76-8222-2B501E837952}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.InteractiveTest", "src\Test\Masa.Workflow.InteractiveTest\Masa.Workflow.InteractiveTest.csproj", "{7A9CCD94-18B6-4D76-8222-2B501E837952}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

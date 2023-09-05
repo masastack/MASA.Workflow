@@ -1,4 +1,4 @@
-namespace Masa.Workflow.InterractiveTest;
+namespace Masa.Workflow.InteractiveTest;
 
 public class RunnerTest
 {

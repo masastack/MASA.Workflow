@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Interractive.Compilation;
+﻿namespace Masa.Workflow.Interactive.Compilation;
 
 internal class CompilationService
 {

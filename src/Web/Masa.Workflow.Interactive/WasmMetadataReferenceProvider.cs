@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Interractive;
+﻿namespace Masa.Workflow.Interactive;
 
 internal class WasmMetadataReferenceProvider : IMetadataReferenceProvider
 {
