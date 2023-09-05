@@ -6,7 +6,7 @@ internal static class JSInteropConstants
 
     public const string DblclickDrawflowNode = JsFunctionPrefix + "dblclickDrawflowNode";
 
-    public const string SelectDrawflowNode = JsFunctionPrefix + "selectDrawflowNode";
-
     public const string SetNodeIdToCustomElement = JsFunctionPrefix + "setNodeIdToCustomElement";
+
+    public const string DownloadFileFromStream = JsFunctionPrefix + "downloadFileFromStream";
 }

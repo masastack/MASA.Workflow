@@ -1,24 +1,32 @@
 ﻿using BlazorComponent.I18n;
 using Microsoft.Extensions.Options;
 
-namespace Masa.Workflow.RCL.Pages;
+namespace Masa.Workflow.RCL.Pages.Workspace;
 
-public partial class Index
+public partial class Workspace
 {
     [Inject] private I18n I18n { get; set; } = null!;
 
-    [Inject] private DrawflowService DrawflowService { get; set; } = null!;
-
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
+
+    [Inject] private IPopupService PopupService { get; set; } = null!;
+
+    [Inject] private DrawflowService DrawflowService { get; set; } = null!;
 
     [Inject] private IOptions<WorkflowActivitiesRegistered> RegisteredActivities { get; set; } = null!;
 
-    [Parameter] public Guid ActivityId { get; set; }
+    [Parameter] public Guid WorkflowId { get; set; }
 
     private MDrawflow _drawflow = null!;
 
+    private object? _workflowInstance;
+
     private List<StringNumber>? _selectedGroups;
     private StringNumber? _node;
+
+    private ExportDialog _exportDialog = null!;
+    private ImportDialog _importDialog = null!;
+
     private bool _helpDrawer;
     private string? _helpMarkdown;
     private List<string> _treeActives = new();
@@ -48,16 +56,19 @@ public partial class Index
         }
     }
 
+    internal string WorkflowName => ""; // TODO: workflow name
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         await base.OnAfterRenderAsync(firstRender);
 
         if (firstRender)
         {
-            if (ActivityId != default)
+            if (WorkflowId != default)
             {
                 //TODO: fetch data from http
                 // await _drawflow.ImportAsync();
+                _workflowInstance = new { };
             }
 
             // TODO: 多个窗口会问题吗？共享的是同一个 drawflow 吗？
@@ -76,7 +87,7 @@ public partial class Index
     {
         if (string.IsNullOrWhiteSpace(args.DataTransfer.Data.Value))
         {
-            throw new InvalidOperationException("data-value cannot be found in DataTransfer.");
+            return;
         }
 
         var nodeType = args.DataTransfer.Data.Value;
@@ -127,6 +138,7 @@ public partial class Index
 
     private void NodeSelected(string nodeId)
     {
+        Console.Out.WriteLine("NodeSelected nodeId = {0}", nodeId);
         _treeActives = new List<string>() { nodeId };
     }
 
@@ -170,14 +182,28 @@ public partial class Index
         _helpDrawer = true;
     }
 
-    private async Task Export()
+    private async Task Save()
     {
-        var data = await _drawflow.ExportAsync(withoutData: false);
-        Console.WriteLine($"export result: {data}");
-        _data = data;
+        // TODO: save data to http
     }
 
-    private async Task Import(string json)
+    private async Task Publish()
+    {
+        // TODO: publish data to http
+    }
+
+    private void OpenImportWorkflowDialog()
+    {
+        _importDialog.OpenDialog();
+    }
+
+    private async Task OpenExportWorkflowDialog()
+    {
+        var data = await _drawflow.ExportAsync(indented: true);
+        _exportDialog.OpenDialog(data);
+    }
+
+    internal async Task ImportWorkflow(string json)
     {
         await _drawflow.ImportAsync(json);
 
@@ -202,19 +228,24 @@ public partial class Index
                 continue;
             }
 
-            _tree[0].Children!.Add(new TreeNode(nodeData.Id.ToString(), nodeData.Name, nodeData.Icon, nodeData.Color));
+            _tree[0].Children!.Add(new TreeNode(id, nodeData.Name, nodeData.Icon, nodeData.Color));
         }
+        
+        StateHasChanged();
     }
 
-    public class Node
+    private async Task ToggleWorkflow()
     {
-        public string? NodeId { get; set; }
+        // TODO: toggle workflow to http
+    }
 
-        public string? NodeType { get; set; }
-
-        public string? NodeName { get; set; }
-
-        public FlowNodeData? Data { get; set; }
+    private async Task DeleteWorkflow()
+    {
+        var confirm = await PopupService.ConfirmAsync("Delete Workflow(TODO: i18n)", "Are you sure to delete this workflow?(TODO: i18n)", AlertTypes.Error);
+        if (confirm)
+        {
+            // delete workflow from http
+        }
     }
 
     public record Node2(Guid Id, string Name, string Color, string? Icon, bool IconRight, bool HideLabel, int MinInput, int MinOutput, string Meta);

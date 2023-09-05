@@ -23,6 +23,21 @@
   align-self: stretch;
 }
 
+/* flow header */
+.mw-flow__header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.mw-flow__header .m-btn {
+  margin-right: 8px;
+}
+
+.mw-flow__header .m-btn:last-child {
+  margin-right: 0;
+}
+
 /* flow */
 .mw-flow {
   display: flex;
