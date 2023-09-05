@@ -1,0 +1,12 @@
+﻿global using Microsoft.CodeAnalysis;
+global using Microsoft.CodeAnalysis.CSharp;
+global using Microsoft.CodeAnalysis.CSharp.Scripting;
+global using Microsoft.CodeAnalysis.Emit;
+global using Microsoft.CodeAnalysis.Scripting;
+global using NuGet.Common;
+global using NuGet.Protocol;
+global using NuGet.Protocol.Core.Types;
+global using NuGet.Versioning;
+global using System.Collections.Immutable;
+global using System.Reflection;
+global using System.Runtime.CompilerServices;
