@@ -1,6 +1,4 @@
-﻿using NuGet.Packaging;
-
-namespace Masa.Workflow.Interractive;
+﻿namespace Masa.Workflow.Interractive;
 
 internal class NuGetMetadataReferenceProvider : IMetadataReferenceProvider
 {
