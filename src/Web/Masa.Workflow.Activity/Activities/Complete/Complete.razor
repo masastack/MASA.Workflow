@@ -3,26 +3,51 @@
 @base.BuildRenderTree
 
 @code {
+
     protected override void DrawerContent(RenderTreeBuilder __builder)
     {
-        <MList Flat>
-        <MListItemGroup Multiple>
-            <MListItem>
-                <ItemContent>
-                    <MListItemAction>
-                        <MCheckbox Value="context.Active"
-                                   Color="primary">
-                        </MCheckbox>
-                    </MListItemAction>
-                    <MListItemContent>
-                        <MListItemTitle>Notifications</MListItemTitle>
-                    </MListItemContent>
-                    <MListItemActionText>
-                        switch
-                    </MListItemActionText>
-                </ItemContent>
-            </MListItem>
+        <MListItemGroup Multiple Color="primary"
+                        Values="ComputedValues"
+                        ValuesChanged="@ValuesChanged">
+            @foreach (var flowNode in _flowNodes)
+            {
+                <MListItem Value="@flowNode.Data.Id.ToString()">
+                    <ItemContent>
+                        <MSimpleCheckbox Value="@context.Active" Color="primary"></MSimpleCheckbox>
+                        <MListItemTitle Class="d-flex align-center justify-space-between">
+                            @flowNode.Data.Name
+                            <MChip Color="@flowNode.Data.Color" Small Label>
+                                @flowNode.Type
+                            </MChip>
+                        </MListItemTitle>
+                    </ItemContent>
+                </MListItem>
+            }
         </MListItemGroup>
-    </MList>
     }
+
+    private List<FlowNode> _flowNodes = new();
+
+    private List<StringNumber> ComputedValues
+        => FormModel.MetaData.DependentIds is null
+            ? new List<StringNumber>()
+            : FormModel.MetaData.DependentIds.Select(u => (StringNumber)u.ToString()).ToList();
+
+    protected override async Task OnBeforeDrawerOpenAsync()
+    {
+        var json = await DrawflowService.ExportAsync();
+
+        if (json is null)
+        {
+            return;
+        }
+
+        _flowNodes = DrawflowJsonHelper.ParseToFlowNodeList(json);
+    }
+
+    private void ValuesChanged(List<StringNumber?> values)
+    {
+        FormModel.MetaData.DependentIds = values.Select(u => Guid.Parse(u!.AsT0)).ToArray();
+    }
+
 }

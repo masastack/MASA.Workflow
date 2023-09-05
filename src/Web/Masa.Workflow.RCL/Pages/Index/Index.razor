@@ -8,8 +8,8 @@
     <MButton OnClick="Export">Export</MButton>
 </div>
 
-<div class="@Block">
-    <div class="@Block.Element("nodes")" style="width: 248px;">
+<div class="mw-flow">
+    <div class="mw-flow__nodes" style="width: 248px;">
         <MExpansionPanels Multiple Flat @bind-Values="_selectedGroups">
             @foreach (var group in _nodeGroups)
             {
@@ -18,7 +18,7 @@
                     <MExpansionPanelContent>
                         @foreach (var node in group)
                         {
-                            <DragNode Name="@node.Id"
+                            <DragNode Name="@node.Type"
                                       Label="@node.Name"
                                       Color="@node.Color"
                                       Icon="@node.Icon" />
@@ -28,15 +28,17 @@
             }
         </MExpansionPanels>
     </div>
-    <div class="@Block.Element("workspace")"
+    <div class="mw-flow__workspace"
          style="width: calc(100% - 600px)">
         <MDrawflow OnDrop="@Drop"
                    OnNodeCreated="@NodeCreated"
                    OnNodeRemoved="@NodeRemoved"
+                   OnNodeSelected="@NodeSelected"
+                   OnNodeUnselected="@NodeUnselected"
                    OnNodeDataChanged="@NodeDataChanged"
                    @ref="_drawflow" />
     </div>
-    <div class="@Block.Element("sidebar")" style="width: 352px;">
+    <div class="mw-flow__sidebar" style="width: 352px;">
         <MTabs @bind-Value="_node">
             <MTab>i18n.node-info</MTab>
             <MTab>i18n.node-help</MTab>
@@ -48,14 +50,41 @@
                            ItemText="t => t.Label"
                            ItemKey="t => t.Key"
                            ItemChildren="t => t.Children"
+                           @bind-Active="_treeActives"
+                           Activatable
                            Dense
                            OpenAll
                            OpenOnClick>
                     <LabelContent>
                         <ActiveNode Data="@context.Item"
-                                    Drawflow="_drawflow"/>
+                                    Drawflow="_drawflow" />
                     </LabelContent>
                 </MTreeview>
+                @if (ActiveTreeNode is not null)
+                {
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 30%;">
+                        <MDivider />
+
+                        <MCard Flat Class="mw-flow__node-attr">
+                            <div class="header">
+                                <MIcon Class="rounded mr-1" Dark
+                                       Style="@($"background-color: {@ActiveTreeNode.Color}")">
+                                    @ActiveTreeNode.Icon
+                                </MIcon>
+                                @ActiveTreeNode.Label
+                                <MSpacer />
+                                <MButton Icon OnClick="@(() => OpenHelpDrawer(ActiveTreeNode.Extra["nodeType"]))">
+                                    <MIcon>mdi-help-box</MIcon>
+                                </MButton>
+                            </div>
+                            <MDescriptions Column="1" Dense Bordered>
+                                <MDescriptionsItem Label="i18n.nodeid">@ActiveTreeNode.Key</MDescriptionsItem>
+                                <MDescriptionsItem Label="i18n.type">TODO: type</MDescriptionsItem>
+                                <MDescriptionsItem Label="i18n.description">TODO: desc</MDescriptionsItem>
+                            </MDescriptions>
+                        </MCard>
+                    </div>
+                }
             </MTabItem>
             <MTabItem Transition="">
                 Help
@@ -66,3 +95,7 @@
         </MTabsItems>
     </div>
 </div>
+
+<PDrawer @bind-Value="_helpDrawer">
+    <MMarkdownIt Source="@_helpMarkdown"></MMarkdownIt>
+</PDrawer>
