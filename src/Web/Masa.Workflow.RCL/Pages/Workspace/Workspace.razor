@@ -1,11 +1,40 @@
-﻿@namespace Masa.Workflow.RCL.Pages
+﻿@namespace Masa.Workflow.RCL.Pages.Workspace
 
-@page "/{ActivityId:guid?}"
+@page "/{WorkflowId:guid?}"
 
-<div class="d-flex">
+<div class="mw-flow__header">
     <MSpacer />
-    <MButton OnClick="() => Import(_data)">Import</MButton>
-    <MButton OnClick="Export">Export</MButton>
+    <MButton Color="primary" OnClick="@Save">i18n.workflow.save</MButton>
+    <MButton Color="primary" OnClick="@Publish">i18n.workflow.publish</MButton>
+    <MMenu OffsetY>
+        <ActivatorContent>
+            <MButton Icon @attributes="@context.Attrs">
+                <MIcon>mdi-dots-vertical</MIcon>
+            </MButton>
+        </ActivatorContent>
+        <ChildContent>
+            <MListItem>
+                <MIcon class="mr-4">mdi-history</MIcon>
+                <span>i18n.workflow.history</span>
+            </MListItem>
+            <MListItem OnClick="@OpenImportWorkflowDialog">
+                <MIcon class="mr-4">mdi-import</MIcon>
+                <span>i18n.workflow.import</span>
+            </MListItem>
+            <MListItem OnClick="@OpenExportWorkflowDialog">
+                <MIcon class="mr-4">mdi-export</MIcon>
+                <span>i18n.workflow.export</span>
+            </MListItem>
+            <MListItem OnClick="@ToggleWorkflow">
+                <MIcon class="mr-4">mdi-toggle-switch-off-outline</MIcon>
+                <span>i18n.workflow.toggle</span>
+            </MListItem>
+            <MListItem OnClick="@DeleteWorkflow">
+                <MIcon class="mr-4">mdi-delete</MIcon>
+                <span>i18n.workflow.delete</span>
+            </MListItem>
+        </ChildContent>
+    </MMenu>
 </div>
 
 <div class="mw-flow">
@@ -99,3 +128,8 @@
 <PDrawer @bind-Value="_helpDrawer">
     <MMarkdownIt Source="@_helpMarkdown"></MMarkdownIt>
 </PDrawer>
+
+<CascadingValue Value="this" IsFixed>
+    <ExportDialog @ref="_exportDialog"></ExportDialog>
+    <ImportDialog @ref="_importDialog"></ImportDialog>
+</CascadingValue>

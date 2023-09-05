@@ -1,0 +1,84 @@
+﻿@inject IPopupService PopupService
+
+<PModal Value="_dialog"
+        ValueChanged="DialogChanged"
+        Width="770"
+        Title="i18n.workflow.import"
+        OnSave="ImportData"
+        SaveText="i18n.workflow.import-data">
+    <MFileInput TValue="IBrowserFile" Value="_file" ValueChanged="FileChanged"></MFileInput>
+    <MForm @ref="_form">
+        <MTextarea @bind-Value="_data"
+                   Outlined
+                   Required
+                   Rows="8"
+                   Rules="@_rules">
+        </MTextarea>
+    </MForm>
+</PModal>
+
+@code {
+
+    [CascadingParameter]
+    private Workspace Workspace { get; set; } = null!;
+
+    private bool _dialog;
+    private IBrowserFile? _file;
+
+    private string? _data;
+
+    private MForm _form = null!;
+
+    private List<Func<string, StringBoolean>> _rules = new()
+    {
+        str => str.IsJson(JsonValueKind.Object) ? true : "i18n.workflow.import.invalidJson"
+    };
+
+    internal void OpenDialog()
+    {
+        _dialog = true;
+        StateHasChanged();
+    }
+
+    private void DialogChanged(bool val)
+    {
+        _dialog = val;
+
+        if (val == false)
+        {
+            ResetDialog();
+        }
+    }
+
+    private async Task FileChanged(IBrowserFile file)
+    {
+        _file = file;
+
+        using var stream = new StreamReader(file.OpenReadStream());
+        _data = await stream.ReadToEndAsync();
+    }
+
+    private async Task ImportData()
+    {
+        var valid = _form.Validate();
+
+        Console.Out.WriteLine("valid = {0}", valid);
+
+        if (valid)
+        {
+            await Workspace.ImportWorkflow(_data!);
+
+            await PopupService.EnqueueSnackbarAsync("i18n.workflow.import-success", AlertTypes.Success);
+
+            ResetDialog();
+        }
+    }
+
+    private void ResetDialog()
+    {
+        _dialog = false;
+        _data = null;
+        _file = null;
+    }
+
+}

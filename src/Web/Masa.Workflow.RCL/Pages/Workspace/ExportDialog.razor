@@ -1,0 +1,68 @@
+﻿@using System.Text
+@inject IJSRuntime JSRuntime
+@inject IPopupService PopupService
+
+<PModal @bind-Value="_dialog"
+        Width="770"
+        ContentStyle="min-height:500px"
+        Title="i18n.workflow.export"
+        OnSave="DownloadExportData"
+        OnDelete="CopyExportData"
+        DeleteProps="CopyBtnProps"
+        SaveText="i18n.workflow.download-export-data"
+        DeleteText="i18n.workflow.copy-export-data">
+    <pre>
+        @_data
+    </pre>
+</PModal>
+
+@code {
+
+    [CascadingParameter]
+    public Workspace Workspace { get; set; } = null!;
+
+    private static void CopyBtnProps(ModalButtonProps props)
+    {
+        props.Color = "secondary";
+    }
+
+    private string? _data;
+    private bool _dialog;
+
+    internal void OpenDialog(string? data)
+    {
+        _data = data;
+        _dialog = true;
+        StateHasChanged();
+    }
+
+    private async Task DownloadExportData()
+    {
+        if (_data == null)
+        {
+            return;
+        }
+
+        await using var fileStream = new MemoryStream(Encoding.UTF8.GetBytes(_data));
+        using var streamRef = new DotNetStreamReference(fileStream);
+        var fileName = $"{Workspace.WorkflowName}{DateTime.Now.ToString("yyyyMMddHHmmss")}.json";
+        await JSRuntime.InvokeVoidAsync(JSInteropConstants.DownloadFileFromStream, fileName, streamRef);
+
+        await PopupService.EnqueueSnackbarAsync("i18n.workflow.export-success", AlertTypes.Success);
+
+        _dialog = false;
+    }
+
+    private async Task CopyExportData()
+    {
+        if (_data == null)
+        {
+            return;
+        }
+
+        await JSRuntime.InvokeVoidAsync(JsInteropConstants.Copy, _data);
+
+        await PopupService.EnqueueSnackbarAsync("i18n.workflow.copy-success", AlertTypes.Success);
+    }
+
+}
