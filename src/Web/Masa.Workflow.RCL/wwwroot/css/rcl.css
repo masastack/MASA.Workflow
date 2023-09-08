@@ -41,6 +41,7 @@
 /* flow */
 .mw-flow {
   display: flex;
+  height: calc(100vh - 140px);
 }
 
 .mw-flow__nodes {
@@ -74,7 +75,7 @@
   height: calc(100% - 48px);
 }
 
-.mw-flow__sidebar .m-window__container {
+.mw-flow__sidebar .m-window__container, .mw-flow__sidebar .m-window-item {
   height: 100%;
 }
 
@@ -96,13 +97,51 @@
   background-color: white;
   background-size: 24px 24px;
   border-radius: 24px;
-  height: calc(100vh - 124px);
+  height: 100%;
 }
 
-.mw-flow__workspace .inputs>.input, .mw-flow__workspace .outputs>.output {
+.mw-flow__workspace .inputs > .input, .mw-flow__workspace .outputs > .output {
   height: 12px;
   margin-bottom: 4px;
   width: 12px;
   left: -6px;
   top: 2px;
+}
+
+/* flow debugging */
+
+.mw-flow__debugging {
+  padding: 8px 0;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.mw-flow__debugging-item {
+}
+
+.mw-flow__debugging-log {
+  font-size: 14px !important;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  line-height: 21px;
+  word-break: break-all !important;
+}
+
+.mw-flow__debugging-extra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mw-flow__debugging-detail {
+  min-height: 500px;
+}
+
+.mw-flow__debugging-detail .m-code-highlight__code {
+  font-size: 14px;
+  white-space: break-spaces;
+  word-break: break-word;
 }

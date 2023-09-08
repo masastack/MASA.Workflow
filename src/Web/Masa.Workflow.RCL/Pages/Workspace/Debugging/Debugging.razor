@@ -1,0 +1,33 @@
+﻿@namespace Masa.Workflow.RCL.Pages.Workspace
+
+<MVirtualScroll Class="mw-flow__debugging"
+                Items="_logs">
+    <ItemContent>
+        <div class="mw-flow__debugging-item">
+            <div class="mw-flow__debugging-extra">
+                <MChip Small Label Color="grey lighten-2">@context.Timestamp</MChip>
+                <MButton Icon Small OnClick="@(() => OpenDetailDialog(context))">
+                    <MIcon Small>mdi-arrow-expand</MIcon>
+                </MButton>
+            </div>
+            @{
+                var log = context.Log.Length > 120 ? context.Log.Substring(0, 120) : context.Log;
+            }
+            <MSyntaxHighlight Inline Class="mw-flow__debugging-log" Code="@log" Language="json"></MSyntaxHighlight>
+            <MDivider Class="my-1" />
+        </div>
+    </ItemContent>
+</MVirtualScroll>
+
+<PModal @bind-Value="_detailDialog"
+        @bind-Value:after="DialogChanged"
+        Title="i18n.workflow.debugging-title"
+        Width="770"
+        Class="mw-flow__debugging-detail"
+        SaveText="i18n.workflow.debugging-copy"
+        OnSave="CopyDebugLog">
+    <div class="mb-2">
+        <MChip Small Label Color="grey lighten-2">@_log?.Timestamp</MChip>
+    </div>
+    <MMonacoEditor Value="@_log?.Log" EditorOptions="s_monacoOptions"></MMonacoEditor>
+</PModal>
