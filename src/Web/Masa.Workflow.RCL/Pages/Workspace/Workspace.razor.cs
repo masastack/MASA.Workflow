@@ -24,6 +24,7 @@ public partial class Workspace
     private List<StringNumber>? _selectedGroups;
     private StringNumber? _node;
 
+    private Debugging? _debugging;
     private ExportDialog _exportDialog = null!;
     private ImportDialog _importDialog = null!;
 
@@ -161,6 +162,10 @@ public partial class Workspace
         }
     }
 
+    private async Task TabChanged()
+    {
+    }
+
     private async Task OpenHelpDrawer(string nodeType)
     {
         var activity = RegisteredActivities.Value.FirstOrDefault(u => u.Config.Type == nodeType);
@@ -228,9 +233,11 @@ public partial class Workspace
                 continue;
             }
 
-            _tree[0].Children!.Add(new TreeNode(id, nodeData.Name, nodeData.Icon, nodeData.Color));
+            var treeNode = new TreeNode(id, nodeData.Name, nodeData.Icon, nodeData.Color);
+            treeNode.Extra["nodeType"] = name;
+            _tree[0].Children!.Add(treeNode);
         }
-        
+
         StateHasChanged();
     }
 
@@ -241,7 +248,8 @@ public partial class Workspace
 
     private async Task DeleteWorkflow()
     {
-        var confirm = await PopupService.ConfirmAsync("Delete Workflow(TODO: i18n)", "Are you sure to delete this workflow?(TODO: i18n)", AlertTypes.Error);
+        var confirm = await PopupService.ConfirmAsync("Delete Workflow(TODO: i18n)", "Are you sure to delete this workflow?(TODO: i18n)",
+            AlertTypes.Error);
         if (confirm)
         {
             // delete workflow from http

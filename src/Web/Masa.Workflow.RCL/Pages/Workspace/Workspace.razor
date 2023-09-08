@@ -68,9 +68,8 @@
                    @ref="_drawflow" />
     </div>
     <div class="mw-flow__sidebar" style="width: 352px;">
-        <MTabs @bind-Value="_node">
+        <MTabs @bind-Value="_node" @bind-Value:after="TabChanged">
             <MTab>i18n.node-info</MTab>
-            <MTab>i18n.node-help</MTab>
             <MTab>i18n.node-debug</MTab>
         </MTabs>
         <MTabsItems Value="_node">
@@ -116,10 +115,7 @@
                 }
             </MTabItem>
             <MTabItem Transition="">
-                Help
-            </MTabItem>
-            <MTabItem Transition="">
-                Debug
+                <Debugging @ref="_debugging"></Debugging>
             </MTabItem>
         </MTabsItems>
     </div>

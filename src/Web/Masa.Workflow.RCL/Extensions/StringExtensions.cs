@@ -1,4 +1,6 @@
-﻿namespace Masa.Workflow.RCL.Extensions;
+﻿using System.Text;
+
+namespace Masa.Workflow.RCL.Extensions;
 
 public static class StringExtensions
 {
@@ -18,5 +20,25 @@ public static class StringExtensions
         {
             return false;
         }
+    }
+}
+
+public static class JsonDocumentExtensions
+{
+    public static string ToJsonString(this JsonDocument doc, bool indented = true)
+    {
+        if (indented)
+        {
+            using var stream = new MemoryStream();
+            using var writer = new Utf8JsonWriter(stream, new JsonWriterOptions
+            {
+                Indented = true
+            });
+            doc.WriteTo(writer);
+            writer.Flush();
+            return Encoding.UTF8.GetString(stream.ToArray());
+        }
+
+        return doc.RootElement.GetRawText();
     }
 }
