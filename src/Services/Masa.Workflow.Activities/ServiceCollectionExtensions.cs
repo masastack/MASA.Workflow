@@ -1,6 +1,4 @@
-﻿using Masa.Workflow.Activities.Console;
-
-namespace Masa.Workflow.Activities;
+﻿namespace Masa.Workflow.Activities;
 
 public static class ServiceCollectionExtensions
 {
@@ -17,17 +15,16 @@ public static class ServiceCollectionExtensions
                     && type.BaseType.IsGenericType
                     && type.BaseType.GetGenericTypeDefinition() == typeof(MasaWorkflowActivity<>));
 
-            options.RegisterActivity<ConsoleActivity>();
-            //var registerActivityMethod = options.GetType().GetMethod("RegisterActivity", Type.EmptyTypes);
-            //if (registerActivityMethod == null)
-            //{
-            //    throw new Exception("Unable to find 'RegisterActivity' method.");
-            //}
-            //foreach (var activityType in activityTypes)
-            //{
-            //    var genericMethod = registerActivityMethod.MakeGenericMethod(activityType);
-            //    genericMethod.Invoke(options, null);
-            //}
+            var registerActivityMethod = options.GetType().GetMethod("RegisterActivity", Type.EmptyTypes);
+            if (registerActivityMethod == null)
+            {
+                throw new Exception("Unable to find 'RegisterActivity' method.");
+            }
+            foreach (var activityType in activityTypes)
+            {
+                var genericMethod = registerActivityMethod.MakeGenericMethod(activityType);
+                genericMethod.Invoke(options, null);
+            }
         });
 
         services.AddRulesEngine(rulesEngineOptions =>
