@@ -1,0 +1,11 @@
+﻿global using Dapr.Workflow;
+global using Masa.BuildingBlocks.RulesEngine;
+global using Masa.Workflow.Activities.Contracts;
+global using Masa.Workflow.Activities.Contracts.Switch;
+global using Masa.Workflow.Activities.Switch;
+global using Masa.Workflow.Core;
+global using Microsoft.Extensions.DependencyInjection;
+global using System.Collections;
+global using System.Reflection;
+global using System.Text.Json;
+global using System.Text.RegularExpressions;

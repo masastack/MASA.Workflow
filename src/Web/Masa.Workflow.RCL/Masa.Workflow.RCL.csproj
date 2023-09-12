@@ -24,6 +24,4 @@
         <ProjectReference Include="..\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj" />
     </ItemGroup>
 
-
-
 </Project>

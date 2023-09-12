@@ -1,11 +1,6 @@
 ﻿global using Masa.Blazor;
-global using Masa.BuildingBlocks.RulesEngine;
-global using Masa.Workflow.Activity.Activities.Switch;
+global using Masa.Workflow.Activities.Contracts;
+global using Masa.Workflow.Activities.Contracts.Switch;
 global using Masa.Workflow.ActivityCore;
 global using Microsoft.AspNetCore.Components;
-global using Microsoft.Extensions.DependencyInjection;
-global using System.Collections;
-global using System.ComponentModel;
 global using System.Runtime.CompilerServices;
-global using System.Text.Json;
-global using System.Text.RegularExpressions;

@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Masa.Workflow.RCL;
 
@@ -28,54 +27,55 @@ public static class ServiceCollectionExtensions
         var assemblies = AppDomain.CurrentDomain.GetAssemblies();
         foreach (var assembly in assemblies)
         {
-            if (assembly.GetTypes().Any(x
-                    => x.BaseType is { IsGenericType: true } &&
-                       typeof(MasaWorkflowActivity<>).IsAssignableFrom(x.BaseType.GetGenericTypeDefinition())))
-            {
-                var resourceNames = assembly.GetManifestResourceNames().Where(name => name.Contains(assetFolderName)).ToList();
-                if (resourceNames.Count == 0)
-                {
-                    continue;
-                }
+            //TODO :add blazor activity replace MasaWorkflowActivity<>
+            //if (assembly.GetTypes().Any(x
+            //        => x.BaseType is { IsGenericType: true } &&
+            //           typeof(MasaWorkflowActivity<>).IsAssignableFrom(x.BaseType.GetGenericTypeDefinition())))
+            //{
+            //    var resourceNames = assembly.GetManifestResourceNames().Where(name => name.Contains(assetFolderName)).ToList();
+            //    if (resourceNames.Count == 0)
+            //    {
+            //        continue;
+            //    }
 
-                var resourceNamesGroups = resourceNames.GroupBy(u => u.Split(assetFolderName)[0]);
-                foreach (var group in resourceNamesGroups)
-                {
-                    WorkflowActivityRegistered workflowActivity = new();
+            //    var resourceNamesGroups = resourceNames.GroupBy(u => u.Split(assetFolderName)[0]);
+            //    foreach (var group in resourceNamesGroups)
+            //    {
+            //        WorkflowActivityRegistered workflowActivity = new();
 
-                    foreach (var resourceName in group)
-                    {
-                        var stream = assembly.GetManifestResourceStream(resourceName);
-                        if (stream == null) continue;
+            //        foreach (var resourceName in group)
+            //        {
+            //            var stream = assembly.GetManifestResourceStream(resourceName);
+            //            if (stream == null) continue;
 
-                        using var reader = new StreamReader(stream, Encoding.UTF8);
-                        var str = reader.ReadToEnd();
+            //            using var reader = new StreamReader(stream, Encoding.UTF8);
+            //            var str = reader.ReadToEnd();
 
-                        if (str is null)
-                        {
-                            continue;
-                        }
+            //            if (str is null)
+            //            {
+            //                continue;
+            //            }
 
-                        if (resourceName.EndsWith(".config.json"))
-                        {
-                            workflowActivity.Config = JsonSerializer.Deserialize<ActivityNodeConfig>(str, s_defaultJsonSerializerOptions);
-                        }
-                        else if (resourceName.Contains("locales"))
-                        {
-                            var localeMd = resourceName.Split("locales.")[1];
-                            var locale = localeMd.Split(".md")[0];
-                            workflowActivity.Locales.Add(locale, str);
-                        }
-                    }
+            //            if (resourceName.EndsWith(".config.json"))
+            //            {
+            //                workflowActivity.Config = JsonSerializer.Deserialize<ActivityNodeConfig>(str, s_defaultJsonSerializerOptions);
+            //            }
+            //            else if (resourceName.Contains("locales"))
+            //            {
+            //                var localeMd = resourceName.Split("locales.")[1];
+            //                var locale = localeMd.Split(".md")[0];
+            //                workflowActivity.Locales.Add(locale, str);
+            //            }
+            //        }
 
-                    if (workflowActivity.Config is null)
-                    {
-                        continue;
-                    }
+            //        if (workflowActivity.Config is null)
+            //        {
+            //            continue;
+            //        }
 
-                    activities.Add(workflowActivity);
-                }
-            }
+            //        activities.Add(workflowActivity);
+            //    }
+            //}
         }
 
         return activities;

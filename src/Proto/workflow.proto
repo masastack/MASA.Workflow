@@ -8,6 +8,7 @@ import "google/protobuf/timestamp.proto";
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "common.proto";
 
 service WorkflowService
 {
@@ -21,7 +22,19 @@ service WorkflowService
 
 	rpc Create (CreateWorkflowRequest) returns (WorkflowId);
 
-	rpc Delete(WorkflowId) returns (google.protobuf.Empty);
+	rpc Delete(WorkflowId) returns (StatusResponse);
+
+	rpc Start(WorkflowId) returns (StatusResponse){
+		option (google.api.http) = {
+			put: "/v1/workflow/start/{id}"
+		};
+	}
+
+	rpc Stop(WorkflowId) returns (google.protobuf.Empty){
+		option (google.api.http) = {
+			put: "/v1/workflow/stop/{id}"
+		};
+	}
 } 
 
 message WorkflowId{

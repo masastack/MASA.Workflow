@@ -1,0 +1,24 @@
+﻿syntax = "proto3"; 
+
+option csharp_namespace = "Masa.Workflow"; 
+
+package masa.workflow; 
+
+import "google/api/annotations.proto";
+import "common.proto";
+
+// https://github.com/grpc/grpc-dotnet/tree/master/examples#uploader
+
+service FileService
+{
+	rpc Upload (stream FileRequest) returns (StatusResponse){
+		option (google.api.http) = {
+			post: "/v1/file"
+		};
+	}
+} 
+
+message FileRequest {
+    string file_name = 1;
+    bytes file = 2;
+}

@@ -1,0 +1,10 @@
+﻿syntax = "proto3"; 
+
+option csharp_namespace = "Masa.Workflow"; 
+
+package masa.workflow; 
+
+message StatusResponse {
+  int32 code = 1;
+  string msg = 2 ;
+}

@@ -16,7 +16,7 @@ public class WorkflowService : ServiceBase
     [Authorize]
     public async Task<IResult> PlaceOrder(IEventBus eventBus)
     {
-        var comman = new WorkFlowCreateCommand();
+        var comman = new CreateWorkflowCommand();
         await eventBus.PublishAsync(comman);
         return Results.Ok();
     }
@@ -24,6 +24,13 @@ public class WorkflowService : ServiceBase
 
 public class WorkflowGrpcService : WorkflowServiceBase
 {
+    private readonly IEventBus _eventBus;
+
+    public WorkflowGrpcService(IEventBus eventBus)
+    {
+        _eventBus = eventBus;
+    }
+
     public override Task<WorkflowDetail> GetDetail(WorkflowId request, ServerCallContext context)
     {
         var result = new WorkflowDetail();
@@ -34,5 +41,11 @@ public class WorkflowGrpcService : WorkflowServiceBase
     public override Task<WorkflowReply> GetList(WorkflowRequest request, ServerCallContext context)
     {
         return base.GetList(request, context);
+    }
+
+    public override async Task<StatusResponse> Start(WorkflowId request, ServerCallContext context)
+    {
+        await _eventBus.PublishAsync(new StartWorkflowCommand(Guid.NewGuid()));
+        return new StatusResponse();
     }
 }
