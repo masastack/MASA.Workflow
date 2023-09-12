@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Activity.Activities.Switch;
+﻿namespace Masa.Workflow.Activities.Switch;
 
 public static class Ruler
 {

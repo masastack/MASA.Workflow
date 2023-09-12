@@ -1,11 +1,4 @@
-﻿namespace Masa.Workflow.ActivityCore;
-
-public abstract class MetaBase
-{
-    public Guid ActivityId { get; } =  Guid.NewGuid();
-
-    public List<List<Guid>> Wires { get; } = new();
-}
+﻿namespace Masa.Workflow.Core;
 
 public sealed class Msg : DynamicObject
 {

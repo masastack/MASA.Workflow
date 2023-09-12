@@ -1,11 +1,11 @@
-﻿namespace Masa.Workflow.Activity.Activities;
+﻿namespace Masa.Workflow.Activities.Switch;
 
 public class SwitchActivity : MasaWorkflowActivity<SwitchMeta>
 {
     IRulesEngineClient _rulesEngineClient;
 
-    public SwitchActivity(WorkflowHub workflowHub, Msg msg, IRulesEngineClient rulesEngineClient)
-        : base(workflowHub, msg)
+    public SwitchActivity(Msg msg, IRulesEngineClient rulesEngineClient)
+        : base(msg)
     {
         _rulesEngineClient = rulesEngineClient;
     }
@@ -59,7 +59,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchMeta>
 
         if (passResults.Count > 0)
         {
-            if (meta.EnforceRule == EnforceRule.FirstMatch)
+            if (meta.SwitchMode == SwitchMode.FirstMatch)
             {
                 return new List<List<Guid>> { passResults.First()! };
             }

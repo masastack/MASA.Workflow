@@ -14,7 +14,13 @@ public class WorkflowDomainService : DomainService
     public async Task CreateAsync()
     {
         //todo create
-        var orderEvent = new WorkflowCreatedDomainEvent();
+        var orderEvent = new CreatedWorkflowDomainEvent();
+        await EventBus.PublishAsync(orderEvent);
+    }
+
+    public async Task StartAsync()
+    {
+        var orderEvent = new CreatedWorkflowDomainEvent();
         await EventBus.PublishAsync(orderEvent);
     }
 

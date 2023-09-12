@@ -15,6 +15,7 @@ global using Masa.Contrib.Dispatcher.Events;
 global using Masa.Contrib.Dispatcher.IntegrationEvents.EventLogs.EFCore;
 global using Masa.Workflow.Service.Application.Orders.Commands;
 global using Masa.Workflow.Service.Application.Orders.Queries;
+global using Masa.Workflow.Service.Application.WorkFlow.Commands;
 global using Masa.Workflow.Service.Domain.Aggregates;
 global using Masa.Workflow.Service.Domain.Events;
 global using Masa.Workflow.Service.Domain.Repositories;

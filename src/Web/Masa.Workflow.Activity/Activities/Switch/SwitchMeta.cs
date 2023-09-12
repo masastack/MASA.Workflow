@@ -1,4 +1,6 @@
-﻿namespace Masa.Workflow.Activity.Activities.Switch;
+﻿using Masa.Workflow.Activities.Contracts.Switch;
+
+namespace Masa.Workflow.Activity.Activities.Switch;
 
 public class SwitchMeta : MetaBase
 {
@@ -8,9 +10,8 @@ public class SwitchMeta : MetaBase
 
     public List<List<Guid>> Wires { get; set; } = new();
 
-    public EnforceRule EnforceRule { get; set; } = EnforceRule.All;
+    public SwitchMode SwitchMode { get; set; } = SwitchMode.All;
 }
-
 public class Rule
 {
     public Rule()

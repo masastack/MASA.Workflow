@@ -1,6 +1,18 @@
-﻿using Masa.Workflow.Service.Services;
+﻿using Masa.Workflow.Activities;
+using Masa.Workflow.Service.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// dapr run --app-id masa-workflow --app-port 6536 --dapr-http-port 3501 dotnet run
+//if (builder.Environment.IsDevelopment())
+//{
+//    builder.Services.AddDaprStarter(option =>
+//    {
+//        option.CreateNoWindow = false;
+//        //option.EnableApiLogging = true;
+//    });
+//}
+builder.Services.AddMasaWorkflow();
 
 builder.Services.AddGrpc(options =>
 {

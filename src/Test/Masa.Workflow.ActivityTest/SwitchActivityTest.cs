@@ -1,4 +1,7 @@
-﻿using Masa.Workflow.ActivityCore;
+﻿using Masa.Workflow.Activities;
+using Masa.Workflow.Activities.Contracts.Switch;
+using Masa.Workflow.Activities.Switch;
+using Masa.Workflow.Core;
 
 namespace Masa.Workflow.ActivityTest
 {
@@ -11,7 +14,7 @@ namespace Masa.Workflow.ActivityTest
         {
             _hub = new Mock<WorkflowHub>().Object;
             _services = new ServiceCollection();
-            _services.AddDepend();
+            _services.AddMasaWorkflow();
         }
 
         [Theory]
@@ -22,7 +25,7 @@ namespace Masa.Workflow.ActivityTest
         {
             var msg = _services.BuildServiceProvider().GetRequiredService<Msg>();
             msg.Payload = payload;
-            var _switchActivity = new SwitchActivity(_hub, msg, _services.BuildServiceProvider().GetRequiredService<IRulesEngineClient>());
+            var _switchActivity = new SwitchActivity(msg, _services.BuildServiceProvider().GetRequiredService<IRulesEngineClient>());
             var input = new SwitchMeta()
             {
                 Rules = new List<Rule>
