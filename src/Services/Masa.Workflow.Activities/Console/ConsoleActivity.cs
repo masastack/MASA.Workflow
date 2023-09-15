@@ -13,7 +13,6 @@ internal class ConsoleActivity : MasaWorkflowActivity<ConsoleMeta>
     {
         _output.WriteLine(meta.Text);
         System.Console.WriteLine("------------ConsoleActivity Run");
-        System.Console.WriteLine(meta.Text);
         return base.RunAsync(meta);
     }
 }

@@ -1,18 +1,31 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="Dapr.Workflow" Version="1.11.0" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.56.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.10" />
+	<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.10" />
+	<PackageReference Include="Masa.Contrib.ReadWriteSplitting.Cqrs" Version="$(MASAFrameworkVersion)" />
+	<PackageReference Include="Masa.Contrib.Dispatcher.Events" Version="$(MASAFrameworkVersion)" />
+	<PackageReference Include="Masa.Contrib.Development.DaprStarter.AspNetCore" Version="$(MASAFrameworkVersion)" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Masa.Workflow.Activities\Masa.Workflow.Activities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+	<Protobuf Include="..\..\Proto\worker.proto" Link="Protos/worker.proto" GrpcServices="Server" />
+	<Protobuf Include="..\..\Proto\workflow.proto" Link="Protos/workflow.proto" GrpcServices="Client" />
+	<Protobuf Include="..\..\Proto\model.proto" Link="Protos/model.proto" GrpcServices="Client" />
+  </ItemGroup>
+	
 </Project>

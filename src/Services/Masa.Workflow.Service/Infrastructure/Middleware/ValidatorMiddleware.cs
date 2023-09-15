@@ -8,7 +8,7 @@ public class ValidatorMiddleware<TEvent> : EventMiddleware<TEvent>
     private readonly IEnumerable<IValidator<TEvent>> _validators;
 
     public ValidatorMiddleware(
-        IEnumerable<IValidator<TEvent>> validators, 
+        IEnumerable<IValidator<TEvent>> validators,
         ILogger<ValidatorMiddleware<TEvent>> logger)
     {
         _validators = validators;

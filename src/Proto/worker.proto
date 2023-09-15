@@ -1,0 +1,34 @@
+syntax = "proto3"; 
+
+option csharp_namespace = "Masa.Workflow"; 
+
+package masa.workflow; 
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "model.proto";
+
+service WorkflowRunner
+{
+	rpc Run(WorkflowId) returns (google.protobuf.Empty){
+		option (google.api.http) = {
+			get: "/v1/workflow/run/{id}"
+		};
+	}
+} 
+
+
+service WorkflowStarter
+{
+	rpc Start(WorkflowId) returns (google.protobuf.Empty){
+		option (google.api.http) = {
+			put: "/v1/workflow/start/{id}"
+		};
+	}
+
+	rpc Stop(WorkflowId) returns (google.protobuf.Empty){
+		option (google.api.http) = {
+			put: "/v1/workflow/stop/{id}"
+		};
+	}
+} 

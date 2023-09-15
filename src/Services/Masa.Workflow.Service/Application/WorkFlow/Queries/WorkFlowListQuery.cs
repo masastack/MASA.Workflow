@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Service.Application.Orders.Queries;
+﻿namespace Masa.Workflow.Service.Application.WorkFlow.Queries;
 
 public record WorkFlowListQuery : DomainQuery<List<WorkflowItem>>
 {

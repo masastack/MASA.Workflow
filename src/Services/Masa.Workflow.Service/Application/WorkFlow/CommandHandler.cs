@@ -1,33 +1,19 @@
-﻿using Dapr.Client;
-using Masa.Workflow.Core;
+﻿using Masa.Workflow.Service.Application.WorkFlow.Commands;
 
-namespace Masa.Workflow.Service.Application.Orders;
+namespace Masa.Workflow.Service.Application.WorkFlow;
 
 public class CommandHandler
 {
     private readonly WorkflowDomainService _domainService;
-    private readonly DaprClient _daprClient;
 
-    const string DaprWorkflowComponent = "dapr";
-
-    public CommandHandler(WorkflowDomainService domainService, DaprClient daprClient)
+    public CommandHandler(WorkflowDomainService domainService)
     {
         _domainService = domainService;
-        _daprClient = daprClient;
     }
 
     [EventHandler(Order = 1)]
     public async Task CreateHandleAsync(CreateWorkflowCommand command)
     {
-        //todo your work
-        await Task.CompletedTask;
-    }
-
-    [EventHandler]
-    public async Task StartHandleAsync(StartWorkflowCommand command)
-    {
-
-        await _daprClient.StartWorkflowAsync(DaprWorkflowComponent, nameof(MasaWorkFlow), command.WorkflowId.ToString(), command.WorkflowId);
         //todo your work
         await Task.CompletedTask;
     }

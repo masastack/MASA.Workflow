@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Service.Application.Orders.Commands;
+﻿namespace Masa.Workflow.Service.Application.WorkFlow.Commands;
 
 public record CreateWorkflowCommand : DomainCommand
 {
