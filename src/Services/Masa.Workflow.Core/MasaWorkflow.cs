@@ -1,17 +1,15 @@
-﻿using Masa.Workflow.Core.Models;
+﻿namespace Masa.Workflow.Core;
 
-namespace Masa.Workflow.Core;
-
-public sealed class MasaWorkFlow : Workflow<Guid, RunWorkflowResult>, IEventHandler<CompleteEvent>
+public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>, IEventHandler<CompleteEvent>
 {
     List<KeyValuePair<string, string>> _completeList = new();
 
-    public async override Task<RunWorkflowResult> RunAsync(WorkflowContext context, Guid instanceId)
+    public async override Task<RunWorkflowResult> RunAsync(WorkflowContext context, WorkflowInstance workflowInstance)
     {
         Console.WriteLine("------------MasaWorkFlow Run");
-        var workflowInstance = new WorkflowInstance
+        workflowInstance = new WorkflowInstance
         {
-            Id = instanceId,
+            Id = Guid.Parse(context.InstanceId),
             Name = "Test",
             Variables = new Variables { { "a", 1 } },
             Activities = new List<ActivityDefinition> {
@@ -21,21 +19,23 @@ public sealed class MasaWorkFlow : Workflow<Guid, RunWorkflowResult>, IEventHand
             }
         };
 
-        var activityDictionary = new Dictionary<string, string>()
-        {
-            { "Console","ConsoleActivity"},
-            { "Switch","ConsoleActivity"},
-            { "Complete","ConsoleActivity"}
-        };
         foreach (var activity in workflowInstance.Activities)
         {
-            Console.WriteLine($"------------MasaWorkFlow Start Activity  {activity.Type}  [{activityDictionary[activity.Type]}]");
-            await context.CallActivityAsync<Wires>(activityDictionary[activity.Type], new
+            if (ActivityProvider.TryGet(activity.Type, out string? activityName))
             {
-                Text = $"{activity.Name}--{activity.Type}",
-                ActivityId = activity.Id,
+                Console.WriteLine($"------------MasaWorkFlow Start Activity  {activity.Type}  [{activityName}]");
 
-            }, new WorkflowTaskOptions());
+                await context.CallActivityAsync<Wires>(activityName!, new
+                {
+                    Text = $"{activity.Name}--{activity.Type}",
+                    ActivityId = activity.Id,
+
+                }, new WorkflowTaskOptions());
+            }
+            else
+            {
+                Console.WriteLine($"------------ActivityProvider not contain a key {activity.Type}");
+            }
         }
         return new RunWorkflowResult(context.InstanceId, null, true);
     }

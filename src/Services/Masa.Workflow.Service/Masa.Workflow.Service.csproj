@@ -8,11 +8,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Dapr.Workflow" Version="1.11.0" />
 		<PackageReference Include="Grpc.AspNetCore" Version="2.56.0" />
 		<PackageReference Include="Masa.BuildingBlocks.Dispatcher.Events" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Masa.Contrib.Data.EFCore.SqlServer" Version="$(MASAFrameworkVersion)" />
-		<PackageReference Include="Masa.Contrib.Development.DaprStarter.AspNetCore" Version="1.0.0" />
+		<PackageReference Include="Masa.Contrib.Development.DaprStarter.AspNetCore" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Masa.Contrib.Dispatcher.Events" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Masa.Contrib.Dispatcher.IntegrationEvents.EventLogs.EFCore" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.10" />
@@ -21,24 +20,18 @@
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0" />
 		<PackageReference Include="FluentValidation" Version="11.7.1" />
 		<PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
-		<PackageReference Include="Dapr.AspNetCore" Version="1.11.0" />
 		<PackageReference Include="Masa.BuildingBlocks.Ddd.Domain" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Masa.Contrib.Ddd.Domain" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Masa.Contrib.Ddd.Domain.Repository.EFCore" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Masa.Contrib.ReadWriteSplitting.Cqrs" Version="$(MASAFrameworkVersion)" />
-		<PackageReference Include="Masa.Contrib.Service.MinimalAPIs" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
 		<PackageReference Include="Masa.Contrib.Data.UoW.EFCore" Version="$(MASAFrameworkVersion)" />
 		<PackageReference Include="Masa.Contrib.Dispatcher.IntegrationEvents.Dapr" Version="$(MASAFrameworkVersion)" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Masa.Workflow.Activities\Masa.Workflow.Activities.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Protobuf Include="..\..\Proto\workflow.proto" Link="Protos/workflow.proto" GrpcServices="Server" />
+		<Protobuf Include="..\..\Proto\workflow.proto" Link="Protos/workflow.proto" GrpcServices="Server"/>
 		<Protobuf Include="..\..\Proto\file.proto" Link="Protos/file.proto" GrpcServices="Server" />
-		<Protobuf Include="..\..\Proto\common.proto" Link="Protos/common.proto" GrpcServices="Server" />
+		<Protobuf Include="..\..\Proto\model.proto" Link="Protos/model.proto" GrpcServices="Server" />
 	</ItemGroup>
 </Project>

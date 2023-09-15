@@ -5,7 +5,7 @@ option csharp_namespace = "Masa.Workflow";
 package masa.workflow; 
 
 import "google/api/annotations.proto";
-import "common.proto";
+import "model.proto";
 
 // https://github.com/grpc/grpc-dotnet/tree/master/examples#uploader
 

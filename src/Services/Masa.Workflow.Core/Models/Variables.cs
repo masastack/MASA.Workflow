@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Service.Models;
+﻿namespace Masa.Workflow.Core.Models;
 
 public class Variables : Dictionary<string, object>
 {

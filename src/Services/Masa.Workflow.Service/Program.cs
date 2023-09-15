@@ -1,18 +1,4 @@
-﻿using Masa.Workflow.Activities;
-using Masa.Workflow.Service.Services;
-
-var builder = WebApplication.CreateBuilder(args);
-
-// dapr run --app-id masa-workflow --app-port 6536 --dapr-http-port 3501 dotnet run
-//if (builder.Environment.IsDevelopment())
-//{
-//    builder.Services.AddDaprStarter(option =>
-//    {
-//        option.CreateNoWindow = false;
-//        //option.EnableApiLogging = true;
-//    });
-//}
-builder.Services.AddMasaWorkflow();
+﻿var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc(options =>
 {
@@ -22,8 +8,6 @@ builder.Services.AddGrpc(options =>
     options.EnableDetailedErrors = !builder.Environment.IsProduction();
 }).AddJsonTranscoding();
 
-// If this service does not need to call other services, you can delete the following line.
-builder.Services.AddDaprClient();
 builder.Services
     .AddAuthorization()
     .AddAuthentication(options =>
@@ -37,7 +21,8 @@ builder.Services
         options.RequireHttpsMetadata = false;
         options.Audience = "";
     });
-var app = builder.Services
+
+builder.Services
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     .AddEndpointsApiExplorer()
     .AddGrpcSwagger()
@@ -86,8 +71,9 @@ var app = builder.Services
             })
             .UseUoW<WorkflowDbContext>(dbOptions => dbOptions.UseSqlServer())
             .UseRepository<WorkflowDbContext>();
-    })
-    .AddServices(builder);
+    });
+
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -111,7 +97,7 @@ app.UseAuthorization();
 app.UseCloudEvents();
 app.MapSubscribeHandler();
 
-app.MapGrpcService<WorkflowGrpcService>();
+app.MapGrpcService<WorkflowService>();
 
 app.UseHttpsRedirection();
 

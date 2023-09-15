@@ -1,0 +1,26 @@
+﻿syntax = "proto3"; 
+
+option csharp_namespace = "Masa.Workflow"; 
+
+package masa.workflow; 
+
+import "google/protobuf/any.proto";
+
+message StatusResponse {
+  int32 code = 1;
+  string msg = 2 ;
+  google.protobuf.Any data = 3;
+}
+
+enum WorkflowStatus {
+  Idle = 0;
+  Running = 1;
+  Finished = 2;
+  Suspended = 3;
+  Faulted = 4;
+  Cancelled = 5; 
+}
+
+message WorkflowId{
+	string id = 1;
+}

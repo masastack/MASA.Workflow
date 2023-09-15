@@ -1,0 +1,13 @@
+﻿global using Dapr.Client;
+global using Google.Protobuf.WellKnownTypes;
+global using Grpc.Core;
+global using Masa.BuildingBlocks.Dispatcher.Events;
+global using Masa.BuildingBlocks.ReadWriteSplitting.Cqrs.Commands;
+global using Masa.Contrib.Dispatcher.Events;
+global using Masa.Workflow;
+global using Masa.Workflow.Activities;
+global using Masa.Workflow.Core;
+global using Masa.Workflow.Core.Models;
+global using Masa.Workflow.Worker.Application.Commands;
+global using Masa.Workflow.Worker.Services;
+global using System.Reflection;

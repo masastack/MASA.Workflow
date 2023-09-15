@@ -1,4 +1,6 @@
-﻿namespace Masa.Workflow.Service.Infrastructure;
+﻿using Microsoft.EntityFrameworkCore.Design;
+
+namespace Masa.Workflow.Service.Infrastructure;
 
 public class WorkflowDbContextFactory : IDesignTimeDbContextFactory<WorkflowDbContext>
 {

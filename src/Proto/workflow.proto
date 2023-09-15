@@ -7,12 +7,11 @@ package masa.workflow;
 import "google/protobuf/timestamp.proto"; 
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
-import "common.proto";
+import "model.proto";
 
-service WorkflowService
+service WorkflowAgent
 {
-	rpc GetList (WorkflowRequest) returns (WorkflowReply);
+	rpc GetList (WorkflowListRequest) returns (WorkflowReply);
 
 	rpc GetDetail (WorkflowId) returns (WorkflowDetail){
 		option (google.api.http) = {
@@ -20,35 +19,18 @@ service WorkflowService
 		};
 	}
 
-	rpc Create (CreateWorkflowRequest) returns (WorkflowId);
+	rpc Create (WorkflowRequest) returns (WorkflowId);
 
 	rpc Delete(WorkflowId) returns (StatusResponse);
-
-	rpc Start(WorkflowId) returns (StatusResponse){
-		option (google.api.http) = {
-			put: "/v1/workflow/start/{id}"
-		};
-	}
-
-	rpc Stop(WorkflowId) returns (google.protobuf.Empty){
-		option (google.api.http) = {
-			put: "/v1/workflow/stop/{id}"
-		};
-	}
 } 
 
-message WorkflowId{
-	string id = 1;
-}
-
-message WorkflowRequest { 
+message WorkflowListRequest { 
 	int32 page = 1; 
 	int32 page_size = 2; 
 	string name = 3;
-	repeated Node nodes=20;
 } 
 
-message CreateWorkflowRequest { 
+message WorkflowRequest { 
 	string name = 1;
 	string description = 2;
 	bool disabled = 3;
@@ -59,18 +41,29 @@ message WorkflowReply {
 } 
 
 message WorkflowItem { 
-	google.protobuf.Timestamp dateTimeStamp = 1; 
-	int32 temperatureC = 2; 
-	string summary = 3; 
+	string id = 1;
+	WorkflowStatus status = 2;
+	string name = 3; 
+	bool is_publish = 4;
+
+	google.protobuf.Timestamp create_dateTime_stamp = 10; 
+	string create_user = 11;
+	google.protobuf.Timestamp update_dateTime_stamp = 12; 
+	string update_user = 13;
 }
 
 message WorkflowDetail { 
-	google.protobuf.Timestamp create_dateTime_stamp = 1; 
-	google.protobuf.Timestamp update_dateTime_stamp = 2; 
+	string id = 1;  
+	WorkflowStatus status = 2;
 	string name = 3; 
 	string description = 4; 
 	map<string, google.protobuf.Any> environment_variables = 5;
 	repeated Node nodes = 6;
+
+	google.protobuf.Timestamp create_dateTime_stamp = 20; 
+	string create_user = 21;
+	google.protobuf.Timestamp update_dateTime_stamp = 22;
+	string update_user = 23;
 }
 
 message Node{
@@ -78,7 +71,7 @@ message Node{
 	string description = 2;
 	bool disabled = 3;
 	Point point =4;
-	Wire wires = 10;
+	WireList wires = 10;
 	google.protobuf.Any meta = 20;
 
 	message Point {
@@ -86,20 +79,11 @@ message Node{
 		int32 y = 2;
 	}
 
-	message Wire{
-		message WireList {
+	message WireList{
+		message Wire {
 			repeated string guids = 1;
 		}
-		repeated WireList guid_lists = 1;
+		repeated Wire guid_lists = 1;
 	}
 }
 
-enum Corpus {
-    UNIVERSAL = 0;
-    WEB = 1;
-    IMAGES = 2;
-    LOCAL = 3;
-    NEWS = 4;
-    PRODUCTS = 5;
-    VIDEO = 6;
-}
