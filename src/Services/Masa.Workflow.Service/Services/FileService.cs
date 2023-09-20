@@ -4,7 +4,7 @@ namespace Masa.Workflow.Service.Services;
 
 public class FileService : FileServiceBase
 {
-    public override async Task<StatusResponse> Upload(IAsyncStreamReader<FileRequest> requestStream, ServerCallContext context)
+    public override async Task<Empty> Upload(IAsyncStreamReader<FileRequest> requestStream, ServerCallContext context)
     {
         await using var writeStream = File.Create("data.bin");
 
@@ -15,10 +15,6 @@ public class FileService : FileServiceBase
                 await writeStream.WriteAsync(message.File.Memory);
             }
         }
-        return new StatusResponse
-        {
-            Code = 0,
-            Msg = ""
-        };
+        return new Empty();
     }
 }

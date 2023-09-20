@@ -1,8 +1,8 @@
 ﻿namespace Masa.Workflow.Service.Application.WorkFlow.Commands;
 
-public class CreateWorkflowCommandValidator : AbstractValidator<CreateWorkflowCommand>
+public class SaveWorkflowCommandValidator : AbstractValidator<SaveWorkflowCommand>
 {
-    public CreateWorkflowCommandValidator()
+    public SaveWorkflowCommandValidator()
     {
         //RuleFor(cmd => cmd.Items).Must(cmd => cmd.Any()).WithMessage("The order items cannot be empty");
     }

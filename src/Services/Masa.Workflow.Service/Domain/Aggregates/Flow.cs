@@ -2,7 +2,6 @@
 
 public class Flow : FullAggregateRoot<Guid, Guid>
 {
-    private List<Activity> _activities = new();
     private List<FlowVersion> _versions = new();
 
     public string Name { get; private set; } = string.Empty;
@@ -10,8 +9,6 @@ public class Flow : FullAggregateRoot<Guid, Guid>
     public string Description { get; private set; } = string.Empty;
 
     public bool Disabled { get; private set; }
-
-    public IReadOnlyCollection<Activity> Activities => _activities;
 
     public IReadOnlyCollection<FlowVersion> Versions => _versions;
 
@@ -30,6 +27,11 @@ public class Flow : FullAggregateRoot<Guid, Guid>
             throw new UserFriendlyException("already draft");
         }
         _versions.Add(flowVersion);
+    }
+
+    public List<Activity> ScheduledActivities()
+    {
+        return _versions.LastOrDefault()?.Activities ?? new();
     }
 
     public void Deployment()

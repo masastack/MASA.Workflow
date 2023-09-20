@@ -1,24 +1,24 @@
-﻿using Google.Protobuf.WellKnownTypes;
+﻿using System.Text.Json;
 
 namespace Masa.Workflow.Service.Application.WorkFlow;
 
 public class QueryHandler
 {
-    readonly IWorkflowRepository _orderRepository;
+    readonly IWorkflowRepository _workflowRepository;
 
-    public QueryHandler(IWorkflowRepository orderRepository)
+    public QueryHandler(IWorkflowRepository workflowRepository)
     {
-        _orderRepository = orderRepository;
+        _workflowRepository = workflowRepository;
     }
 
     [EventHandler]
-    public async Task WorkFlowListHandleAsync(WorkFlowListQuery query)
+    public async Task WorkFlowListHandleAsync(WorkflowListQuery query)
     {
         //todo work
     }
 
     [EventHandler]
-    public async Task WorkFlowDetailHandleAsync(WorkFlowDetailQuery query)
+    public async Task WorkFlowDetailHandleAsync(WorkflowDetailQuery query)
     {
         query.Result = new WorkflowDetail
         {
@@ -30,23 +30,27 @@ public class QueryHandler
 
             CreateDateTimeStamp = DateTime.UtcNow.ToTimestamp()
         };
-        query.Result.EnvironmentVariables.Add("1", new Any
+        query.Result.EnvironmentVariables.Add("1", "test");
+    }
+
+    [EventHandler]
+    public async Task WorkFlowDefinitionHandleAsync(WorkflowDefinitionQuery query)
+    {
+        query.Result = new WorkflowDefinition
         {
-            Value = Google.Protobuf.ByteString.CopyFromUtf8("1")
-        });
+            Id = query.Id.ToString(),
+            Name = "Test Flow",
+        };
+        query.Result.EnvironmentVariables.Add("1", "test");
         query.Result.Nodes.Add(new Node
         {
             Name = "Test Node",
             Disabled = false,
-            Point = new Node.Types.Point()
+            Meta = JsonSerializer.Serialize(new
             {
-                X = 1,
-                Y = 2
-            },
-            Meta = new Any
-            {
-                Value = Google.Protobuf.ByteString.CopyFromUtf8("1")
-            }
+                Address = "Address",
+                Method = "POST",
+            })
         });
     }
 }

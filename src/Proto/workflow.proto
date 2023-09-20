@@ -7,6 +7,7 @@ package masa.workflow;
 import "google/protobuf/timestamp.proto"; 
 import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 import "model.proto";
 
 service WorkflowAgent
@@ -19,9 +20,19 @@ service WorkflowAgent
 		};
 	}
 
-	rpc Create (WorkflowRequest) returns (WorkflowId);
+	rpc GetDefinition (WorkflowId) returns (WorkflowDefinition){
+		option (google.api.http) = {
+			get: "/v1/workflow/{id}"
+		};
+	}
 
-	rpc Delete(WorkflowId) returns (StatusResponse);
+	rpc Save (WorkflowRequest) returns (WorkflowId);
+
+	rpc Delete(WorkflowId) returns (google.protobuf.Empty){
+		option (google.api.http) = {
+			delete: "/v1/workflow/{id}"
+		};
+	}
 } 
 
 message WorkflowListRequest { 
@@ -31,9 +42,13 @@ message WorkflowListRequest {
 } 
 
 message WorkflowRequest { 
-	string name = 1;
-	string description = 2;
-	bool disabled = 3;
+	string id = 1;
+	string name = 2;
+	string description = 3;
+	bool is_draft = 4;
+	bool disabled = 5;
+
+	repeated Node nodes = 10;
 } 
 
 message WorkflowReply { 
@@ -57,8 +72,8 @@ message WorkflowDetail {
 	WorkflowStatus status = 2;
 	string name = 3; 
 	string description = 4; 
-	map<string, google.protobuf.Any> environment_variables = 5;
-	repeated Node nodes = 6;
+	map<string, string> environment_variables = 5;
+	string json = 6;
 
 	google.protobuf.Timestamp create_dateTime_stamp = 20; 
 	string create_user = 21;
@@ -66,18 +81,19 @@ message WorkflowDetail {
 	string update_user = 23;
 }
 
+message WorkflowDefinition{
+	string id = 1; 
+	string name = 2; 
+	map<string, string> environment_variables = 5;
+	repeated Node nodes = 6;
+}
+
 message Node{
 	string name = 1;
 	string description = 2;
 	bool disabled = 3;
-	Point point =4;
 	WireList wires = 10;
-	google.protobuf.Any meta = 20;
-
-	message Point {
-		int32 x = 1;
-		int32 y = 2;
-	}
+	string meta = 20;
 
 	message WireList{
 		message Wire {

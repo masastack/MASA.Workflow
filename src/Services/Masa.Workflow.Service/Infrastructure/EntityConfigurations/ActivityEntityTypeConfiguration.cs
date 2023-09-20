@@ -9,11 +9,6 @@ public class ActivityEntityTypeConfiguration : IEntityTypeConfiguration<Activity
         builder.Property(a => a.Type).HasMaxLength(20).IsRequired();
         builder.Property(a => a.Description).HasMaxLength(4000);
         builder.OwnsOne(
-            a => a.Point, ownedNavigationBuilder =>
-            {
-                ownedNavigationBuilder.ToJson();
-            });
-        builder.OwnsOne(
             a => a.Wires, ownedNavigationBuilder =>
             {
                 ownedNavigationBuilder.ToJson();
@@ -31,16 +26,5 @@ public class ActivityEntityTypeConfiguration : IEntityTypeConfiguration<Activity
                 ownedNavigationBuilder.Property(p => p.RetryTimeout).HasConversion<string>();
                 ownedNavigationBuilder.Property(p => p.MaxRetryInterval).HasConversion<string>();
             });
-        //builder.OwnsOne(
-        //    a => a.InputLabels, ownedNavigationBuilder =>
-        //    {
-        //        ownedNavigationBuilder.ToJson();
-        //    });
-
-        //builder.OwnsOne(
-        //    a => a.OutputLabels, ownedNavigationBuilder =>
-        //    {
-        //        ownedNavigationBuilder.ToJson();
-        //    });
     }
 }

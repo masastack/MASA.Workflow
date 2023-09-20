@@ -5,13 +5,14 @@ option csharp_namespace = "Masa.Workflow";
 package masa.workflow; 
 
 import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
 import "model.proto";
 
 // https://github.com/grpc/grpc-dotnet/tree/master/examples#uploader
 
 service FileService
 {
-	rpc Upload (stream FileRequest) returns (StatusResponse){
+	rpc Upload (stream FileRequest) returns (google.protobuf.Empty){
 		option (google.api.http) = {
 			post: "/v1/file"
 		};

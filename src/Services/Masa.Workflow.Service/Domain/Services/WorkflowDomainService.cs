@@ -11,21 +11,30 @@ public class WorkflowDomainService : DomainService
         _workflowRepository = workflowRepository;
     }
 
-    public async Task CreateAsync()
+    public async Task SaveAsync()
     {
-        //todo create
-        var orderEvent = new CreatedWorkflowDomainEvent();
-        await EventBus.PublishAsync(orderEvent);
+
     }
 
     public async Task StartAsync()
     {
-        var orderEvent = new CreatedWorkflowDomainEvent();
-        await EventBus.PublishAsync(orderEvent);
+
     }
 
     public async Task<IList<Flow>> QueryListAsync()
     {
         return await _workflowRepository.GetPaginatedListAsync(1, 20);
+    }
+
+    public async Task DeleteAsync(Guid workflowId)
+    {
+        var entity = await _workflowRepository.FindAsync(w => w.Id == workflowId);
+        if (entity == null)
+        {
+            _logger.LogError($"The Id {workflowId} does not exist");
+            throw new UserFriendlyException("The Id does not exist");
+        }
+        //todo chech run
+        await _workflowRepository.RemoveAsync(entity);
     }
 }

@@ -12,6 +12,8 @@ public class FlowVersion : FullEntity<Guid, Guid>
 
     public List<Activity> Activities { get; init; }
 
+    public string Json { get; set; } = "";
+
     private FlowVersion()
     {
         VersionNumber = DateTime.Now.ToString("yyyyMMddHHmmss");
