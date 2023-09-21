@@ -12,21 +12,30 @@ import "model.proto";
 
 service WorkflowAgent
 {
-	rpc GetList (WorkflowListRequest) returns (WorkflowReply);
+	rpc GetList (WorkflowListRequest) returns (WorkflowReply){
+		option (google.api.http) = {
+			get: "/v1/workflow/{page}/{page_size}"
+		};
+	}
 
 	rpc GetDetail (WorkflowId) returns (WorkflowDetail){
 		option (google.api.http) = {
-			get: "/v1/workflow/{id}"
+			get: "/v1/workflow/detail/{id}"
 		};
 	}
 
 	rpc GetDefinition (WorkflowId) returns (WorkflowDefinition){
 		option (google.api.http) = {
-			get: "/v1/workflow/{id}"
+			get: "/v1/workflow/defintion/{id}"
 		};
 	}
 
-	rpc Save (WorkflowRequest) returns (WorkflowId);
+	rpc Save (WorkflowRequest) returns (WorkflowId){
+		option (google.api.http) = {
+			post: "/v1/workflow/save",
+			body:"*"
+		};
+	}
 
 	rpc Delete(WorkflowId) returns (google.protobuf.Empty){
 		option (google.api.http) = {
@@ -48,11 +57,13 @@ message WorkflowRequest {
 	bool is_draft = 4;
 	bool disabled = 5;
 
-	repeated Node nodes = 10;
+	string node_json = 10;
 } 
 
 message WorkflowReply { 
-	repeated WorkflowItem Workflows = 1; 
+	int64 total = 1;
+	int32 total_page = 2;
+	repeated WorkflowItem Workflows = 3; 
 } 
 
 message WorkflowItem { 
@@ -73,7 +84,7 @@ message WorkflowDetail {
 	string name = 3; 
 	string description = 4; 
 	map<string, string> environment_variables = 5;
-	string json = 6;
+	string node_json = 6;
 
 	google.protobuf.Timestamp create_dateTime_stamp = 20; 
 	string create_user = 21;

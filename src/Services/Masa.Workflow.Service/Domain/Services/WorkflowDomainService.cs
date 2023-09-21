@@ -5,25 +5,17 @@ public class WorkflowDomainService : DomainService
     private readonly ILogger<WorkflowDomainService> _logger;
     private readonly IWorkflowRepository _workflowRepository;
 
-    public WorkflowDomainService(IDomainEventBus eventBus, ILogger<WorkflowDomainService> logger, IWorkflowRepository workflowRepository) : base(eventBus)
+    public WorkflowDomainService(IDomainEventBus eventBus, ILogger<WorkflowDomainService> logger, IWorkflowRepository workflowRepository)
+        : base(eventBus)
     {
         _logger = logger;
         _workflowRepository = workflowRepository;
     }
 
-    public async Task SaveAsync()
+    public async Task<Guid> SaveAsync(WorkflowRequest workflowRequest)
     {
-
-    }
-
-    public async Task StartAsync()
-    {
-
-    }
-
-    public async Task<IList<Flow>> QueryListAsync()
-    {
-        return await _workflowRepository.GetPaginatedListAsync(1, 20);
+        //todd workflowRequest.NodeJson convert Activity
+        return Guid.Empty;
     }
 
     public async Task DeleteAsync(Guid workflowId)
@@ -34,7 +26,7 @@ public class WorkflowDomainService : DomainService
             _logger.LogError($"The Id {workflowId} does not exist");
             throw new UserFriendlyException("The Id does not exist");
         }
-        //todo chech run
+        //todo check run
         await _workflowRepository.RemoveAsync(entity);
     }
 }

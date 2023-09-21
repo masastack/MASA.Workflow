@@ -12,7 +12,7 @@ public class CommandHandler
     [EventHandler]
     public async Task SaveHandleAsync(SaveWorkflowCommand command)
     {
-        await _domainService.SaveAsync();
+        command.Id = await _domainService.SaveAsync(command.Request);
     }
 
     [EventHandler]

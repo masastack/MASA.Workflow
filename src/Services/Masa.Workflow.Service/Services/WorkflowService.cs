@@ -25,9 +25,11 @@ public class WorkflowService : WorkflowAgent.WorkflowAgentBase
         return query.Result;
     }
 
-    public override Task<WorkflowReply> GetList(WorkflowListRequest request, ServerCallContext context)
+    public override async Task<WorkflowReply> GetList(WorkflowListRequest request, ServerCallContext context)
     {
-        return base.GetList(request, context);
+        var query = new WorkflowListQuery(request);
+        await _eventBus.PublishAsync(query);
+        return query.Result;
     }
 
     public override async Task<Empty> Delete(WorkflowId request, ServerCallContext context)
@@ -38,9 +40,11 @@ public class WorkflowService : WorkflowAgent.WorkflowAgentBase
         return new Empty();
     }
 
-    public override Task<WorkflowId> Save(WorkflowRequest request, ServerCallContext context)
+    public override async Task<WorkflowId> Save(WorkflowRequest request, ServerCallContext context)
     {
-        return base.Save(request, context);
+        var command = new SaveWorkflowCommand(request);
+        await _eventBus.PublishAsync(command);
+        return new WorkflowId { Id = command.Id.ToString() };
     }
 
     private Guid CheckId(string id)

@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace Masa.Workflow.Service.Application.WorkFlow;
+﻿namespace Masa.Workflow.Service.Application.WorkFlow;
 
 public class QueryHandler
 {
@@ -14,7 +12,28 @@ public class QueryHandler
     [EventHandler]
     public async Task WorkFlowListHandleAsync(WorkflowListQuery query)
     {
-        //todo work
+        Expression<Func<Flow, bool>> condition = flow => true;
+        condition = condition.And(!string.IsNullOrEmpty(query.Request.Name), flow => flow.Name.Contains(query.Request.Name));
+
+        var data = await _workflowRepository.GetPaginatedListAsync(condition, new PaginatedOptions { Page = query.Request.Page, PageSize = query.Request.PageSize });
+
+        var result = new WorkflowReply
+        {
+            Total = data.Total,
+            TotalPage = data.TotalPages
+        };
+
+        foreach (var item in data.Result)
+        {
+            result.Workflows.Add(new WorkflowItem
+            {
+                Name = item.Name,
+                Id = item.Id.ToString()
+                //todo
+            });
+        }
+
+        query.Result = result;
     }
 
     [EventHandler]

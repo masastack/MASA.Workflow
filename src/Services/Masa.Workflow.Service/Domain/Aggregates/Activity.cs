@@ -2,7 +2,9 @@
 
 public class Activity : Entity<Guid>
 {
-    public Guid VersionId { get; init; }
+    public Guid FlowId { get; init; }
+
+    public Flow Flow { get; private set; } = default!;
 
     public string Type { get; init; } = string.Empty;
 
@@ -23,9 +25,8 @@ public class Activity : Entity<Guid>
     /// </summary>
     public Wires Wires { get; private set; } = new();
 
-    public Activity(Guid versionId, string name, string type, string description = "")
+    public Activity(string name, string type, string description = "")
     {
-        VersionId = versionId;
         Name = name;
         Description = description;
         Type = type;
