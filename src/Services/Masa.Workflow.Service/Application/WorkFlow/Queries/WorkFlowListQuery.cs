@@ -1,6 +1,6 @@
 ﻿namespace Masa.Workflow.Service.Application.WorkFlow.Queries;
 
-public record WorkFlowListQuery : DomainQuery<List<WorkflowItem>>
+public record WorkflowListQuery(WorkflowListRequest Request) : DomainQuery<WorkflowReply>
 {
-    public override List<WorkflowItem> Result { get; set; } = new();
+    public override WorkflowReply Result { get; set; } = new();
 }

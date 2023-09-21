@@ -1,6 +1,4 @@
-﻿using Masa.Workflow.Service.Application.WorkFlow.Commands;
-
-namespace Masa.Workflow.Service.Application.WorkFlow;
+﻿namespace Masa.Workflow.Service.Application.WorkFlow;
 
 public class CommandHandler
 {
@@ -11,10 +9,15 @@ public class CommandHandler
         _domainService = domainService;
     }
 
-    [EventHandler(Order = 1)]
-    public async Task CreateHandleAsync(CreateWorkflowCommand command)
+    [EventHandler]
+    public async Task SaveHandleAsync(SaveWorkflowCommand command)
     {
-        //todo your work
-        await Task.CompletedTask;
+        command.Id = await _domainService.SaveAsync(command.Request);
+    }
+
+    [EventHandler]
+    public async Task DeleteHandleAsync(DeleteWorkflowCommand command)
+    {
+        await _domainService.DeleteAsync(command.WorkflowId);
     }
 }

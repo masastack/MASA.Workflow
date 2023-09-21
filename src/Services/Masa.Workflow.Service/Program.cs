@@ -57,10 +57,9 @@ builder.Services
         options.IncludeXmlComments(filePath);
         options.IncludeGrpcXmlComments(filePath, includeControllerXmlComments: true);
     })
-    .AddFluentValidation(options =>
-    {
-        options.RegisterValidatorsFromAssemblyContaining<Program>();
-    })
+    .AddFluentValidationAutoValidation()
+    .AddFluentValidationClientsideAdapters()
+    .AddValidatorsFromAssemblyContaining<Program>()
     .AddDomainEventBus(dispatcherOptions =>
     {
         dispatcherOptions

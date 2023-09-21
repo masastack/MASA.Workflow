@@ -1,6 +1,5 @@
 ﻿namespace Masa.Workflow.Service.Application.WorkFlow.Commands;
 
-public record CreateWorkflowCommand : DomainCommand
+public record DeleteWorkflowCommand(Guid WorkflowId) : Command
 {
-
 }
