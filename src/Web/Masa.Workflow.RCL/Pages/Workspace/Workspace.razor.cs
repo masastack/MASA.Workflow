@@ -1,9 +1,11 @@
 ﻿using BlazorComponent.I18n;
+using Masa.Workflow.ActivityCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Options;
 
 namespace Masa.Workflow.RCL.Pages.Workspace;
 
-public partial class Workspace
+public partial class Workspace : IAsyncDisposable
 {
     [Inject] private I18n I18n { get; set; } = null!;
 
@@ -13,6 +15,8 @@ public partial class Workspace
 
     [Inject] private DrawflowService DrawflowService { get; set; } = null!;
 
+    [Inject] private NavigationManager NavigationManager { get; set; } = null!;
+
     [Inject] private IOptions<WorkflowActivitiesRegistered> RegisteredActivities { get; set; } = null!;
 
     [Parameter] public Guid WorkflowId { get; set; }
@@ -20,6 +24,7 @@ public partial class Workspace
     private MDrawflow _drawflow = null!;
 
     private object? _workflowInstance;
+    private Guid _testMqttInGuid = Guid.NewGuid(); // TODO: just for test mqtt in demo, remove it later
 
     private List<StringNumber>? _selectedGroups;
     private StringNumber? _node;
@@ -31,6 +36,7 @@ public partial class Workspace
     private bool _helpDrawer;
     private string? _helpMarkdown;
     private List<string> _treeActives = new();
+    private Dictionary<Guid, string> _activityNodeIdMap = new();
 
     private List<TreeNode> _tree = new()
     {
@@ -58,6 +64,34 @@ public partial class Workspace
     }
 
     internal string WorkflowName => ""; // TODO: workflow name
+
+    private HubConnection _hubConnection;
+
+    private async Task TestHub()
+    {
+        await _hubConnection.SendAsync("UpdateMqttInState", _testMqttInGuid, "connected");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/workflow-client-hub")).Build();
+        _hubConnection.On<Guid, string>("WatchMqttInState", async (id, state) =>
+        {
+            if (_activityNodeIdMap.TryGetValue(id, out string nodeId))
+            {
+                var drawflowData = await _drawflow.ExportAsync();
+                var activityMeta = DrawflowJsonHelper.GetNodeData<ActivityMeta>(drawflowData, nodeId);
+                activityMeta.State = state;
+                await _drawflow.UpdateNodeDataAsync(nodeId, new { data = JsonSerializer.Serialize(activityMeta) });
+            }
+            else
+            {
+                // LOG
+            }
+        });
+
+        await _hubConnection.StartAsync();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -97,10 +131,18 @@ public partial class Workspace
 
         var node = _nodes.FirstOrDefault(u => u.Type == nodeType);
 
+        var activityId = Guid.NewGuid();
+
+        // TODO: just for test mqtt in demo, remove it later
+        if (node.Type == "mqtt-in")
+        {
+            activityId = _testMqttInGuid;
+        }
+
         // TODO: get init meta of node
         var minInput = 1;
         var minOutput = 1;
-        var metaNode = new Node2(Guid.NewGuid(), node.Type, node.Color, node.Icon, node.IconRight, false, minInput, minOutput, "");
+        var metaNode = new Node2(activityId, node.Type, node.Color, node.Icon, node.IconRight, false, node.States, minInput, minOutput, "");
 
         var id = await _drawflow.AddNodeAsync(
             nodeType,
@@ -117,9 +159,11 @@ public partial class Workspace
         await _drawflow.UpdateNodeHTMLAsync(id, $"<{tagName} node-id='{id}' df-data></{tagName}>");
         await JSRuntime.InvokeVoidAsync(JSInteropConstants.SetNodeIdToCustomElement, id);
 
-        var treeNode = new TreeNode(id.ToString(), node.Type, node.Icon, node.Color);
+        var treeNode = new TreeNode(id, node.Type, node.Icon, node.Color);
         treeNode.Extra["nodeType"] = node.Type;
         _tree[0].Children.Add(treeNode);
+
+        _activityNodeIdMap[activityId] = id;
     }
 
     private void NodeCreated(string nodeId)
@@ -236,6 +280,7 @@ public partial class Workspace
             var treeNode = new TreeNode(id, nodeData.Name, nodeData.Icon, nodeData.Color);
             treeNode.Extra["nodeType"] = name;
             _tree[0].Children!.Add(treeNode);
+            _activityNodeIdMap[nodeData.Id] = id;
         }
 
         StateHasChanged();
@@ -256,5 +301,20 @@ public partial class Workspace
         }
     }
 
-    public record Node2(Guid Id, string Name, string Color, string? Icon, bool IconRight, bool HideLabel, int MinInput, int MinOutput, string Meta);
+    public record Node2(
+        Guid Id,
+        string Name,
+        string Color,
+        string? Icon,
+        bool IconRight,
+        bool HideLabel,
+        IReadOnlyList<NodeStateInfo>? States,
+        int MinInput,
+        int MinOutput,
+        string Meta);
+
+    public async ValueTask DisposeAsync()
+    {
+        await _hubConnection.DisposeAsync();
+    }
 }

@@ -24,6 +24,12 @@ public class ActivityMeta
 
     public bool ShowLabel { get; set; } = true;
 
+    public IReadOnlyList<NodeStateInfo>? States { get; set; }
+
+    public string? State { get; set; }
+
+    public string? CustomStateLabel { get; set; }
+
     public int MinInput { get; set; }
 
     public int MinOutput { get; set; }

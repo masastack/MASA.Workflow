@@ -1,4 +1,5 @@
-﻿@typeparam TMeta
+﻿@namespace Masa.Workflow.ActivityCore.Components
+@typeparam TMeta
 @typeparam T
 @attribute [JSCustomElement]
 
@@ -8,6 +9,9 @@
       HideLabel="@(!_cachedModel.ShowLabel)"
       Icon="@_cachedModel.Icon"
       IconRight="@_cachedModel.IconRight"
+      States="@_cachedModel.States"
+      State="@_cachedModel.State"
+      CustomStateLabel="@_cachedModel.CustomStateLabel"
       @ondblclick="@OnDblClick"
       @ref="_node">
 </Node>

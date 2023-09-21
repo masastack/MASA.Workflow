@@ -1,0 +1,20 @@
+{
+  "type": "mqtt-in",
+  "name": "MQTT in",
+  "color": "#d8bfd8",
+  "icon": "mdi-access-point",
+  "iconRight": false,
+  "tag": "net",
+  "states": [
+    {
+      "state": "connected",
+      "icon": "mdi-octagon",
+      "color": "green"
+    },
+    {
+      "state": "disconnected",
+      "icon": "mdi-alert-octagon-outline",
+      "color": "red"
+    }
+  ]
+}

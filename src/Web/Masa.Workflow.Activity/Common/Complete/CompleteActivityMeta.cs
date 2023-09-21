@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Activity.Activities.Complete;
+﻿namespace Masa.Workflow.Activity.Common.Complete;
 
 public class CompleteActivityMeta : ActivityMeta<CompleteMeta>
 {
