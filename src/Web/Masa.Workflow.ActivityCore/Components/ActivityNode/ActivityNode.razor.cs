@@ -1,6 +1,6 @@
 ﻿using Force.DeepCloner;
 
-namespace Masa.Workflow.ActivityCore;
+namespace Masa.Workflow.ActivityCore.Components;
 
 public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
     where TMeta : class, new()
@@ -10,7 +10,7 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
 
     [Inject] protected DrawflowService DrawflowService { get; set; } = null!;
 
-    [Parameter] public int NodeId { get; set; }
+    [Parameter] [EditorRequired] public string NodeId { get; set; } = null!;
 
     /// <summary>
     /// Value from drawflow df-*
@@ -24,17 +24,33 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
     private T _cachedModel = new();
 
     private Node? _node;
+    private string _prevValue = null!;
 
     protected T FormModel { get; set; } = new();
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        DeserializeValue();
+    }
 
-        _cachedModel = JsonSerializer.Deserialize<T>(Value)!;
-        if (!string.IsNullOrWhiteSpace(_cachedModel.Meta))
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        DeserializeValue();
+    }
+
+    private void DeserializeValue()
+    {
+        if (_prevValue != Value)
         {
-            _cachedModel.MetaData = JsonSerializer.Deserialize<TMeta>(_cachedModel.Meta);
+            _prevValue = Value;
+
+            _cachedModel = JsonSerializer.Deserialize<T>(Value)!;
+            if (!string.IsNullOrWhiteSpace(_cachedModel.Meta))
+            {
+                _cachedModel.MetaData = JsonSerializer.Deserialize<TMeta>(_cachedModel.Meta);
+            }
         }
     }
 

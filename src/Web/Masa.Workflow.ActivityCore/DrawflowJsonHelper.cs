@@ -24,4 +24,19 @@ public static class DrawflowJsonHelper
 
         return list;
     }
+
+    public static T GetNodeData<T>(string json, string nodeId)
+    {
+        using var document = JsonDocument.Parse(json);
+        var root = document.RootElement;
+        var rawText = root.GetProperty("drawflow").GetProperty("Home").GetProperty("data").GetProperty(nodeId).GetProperty("data")
+                          .GetProperty("data");
+        var st  = rawText.GetString();
+        Console.Out.WriteLine("rawText = {0}", st);
+        return JsonSerializer.Deserialize<T>(st, new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = false
+        })!;
+    }
+
 }

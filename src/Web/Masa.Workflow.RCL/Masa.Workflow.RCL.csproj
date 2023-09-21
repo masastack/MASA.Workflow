@@ -16,6 +16,7 @@
         <PackageReference Include="Grpc.Net.ClientFactory" Version="2.56.0" />
         <PackageReference Include="Masa.Stack.Components" Version="0.0.426" />
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.9" />
     </ItemGroup>
 
     <ItemGroup>

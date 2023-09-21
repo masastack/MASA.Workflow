@@ -61,8 +61,20 @@
   min-height: 56px;
 }
 
+.mw-flow__nodes .m-expansion-panel-content {
+  display: block;
+}
+
 .mw-flow__nodes .m-expansion-panel-content__wrap {
   padding: 0;
+}
+
+.mw-flow__nodes .mw-activity-node--draggable {
+  margin-bottom: 8px;
+}
+
+.mw-flow__nodes .mw-activity-node--draggable:last-child {
+  margin-bottom: 0;
 }
 
 .mw-flow__sidebar {

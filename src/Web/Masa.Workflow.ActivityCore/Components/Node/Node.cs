@@ -1,4 +1,6 @@
-namespace Masa.Workflow.ActivityCore;
+using System.Collections.ObjectModel;
+
+namespace Masa.Workflow.ActivityCore.Components;
 
 public class Node : ComponentBase
 {
@@ -26,6 +28,12 @@ public class Node : ComponentBase
     [Parameter] public string? Icon { get; set; }
 
     [Parameter] public bool IconRight { get; set; }
+
+    [Parameter] public IReadOnlyList<NodeStateInfo>? States { get; set; }
+
+    [Parameter] public string? State { get; set; }
+
+    [Parameter] public string? CustomStateLabel { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
     public IDictionary<string, object?> AdditionalAttributes { get; set; }
@@ -90,7 +98,6 @@ public class Node : ComponentBase
             builder.AddContent(4, childContent);
         }
 
-
         if (_draggable)
         {
             builder.CloseComponent();
@@ -99,6 +106,14 @@ public class Node : ComponentBase
         {
             builder.AddElementReferenceCapture(6, e => ElementReference = e);
             builder.CloseElement();
+
+            if (States is not null)
+            {
+                builder.OpenComponent<NodeState>(7);
+                builder.AddAttribute(8, nameof(NodeState.States), States);
+                builder.AddAttribute(9, nameof(NodeState.State), State);
+                builder.CloseComponent();
+            }
         }
     }
 }

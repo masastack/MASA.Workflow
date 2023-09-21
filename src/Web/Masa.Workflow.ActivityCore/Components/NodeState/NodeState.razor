@@ -1,0 +1,29 @@
+﻿@namespace Masa.Workflow.ActivityCore.Components
+
+<div class="mw-activity-node-state">
+    @if (CurrentState != null)
+    {
+        <MIcon Class="mr-1"
+               Color="@CurrentState.Color"
+               Icon="@CurrentState.Icon"
+               Small>
+        </MIcon>
+    }
+
+    <span class="grey--text">@(CustomStateLabel ?? State)</span>
+</div>
+
+@code {
+
+    [Parameter]
+    public IReadOnlyList<NodeStateInfo> States { get; set; } = null!;
+
+    [Parameter]
+    public string? State { get; set; }
+
+    [Parameter]
+    public string? CustomStateLabel { get; set; }
+
+    private NodeStateInfo? CurrentState => States.FirstOrDefault(x => x.State == State);
+
+}

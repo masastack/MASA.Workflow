@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.ActivityCore;
+﻿namespace Masa.Workflow.ActivityCore.Components;
 
 public class DragNode : Node
 {
