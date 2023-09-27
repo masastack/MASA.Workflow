@@ -6,7 +6,6 @@ package masa.workflow;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-import "model.proto";
 
 // https://github.com/grpc/grpc-dotnet/tree/master/examples#uploader
 

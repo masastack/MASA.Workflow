@@ -1,4 +1,6 @@
-﻿namespace Masa.Workflow.Activities.Switch;
+﻿using Masa.Workflow.Core.Models;
+
+namespace Masa.Workflow.Activities.Switch;
 
 public class SwitchActivity : MasaWorkflowActivity<SwitchMeta>
 {
@@ -10,7 +12,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchMeta>
         _rulesEngineClient = rulesEngineClient;
     }
 
-    public override async Task<List<List<Guid>>> RunAsync(SwitchMeta meta)
+    public override async Task<ActivityExecutionResult> RunAsync(SwitchMeta meta)
     {
         var _rules = new List<object>();
         int i = 0;
@@ -57,19 +59,29 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchMeta>
         var otherwise = ruleResults.FirstOrDefault(r => r.IsValid && r.RuleName == Operator.Otherwise.ToString());
         var passResults = ruleResults.Where(r => r.IsValid && r.RuleName != Operator.Otherwise.ToString()).Select(r => r.ActionResult.Output as List<Guid>).ToList();
 
+        var result = new ActivityExecutionResult()
+        {
+            ActivityId = meta.ActivityId.ToString(),
+            Status = ActivityStatus.Finished
+        };
+
         if (passResults.Count > 0)
         {
             if (meta.SwitchMode == SwitchMode.FirstMatch)
             {
-                return new List<List<Guid>> { passResults.First()! };
+                result.Wires.Add(passResults.First()!);
             }
-            return passResults;
+            else
+            {
+                result.Wires.AddRange(passResults);
+            }
+            return result;
         }
         if (otherwise != null)
         {
-            return new List<List<Guid>> { otherwise.ActionResult.Output as List<Guid> };
+            result.Wires.Add(otherwise.ActionResult.Output as List<Guid>);
         }
-        return new();
+        return result;
 
         string GetExpressionString(string property, Rule rule)
         {

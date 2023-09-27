@@ -1,4 +1,6 @@
-﻿namespace Masa.Workflow.Activities.Console;
+﻿using Masa.Workflow.Core.Models;
+
+namespace Masa.Workflow.Activities.Console;
 
 internal class ConsoleActivity : MasaWorkflowActivity<ConsoleMeta>
 {
@@ -9,7 +11,7 @@ internal class ConsoleActivity : MasaWorkflowActivity<ConsoleMeta>
         _output = System.Console.Out;
     }
 
-    public override Task<List<List<Guid>>> RunAsync(ConsoleMeta meta)
+    public override Task<ActivityExecutionResult> RunAsync(ConsoleMeta meta)
     {
         _output.WriteLine(meta.Text);
         System.Console.WriteLine("------------ConsoleActivity Run");

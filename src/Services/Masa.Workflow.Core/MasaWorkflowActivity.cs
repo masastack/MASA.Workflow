@@ -1,6 +1,6 @@
 ﻿namespace Masa.Workflow.Core;
 
-public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, List<List<Guid>>> where TMeta : MetaBase
+public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, ActivityExecutionResult> where TMeta : MetaBase
 {
     protected readonly Msg _msg;
 
@@ -9,9 +9,9 @@ public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, List
         _msg = msg;
     }
 
-    public sealed override async Task<List<List<Guid>>> RunAsync(WorkflowActivityContext context, TMeta meta)
+    public sealed override async Task<ActivityExecutionResult> RunAsync(WorkflowActivityContext context, TMeta meta)
     {
-        List<List<Guid>> result = new();
+        ActivityExecutionResult result = new();
         await ActivityExecuting(meta.ActivityId);
         try
         {
@@ -25,18 +25,24 @@ public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, List
         return result;
     }
 
-    public virtual Task<List<List<Guid>>> RunAsync(TMeta meta)
+    public virtual Task<ActivityExecutionResult> RunAsync(TMeta meta)
     {
-        return Task.FromResult(meta.Wires);
+        var result = new ActivityExecutionResult();
+        result.Status = ActivityStatus.Finished;
+        result.Wires = (Wires)meta.Wires;
+        result.ActivityId = meta.ActivityId.ToString();
+        return Task.FromResult(result);
     }
 
     public virtual async Task ActivityExecuting(Guid activityId)
     {
         //await _workflowHub.BroadcastStepAsync(new ExecuteStep(activityId, ExecuteStatus.Start));
+        await Task.CompletedTask;
     }
 
     public virtual async Task ActivityExecuted(Guid activityId)
     {
         //await _workflowHub.BroadcastStepAsync(new ExecuteStep(activityId, ExecuteStatus.End));
+        await Task.CompletedTask;
     }
 }
