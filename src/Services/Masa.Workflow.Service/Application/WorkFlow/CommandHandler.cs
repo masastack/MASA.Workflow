@@ -20,4 +20,14 @@ public class CommandHandler
     {
         await _domainService.DeleteAsync(command.WorkflowId);
     }
+
+    [EventHandler]
+    public async Task UpdateStatusHandleAsync(UpdateWorkflowStatusCommand command)
+    {
+        if (!Guid.TryParse(command.Request.Id, out Guid workflowId))
+        {
+            throw new UserFriendlyException("Invalid ID");
+        }
+        await _domainService.UpdateStatusAsync(workflowId, command.Request.Status);
+    }
 }

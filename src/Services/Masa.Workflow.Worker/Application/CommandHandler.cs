@@ -18,14 +18,15 @@ public class CommandHandler
     [EventHandler]
     public async Task RunHandleAsync(RunWorkflowCommand command)
     {
-        var workflowDetail = await _workflowAgentClient.GetDetailAsync(new WorkflowId { Id = command.WorkflowId });
-        if (workflowDetail == null)
+        var workflowDefinition = await _workflowAgentClient.GetDefinitionAsync(new WorkflowId { Id = command.WorkflowId });
+        if (workflowDefinition == null)
         {
             throw new UserFriendlyException($"The workflow with id {command.WorkflowId} does not exist");
         }
-        await Console.Out.WriteLineAsync(JsonSerializer.Serialize(workflowDetail));
-        //todo workflowDetail convert to WorkflowInstance
-        var workflowInstance = new WorkflowInstance();
+        await Console.Out.WriteLineAsync(JsonSerializer.Serialize(workflowDefinition));
+
+        var workflowInstance = workflowDefinition.Adapt<WorkflowInstance>();
+
         await _daprClient.StartWorkflowAsync(DaprWorkflowComponent, nameof(MasaWorkFlow), command.WorkflowId, workflowInstance);
     }
 

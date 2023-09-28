@@ -1,4 +1,7 @@
-﻿namespace Masa.Workflow.Service.Application.WorkFlow;
+﻿using System.Linq.Expressions;
+using System.Text.Json;
+
+namespace Masa.Workflow.Service.Application.WorkFlow;
 
 public class QueryHandler
 {
@@ -69,7 +72,8 @@ public class QueryHandler
             {
                 Address = "Address",
                 Method = "POST",
-            })
+            }),
+            RetryPolicy = new RetryPolicy(),
         });
     }
 }

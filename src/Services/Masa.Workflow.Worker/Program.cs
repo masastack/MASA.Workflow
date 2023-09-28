@@ -1,3 +1,5 @@
+using Masa.Workflow.Worker;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // dapr run --app-id masa-workflow --app-port 7129 --dapr-http-port 3501 dotnet run
@@ -36,6 +38,8 @@ builder.Services.AddGrpcClient<WorkflowAgent.WorkflowAgentClient>(o =>
 {
     o.Address = new Uri("https://localhost:6536");
 });
+
+MapsterConfig.Map();
 
 var app = builder.Build();
 

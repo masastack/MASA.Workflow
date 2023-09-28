@@ -47,6 +47,13 @@ public class WorkflowService : WorkflowAgent.WorkflowAgentBase
         return new WorkflowId { Id = command.Id.ToString() };
     }
 
+    public override async Task<Empty> Status(WorkflowStatusRequest request, ServerCallContext context)
+    {
+        var command = new UpdateWorkflowStatusCommand(request);
+        await _eventBus.PublishAsync(command);
+        return new Empty();
+    }
+
     private Guid CheckId(string id)
     {
         if (!Guid.TryParse(id, out Guid workflowId))

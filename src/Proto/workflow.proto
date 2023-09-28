@@ -5,9 +5,9 @@ option csharp_namespace = "Masa.Workflow";
 package masa.workflow; 
 
 import "google/protobuf/timestamp.proto"; 
-import "google/protobuf/any.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
+import "google/protobuf/duration.proto";
 import "model.proto";
 
 service WorkflowAgent
@@ -42,6 +42,12 @@ service WorkflowAgent
 			delete: "/v1/workflow/{id}"
 		};
 	}
+
+	rpc Status(WorkflowStatusRequest) returns (google.protobuf.Empty){
+		option (google.api.http) = {
+			get: "/v1/workflow/status/{id}"
+		};
+	}
 } 
 
 message WorkflowListRequest { 
@@ -49,6 +55,11 @@ message WorkflowListRequest {
 	int32 page_size = 2; 
 	string name = 3;
 } 
+
+message WorkflowStatusRequest{
+	string id=1;
+	WorkflowStatus status = 2;
+}
 
 message WorkflowRequest { 
 	string id = 1;
@@ -104,6 +115,7 @@ message Node{
 	string description = 2;
 	bool disabled = 3;
 	WireList wires = 10;
+	RetryPolicy retry_policy = 15;
 	string meta = 20;
 
 	message WireList{
@@ -114,3 +126,10 @@ message Node{
 	}
 }
 
+message RetryPolicy{
+	int32 max_nmber_of_attempts = 1;
+	google.protobuf.Duration first_retry_interval = 2;
+	int32 backoff_coefficient = 3;
+	google.protobuf.Duration retry_timeout = 4;
+	google.protobuf.Duration max_retry_interval = 5;
+}

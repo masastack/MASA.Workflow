@@ -1,6 +1,7 @@
 ﻿global using Dapr.Client;
 global using Google.Protobuf.WellKnownTypes;
 global using Grpc.Core;
+global using Mapster;
 global using Masa.BuildingBlocks.Dispatcher.Events;
 global using Masa.BuildingBlocks.ReadWriteSplitting.Cqrs.Commands;
 global using Masa.Contrib.Dispatcher.Events;
