@@ -28,6 +28,8 @@ public class WorkflowDomainService : DomainService
     public async Task UpdateStatusAsync(Guid workflowId, WorkflowStatus status)
     {
         var entity = await GetByIdAsync(workflowId);
+        entity.SetStatus(status);
+        await _workflowRepository.UpdateAsync(entity);
     }
 
     private async Task<Flow> GetByIdAsync(Guid workflowId)
