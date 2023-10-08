@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Masa.Workflow.Activities\Masa.Workflow.Activities.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Masa.Workflow.Activities\Masa.Workflow.Activities.csproj" />
   </ItemGroup>
 
   <ItemGroup>
