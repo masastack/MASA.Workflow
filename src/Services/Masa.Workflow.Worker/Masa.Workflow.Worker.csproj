@@ -10,7 +10,6 @@
   <ItemGroup>
 	<PackageReference Include="Dapr.Workflow" Version="1.11.0" />
 	<PackageReference Include="Grpc.AspNetCore" Version="2.56.0" />
-	<PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
 	<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.10" />
 	<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.10" />
@@ -20,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Masa.Workflow.Activities\Masa.Workflow.Activities.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Masa.Workflow.Activities\Masa.Workflow.Activities.csproj" />
   </ItemGroup>
 
   <ItemGroup>

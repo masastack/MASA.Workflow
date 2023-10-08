@@ -111,9 +111,11 @@ message WorkflowDefinition{
 }
 
 message Node{
-	string name = 1;
-	string description = 2;
-	bool disabled = 3;
+	string id= 1;
+	string name = 2;
+	string type = 3;
+	string description = 4;
+	bool disabled = 5;
 	WireList wires = 10;
 	RetryPolicy retry_policy = 15;
 	string meta = 20;

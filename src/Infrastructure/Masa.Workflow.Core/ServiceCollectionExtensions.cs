@@ -23,6 +23,11 @@ public static class ServiceCollectionExtensions
                 genericMethod.Invoke(options, null);
             }
         });
+
+        TypeAdapterConfig<RetryPolicy, WorkflowRetryPolicy>.NewConfig()
+                                                  .MapWith(src => new WorkflowRetryPolicy(src.MaxNumberOfAttempts, src.FirstRetryInterval,
+                                                  src.BackoffCoefficient, src.MaxRetryInterval, src.RetryTimeout));
+
         return services;
     }
 }

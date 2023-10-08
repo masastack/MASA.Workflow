@@ -66,12 +66,13 @@ public class QueryHandler
         query.Result.EnvironmentVariables.Add("1", "test");
         query.Result.Nodes.Add(new Node
         {
+            Id = Guid.NewGuid().ToString(),
             Name = "Test Node",
+            Type = "Console",
             Disabled = false,
             Meta = JsonSerializer.Serialize(new
             {
-                Address = "Address",
-                Method = "POST",
+                Text = "Server return data"
             }),
             RetryPolicy = new RetryPolicy(),
         });

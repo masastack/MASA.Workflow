@@ -9,13 +9,18 @@ public class FlowTask : FullEntity<Guid, Guid>
     /// <summary>
     /// Task run use total time (second)
     /// </summary>
-    public long RunTime { get; private set; }
+    public long RunTime { get; private set; } = 0;
 
     public string WorkerHost { get; private set; } = string.Empty;
 
     public string Message { get; private set; } = string.Empty;
 
     public WorkflowStatus Status { get; private set; }
+
+    private FlowTask()
+    {
+
+    }
 
     public FlowTask(WorkflowStatus workflowStatus, string workHost)
     {
