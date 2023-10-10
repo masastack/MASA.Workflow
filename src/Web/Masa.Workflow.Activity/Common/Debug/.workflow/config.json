@@ -3,6 +3,6 @@
   "name": "Debug",
   "color": "#c0edc0",
   "icon": "mdi-format-align-justify",
-  "iconRight": true,
+  "iconRight": false,
   "tag": "common"
 }
