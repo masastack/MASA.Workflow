@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -24,11 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Functions\" />
+	  <Folder Include="Common\" />
+	  <Folder Include="Functions\" />
   </ItemGroup>
 
   <ItemGroup>
+    <AdditionalFiles Include="Common\Debug\Debug.razor" />
     <AdditionalFiles Include="Common\Complete\Complete.razor" />
     <AdditionalFiles Include="Functions\Switch\Switch.razor" />
   </ItemGroup>

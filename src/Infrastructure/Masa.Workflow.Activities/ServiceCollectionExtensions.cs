@@ -7,6 +7,7 @@ public static class ServiceCollectionExtensions
         ActivityProvider.Set("Console", "ConsoleActivity");
         ActivityProvider.Set("Switch", "ConsoleActivity");
         ActivityProvider.Set("Complete", "ConsoleActivity");
+        ActivityProvider.Set("Debug", "ConsoleActivity");
         services.AddMasaWorkflowCore(Assembly.GetExecutingAssembly());
         services.AddRulesEngine(rulesEngineOptions =>
         {
