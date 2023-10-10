@@ -6,25 +6,48 @@
 
     protected override void DrawerContent(RenderTreeBuilder __builder)
     {
-        <MListItemGroup Multiple Color="primary"
-                        Values="ComputedValues"
-                        ValuesChanged="@ValuesChanged">
-            @foreach (var flowNode in _flowNodes)
-            {
-                <MListItem Value="@flowNode.Data.Id.ToString()">
-                    <ItemContent>
-                        <MSimpleCheckbox Value="@context.Active" Color="primary"></MSimpleCheckbox>
-                        <MListItemTitle Class="d-flex align-center justify-space-between">
-                            @flowNode.Data.Name
-                            <MChip Color="@flowNode.Data.Color" Small Label>
-                                @flowNode.Type
-                            </MChip>
-                        </MListItemTitle>
-                    </ItemContent>
-                </MListItem>
-            }
-        </MListItemGroup>
+        <MRow>
+            <MCol Cols="3">
+                输出
+            </MCol>
+            <MCol Cols="9">
+                <MTextField @bind-Value="DebugOutput" Solo>
+                </MTextField>
+            </MCol>
+        </MRow>
+        <MRow>
+            <MCol Cols="3">
+                目标
+            </MCol>
+            <MCol Cols="9">
+                <MCheckbox @bind-Value="DebugToSidebar"
+                           Label="调试窗口"
+                           HideDetails="true"
+                           Color="primary"></MCheckbox>
+                <MCheckbox @bind-Value="DebugToConsole"
+                           Label="控制台"
+                           HideDetails="true"
+                           Color="primary"></MCheckbox>
+            </MCol>
+        </MRow>
+        <MRow>
+            <MCol Cols="3">
+                名称
+            </MCol>
+            <MCol Cols="9">
+                <MTextField @bind-Value="NodeName"
+                                    Solo>
+                </MTextField>
+            </MCol>
+        </MRow>
     }
+
+    // [CascadingParameter] public Masa.Workflow.RCL.Pages.Workspace.MainLayout MainLayout { get; set; }
+
+    private string? DebugOutput { get; set; }
+    private string? NodeName { get; set; }
+    private bool DebugToSidebar { get; set; }
+    private bool DebugToConsole { get; set; }
 
     private List<FlowNode> _flowNodes = new();
 
