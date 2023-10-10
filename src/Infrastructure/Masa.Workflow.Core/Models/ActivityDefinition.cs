@@ -11,4 +11,6 @@ public class ActivityDefinition
     public MetaBase Meta { get; set; }
 
     public RetryPolicy RetryPolicy { get; set; }
+
+    public bool Disabled { get; set; }
 }

@@ -12,3 +12,4 @@ global using Masa.Workflow.Core.Models;
 global using Masa.Workflow.Worker.Application.Commands;
 global using Masa.Workflow.Worker.Services;
 global using System.Reflection;
+global using System.Text.Json;
