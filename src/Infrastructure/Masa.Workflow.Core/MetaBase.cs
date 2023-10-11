@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Activities.Contracts;
+﻿namespace Masa.Workflow.Core;
 
 public abstract class MetaBase
 {

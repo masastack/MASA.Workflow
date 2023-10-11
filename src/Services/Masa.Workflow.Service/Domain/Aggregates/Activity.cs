@@ -16,20 +16,25 @@ public class Activity : Entity<Guid>
 
     public RetryPolicyValue RetryPolicy { get; private set; } = new();
 
-    public FlowVersion Version { get; private set; } = default!;
-
-    public MetaData Meta { get; private set; } = new();
+    public MetaData Meta { get; private set; }
 
     /// <summary>
     /// next node id collection
     /// </summary>
-    public Wires Wires { get; private set; } = new();
+    public Wires Wires { get; private set; }
 
-    public Activity(string name, string type, string description = "")
+    public Activity(Guid id, string name, string type, string? description) : this(id, name, type, description, null, null)
     {
+    }
+
+    public Activity(Guid id, string name, string type, string? description, Wires? wires, MetaData? meta)
+    {
+        Id = id;
         Name = name;
-        Description = description;
+        Description = description ?? "";
         Type = type;
+        Wires = wires ?? new();
+        Meta = meta ?? new();
     }
 }
 

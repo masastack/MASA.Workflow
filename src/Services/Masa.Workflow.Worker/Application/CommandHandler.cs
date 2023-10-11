@@ -1,6 +1,4 @@
-﻿using Masa.Workflow.Activities.Contracts;
-
-namespace Masa.Workflow.Worker.Application;
+﻿namespace Masa.Workflow.Worker.Application;
 
 public class CommandHandler
 {
