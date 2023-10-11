@@ -58,6 +58,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Core", "src\I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Activities", "src\Infrastructure\Masa.Workflow.Activities\Masa.Workflow.Activities.csproj", "{FDD4B06A-8877-4E20-8BD3-A16141E049EB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Blazor.Docs.ApiGenerator", "..\MASA.Blazor\src\Masa.Blazor.Docs.ApiGenerator\Masa.Blazor.Docs.ApiGenerator.csproj", "{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Blazor.Docs.ApiGenerator.Shared", "..\MASA.Blazor\src\Masa.Blazor.Docs.ApiGenerator.Shared\Masa.Blazor.Docs.ApiGenerator.Shared.csproj", "{07E8C628-129D-4E90-8CBF-32E0C0763BA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Blazor.Docs.ComponentApiGenerator", "..\MASA.Blazor\src\Masa.Blazor.Docs.ComponentApiGenerator\Masa.Blazor.Docs.ComponentApiGenerator.csproj", "{59620881-C919-4933-B85D-0063EAE48E07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -186,6 +192,30 @@ Global
 		{FDD4B06A-8877-4E20-8BD3-A16141E049EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FDD4B06A-8877-4E20-8BD3-A16141E049EB}.Release|x86.ActiveCfg = Release|Any CPU
 		{FDD4B06A-8877-4E20-8BD3-A16141E049EB}.Release|x86.Build.0 = Release|Any CPU
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}.Debug|x86.Build.0 = Debug|Any CPU
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}.Release|x86.ActiveCfg = Release|Any CPU
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15}.Release|x86.Build.0 = Release|Any CPU
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9}.Debug|x86.Build.0 = Debug|Any CPU
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9}.Release|x86.ActiveCfg = Release|Any CPU
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9}.Release|x86.Build.0 = Release|Any CPU
+		{59620881-C919-4933-B85D-0063EAE48E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59620881-C919-4933-B85D-0063EAE48E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59620881-C919-4933-B85D-0063EAE48E07}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{59620881-C919-4933-B85D-0063EAE48E07}.Debug|x86.Build.0 = Debug|Any CPU
+		{59620881-C919-4933-B85D-0063EAE48E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59620881-C919-4933-B85D-0063EAE48E07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59620881-C919-4933-B85D-0063EAE48E07}.Release|x86.ActiveCfg = Release|Any CPU
+		{59620881-C919-4933-B85D-0063EAE48E07}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -212,6 +242,9 @@ Global
 		{25F30ACE-85B7-41AF-888C-E1C0A8FF3014} = {92F40AFA-8416-40BE-9893-D35E1924C69D}
 		{4C0E5A64-F3F1-4FEE-B45B-B1D2FAA1A2CA} = {25F30ACE-85B7-41AF-888C-E1C0A8FF3014}
 		{FDD4B06A-8877-4E20-8BD3-A16141E049EB} = {25F30ACE-85B7-41AF-888C-E1C0A8FF3014}
+		{BFFBEA4F-4CAF-4BA8-9CD9-1383D9F2FC15} = {F3986DD3-0372-4929-B72A-09D93196541E}
+		{07E8C628-129D-4E90-8CBF-32E0C0763BA9} = {F3986DD3-0372-4929-B72A-09D93196541E}
+		{59620881-C919-4933-B85D-0063EAE48E07} = {F3986DD3-0372-4929-B72A-09D93196541E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B83BA2BA-19E5-41FB-A92A-16A03DA229E4}

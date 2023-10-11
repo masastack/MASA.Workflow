@@ -10,7 +10,7 @@ public class FlowVersion : FullEntity<Guid, Guid>
 
     public string Json { get; init; }
 
-    private FlowVersion(string json)
+    public FlowVersion(string json)
     {
         VersionNumber = DateTime.Now.ToString("yyyyMMddHHmmss");
         Json = json;

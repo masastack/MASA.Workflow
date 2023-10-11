@@ -42,4 +42,13 @@ public class Flow : FullAggregateRoot<Guid, Guid>
         }
         flowTask.UpdateStatus(status);
     }
+
+    public void AddVersion(string json)
+    {
+        _versions.Add(new FlowVersion(json));
+    }
+
+    public void SetActivities(IEnumerable<Activity> activities)
+    {
+    }
 }

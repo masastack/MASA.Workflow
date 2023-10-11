@@ -12,8 +12,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.Net.Client.Web" Version="2.56.0" />
-        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.56.0" />
+        <PackageReference Include="Google.Api.Gax.Grpc" Version="4.4.0" />
+        <PackageReference Include="Grpc.Net.Client.Web" Version="2.57.0" />
+        <PackageReference Include="Grpc.Net.ClientFactory" Version="2.57.0" />
+        <PackageReference Include="Grpc.Tools" Version="2.58.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
         <PackageReference Include="Masa.Stack.Components" Version="0.0.426" />
         <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.9" />
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.9" />
@@ -25,4 +30,10 @@
         <ProjectReference Include="..\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj" />
     </ItemGroup>
 
+	<ItemGroup>
+		<Protobuf Include="..\..\Proto\worker.proto" GrpcServices="Client" />
+		<Protobuf Include="..\..\Proto\workflow.proto" GrpcServices="Client" />
+		<Protobuf Include="..\..\Proto\model.proto" GrpcServices="Client" />
+	</ItemGroup>
+	
 </Project>

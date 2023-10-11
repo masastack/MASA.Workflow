@@ -1,5 +1,5 @@
-﻿using System.Text;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 
 namespace Masa.Workflow.RCL;
 
@@ -20,6 +20,11 @@ public static class ServiceCollectionExtensions
     {
         var activities = FindActivitiesInAssembly(assembly);
         services.AddOptions<WorkflowActivitiesRegistered>().Configure(options => { options.AddRange(activities); });
+
+        services.AddGrpcClient<WorkflowAgent.WorkflowAgentClient>(o =>
+        {
+            o.Address = new Uri("https://localhost:6536");
+        });
     }
 
     private static WorkflowActivitiesRegistered FindActivitiesInAssembly(Assembly assembly)

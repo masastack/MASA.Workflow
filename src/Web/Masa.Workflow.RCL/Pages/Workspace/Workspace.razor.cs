@@ -19,6 +19,8 @@ public partial class Workspace : IAsyncDisposable
 
     [Inject] private IOptions<WorkflowActivitiesRegistered> RegisteredActivities { get; set; } = null!;
 
+    [Inject] private WorkflowAgent.WorkflowAgentClient WorkflowAgentClient { get; set; } = null!;
+
     [Parameter] public Guid WorkflowId { get; set; }
 
     private MDrawflow _drawflow = null!;
@@ -63,7 +65,8 @@ public partial class Workspace : IAsyncDisposable
         }
     }
 
-    internal string WorkflowName => ""; // TODO: workflow name
+    internal string WorkflowName => "Workflow"; // TODO: workflow name 
+    internal string WorkflowDescription => ""; // TODO: workflow description 
 
     private HubConnection _hubConnection;
 
@@ -231,14 +234,17 @@ public partial class Workspace : IAsyncDisposable
         _helpDrawer = true;
     }
 
-    private async Task Save()
+    private async Task Save(bool publish)
     {
-        // TODO: save data to http
-    }
-
-    private async Task Publish()
-    {
-        // TODO: publish data to http
+        await WorkflowAgentClient.SaveAsync(new WorkflowRequest
+        {
+            Id = "",//tod0 id
+            Name = WorkflowName,
+            Description = WorkflowDescription,
+            Disabled = false,
+            IsDraft = !publish,
+            NodeJson = await _drawflow.ExportAsync(indented: true)
+        });
     }
 
     private void OpenImportWorkflowDialog()

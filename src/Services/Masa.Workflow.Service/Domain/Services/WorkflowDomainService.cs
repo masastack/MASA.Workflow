@@ -1,4 +1,6 @@
-﻿namespace Masa.Workflow.Service.Domain.Services;
+﻿using System.Text.Json;
+
+namespace Masa.Workflow.Service.Domain.Services;
 
 public class WorkflowDomainService : DomainService
 {
@@ -14,8 +16,75 @@ public class WorkflowDomainService : DomainService
 
     public async Task<Guid> SaveAsync(WorkflowRequest workflowRequest)
     {
-        //todd workflowRequest.NodeJson convert Activity
-        return Guid.Empty;
+        Flow? flow;
+        if (workflowRequest.Id.IsNullOrEmpty())
+        {
+            flow = new Flow(workflowRequest.Name, workflowRequest.Description);
+        }
+        else
+        {
+            flow = await _workflowRepository.FindAsync(Guid.Parse(workflowRequest.Id));
+            if (flow == null)
+            {
+                throw new UserFriendlyException("workflow id not find");
+            }
+        }
+        flow?.AddVersion(workflowRequest.NodeJson);
+        flow?.SetActivities(ResolveJson(workflowRequest.NodeJson));
+
+        if (flow.Id == Guid.Empty)
+        {
+            await _workflowRepository.AddAsync(flow);
+        }
+        else
+        {
+            await _workflowRepository.UpdateAsync(flow);
+        }
+
+        return flow.Id;
+
+        List<Activity> ResolveJson(string nodeJson)
+        {
+            var result = new List<Activity>();
+
+            using var document = JsonDocument.Parse(nodeJson);
+            var root = document.RootElement;
+            var nodes = root.GetProperty("drawflow").GetProperty("Home").GetProperty("data");
+
+            foreach (var nodeObject in nodes.EnumerateObject())
+            {
+                var node = nodeObject.Value;
+                var type = node.GetProperty("name").GetString();
+
+                var data = JsonDocument.Parse(node.GetProperty("data").GetProperty("data").GetString()).RootElement;
+
+                data.GetProperty("Id").TryGetGuid(out var id);
+
+                var name = data.GetProperty("Name").GetString();
+                var description = data.TryGetProperty("Description", out var descProperty) ? descProperty.GetString() : null;
+
+                var outputs = node.GetProperty("outputs").EnumerateObject();
+                Wires wires = new Wires();
+                foreach (var output in outputs)
+                {
+                    var item = new List<Guid>();
+                    var connections = output.Value.GetProperty("connections").EnumerateArray();
+                    foreach (var connection in connections)
+                    {
+                        var nodeId = connection.GetProperty("node").GetString();
+
+                        var nodeIdData = JsonDocument.Parse(nodes.GetProperty(nodeId).GetProperty("data").GetProperty("data").GetString()).RootElement;
+                        var wireId = Guid.Parse(nodeIdData.GetProperty("Id").GetString());
+                        item.Add(wireId);
+                    }
+                    wires.Add(item);
+                }
+
+                var metaData = JsonSerializer.Deserialize<MetaData>(data.GetProperty("Meta").GetString());
+                result.Add(new Activity(id, name, type, description, wires, metaData));
+            }
+            return result;
+        }
     }
 
     public async Task DeleteAsync(Guid workflowId)
