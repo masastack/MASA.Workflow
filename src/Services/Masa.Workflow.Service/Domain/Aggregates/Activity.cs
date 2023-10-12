@@ -39,25 +39,18 @@ public class Activity : Entity<Guid>
 
     public void Update(string name, string? description, Wires? wires, MetaData? meta)
     {
-        if (!name.IsNullOrEmpty())
+        if (!name.IsNullOrEmpty() && Name != name)
         {
             Name = name;
         }
 
-        if (!description.IsNullOrEmpty())
+        if (!description.IsNullOrEmpty() && Description != description)
         {
             Description = description;
         }
 
-        if (wires != null)
-        {
-            Wires = wires;
-        }
-
-        if (meta != null)
-        {
-            Meta = meta;
-        }
+        Wires = wires ?? Wires;
+        Meta = meta ?? Meta;
     }
 }
 
