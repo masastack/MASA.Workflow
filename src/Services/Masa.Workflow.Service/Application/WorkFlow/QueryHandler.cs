@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using System.Text.Json;
 
 namespace Masa.Workflow.Service.Application.WorkFlow;
 
@@ -42,17 +41,18 @@ public class QueryHandler
     [EventHandler]
     public async Task WorkFlowDetailHandleAsync(WorkflowDetailQuery query)
     {
+        var workflow = await _workflowRepository.GetAsync(query.Id, nameof(Flow.Versions));
         query.Result = new WorkflowDetail
         {
-            Id = query.Id.ToString(),
-            Name = "Test Flow",
-            Description = "Hard Code",
+            Id = workflow.Id.ToString(),
+            Name = workflow.Name,
+            Description = workflow.Description,
             Status = WorkflowStatus.Idle,
+            NodeJson = workflow.LastVersion?.Json ?? "",
             CreateUser = "admin",
-
             CreateDateTimeStamp = DateTime.UtcNow.ToTimestamp()
         };
-        query.Result.EnvironmentVariables.Add("1", "test");
+        query.Result.EnvironmentVariables.Add(workflow.EnvironmentVariables);
     }
 
     [EventHandler]

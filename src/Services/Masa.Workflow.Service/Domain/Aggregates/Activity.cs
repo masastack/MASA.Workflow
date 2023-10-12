@@ -36,6 +36,29 @@ public class Activity : Entity<Guid>
         Wires = wires ?? new();
         Meta = meta ?? new();
     }
+
+    public void Update(string name, string? description, Wires? wires, MetaData? meta)
+    {
+        if (!name.IsNullOrEmpty())
+        {
+            Name = name;
+        }
+
+        if (!description.IsNullOrEmpty())
+        {
+            Description = description;
+        }
+
+        if (wires != null)
+        {
+            Wires = wires;
+        }
+
+        if (meta != null)
+        {
+            Meta = meta;
+        }
+    }
 }
 
 public class MetaData : Dictionary<string, object>
