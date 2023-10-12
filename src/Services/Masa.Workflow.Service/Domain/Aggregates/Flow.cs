@@ -20,7 +20,7 @@ public class Flow : FullAggregateRoot<Guid, Guid>
 
     public IReadOnlyCollection<FlowTask> FlowTasks => _flowTasks;
 
-    public Dictionary<string, object> EnvironmentVariables { get; private set; } = new();
+    public Dictionary<string, string> EnvironmentVariables { get; private set; } = new();
 
     public Flow(string name, string description)
     {
@@ -48,7 +48,24 @@ public class Flow : FullAggregateRoot<Guid, Guid>
         _versions.Add(new FlowVersion(json));
     }
 
+    public FlowVersion? LastVersion => _versions.LastOrDefault();
+
     public void SetActivities(IEnumerable<Activity> activities)
     {
+        var activitiesIds = activities.Select(x => x.Id).ToList();
+        _activities.RemoveAll(x => !activitiesIds.Contains(x.Id));
+
+        foreach (var activity in activities)
+        {
+            var oldActivity = _activities.FirstOrDefault(x => x.Id == activity.Id);
+            if (oldActivity == null)
+            {
+                _activities.Add(activity);
+            }
+            else
+            {
+                oldActivity.Update(activity.Name, activity.Description, activity.Wires, activity.Meta);
+            }
+        }
     }
 }

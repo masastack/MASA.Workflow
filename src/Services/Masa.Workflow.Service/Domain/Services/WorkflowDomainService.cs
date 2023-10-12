@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-
-namespace Masa.Workflow.Service.Domain.Services;
+﻿namespace Masa.Workflow.Service.Domain.Services;
 
 public class WorkflowDomainService : DomainService
 {
@@ -16,21 +14,18 @@ public class WorkflowDomainService : DomainService
 
     public async Task<Guid> SaveAsync(WorkflowRequest workflowRequest)
     {
-        Flow? flow;
+        Flow flow;
         if (workflowRequest.Id.IsNullOrEmpty())
         {
             flow = new Flow(workflowRequest.Name, workflowRequest.Description);
         }
         else
         {
-            flow = await _workflowRepository.FindAsync(Guid.Parse(workflowRequest.Id));
-            if (flow == null)
-            {
-                throw new UserFriendlyException("workflow id not find");
-            }
+            flow = await _workflowRepository.FindAsync(Guid.Parse(workflowRequest.Id))
+                ?? throw new UserFriendlyException("workflow id not find");
         }
-        flow?.AddVersion(workflowRequest.NodeJson);
-        flow?.SetActivities(ResolveJson(workflowRequest.NodeJson));
+        flow.AddVersion(workflowRequest.NodeJson);
+        flow.SetActivities(ResolveJson(workflowRequest.NodeJson));
 
         if (flow.Id == Guid.Empty)
         {

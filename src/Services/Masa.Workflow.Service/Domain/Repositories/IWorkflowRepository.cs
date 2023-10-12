@@ -3,4 +3,5 @@
 
 public interface IWorkflowRepository : IRepository<Flow, Guid>
 {
+    Task<Flow> GetAsync(Guid id, params string[] includeProperties);
 }
