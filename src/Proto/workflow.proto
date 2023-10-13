@@ -116,22 +116,19 @@ message Node{
 	string type = 3;
 	string description = 4;
 	bool disabled = 5;
-	WireList wires = 10;
+	repeated Wire wires = 10;
 	RetryPolicy retry_policy = 15;
 	string meta = 20;
 
-	message WireList{
-		message Wire {
-			repeated string guids = 1;
-		}
-		repeated Wire guid_lists = 1;
+	message Wire {
+		repeated string guids = 1;
 	}
 }
 
 message RetryPolicy{
 	int32 max_nmber_of_attempts = 1;
 	google.protobuf.Duration first_retry_interval = 2;
-	int32 backoff_coefficient = 3;
+	double backoff_coefficient = 3;
 	google.protobuf.Duration retry_timeout = 4;
 	google.protobuf.Duration max_retry_interval = 5;
 }

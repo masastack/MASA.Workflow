@@ -8,16 +8,10 @@ public class ActivityEntityTypeConfiguration : IEntityTypeConfiguration<Activity
         builder.Property(a => a.Name).HasMaxLength(50).IsRequired();
         builder.Property(a => a.Type).HasMaxLength(20).IsRequired();
         builder.Property(a => a.Description).HasMaxLength(4000);
-        builder.OwnsOne(
-            a => a.Wires, ownedNavigationBuilder =>
-            {
-                ownedNavigationBuilder.ToJson();
-            });
-        builder.OwnsOne(
-            a => a.Meta, ownedNavigationBuilder =>
-            {
-                ownedNavigationBuilder.ToJson();
-            });
+
+        builder.Property(a => a.Wires).HasJsonConversion();
+        builder.Property(a => a.Meta).HasJsonConversion();
+
         builder.OwnsOne(
             a => a.RetryPolicy, ownedNavigationBuilder =>
             {

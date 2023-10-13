@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-
-namespace Masa.Workflow.Service.Application.WorkFlow;
+﻿namespace Masa.Workflow.Service.Application.WorkFlow;
 
 public class QueryHandler
 {
@@ -58,23 +56,40 @@ public class QueryHandler
     [EventHandler]
     public async Task WorkFlowDefinitionHandleAsync(WorkflowDefinitionQuery query)
     {
+        var workflow = await _workflowRepository.GetAsync(query.Id, nameof(Flow.Activities));
+
         query.Result = new WorkflowDefinition
         {
-            Id = query.Id.ToString(),
-            Name = "Test Flow",
+            Id = workflow.Id.ToString(),
+            Name = workflow.Name
         };
-        query.Result.EnvironmentVariables.Add("1", "test");
-        query.Result.Nodes.Add(new Node
+        query.Result.EnvironmentVariables.Add(workflow.EnvironmentVariables);
+        foreach (var activity in workflow.Activities)
         {
-            Id = Guid.NewGuid().ToString(),
-            Name = "Test Node",
-            Type = "Console",
-            Disabled = false,
-            Meta = JsonSerializer.Serialize(new
+            var node = new Node
             {
-                Text = "Server return data"
-            }),
-            RetryPolicy = new RetryPolicy(),
-        });
+                Id = activity.Id.ToString(),
+                Name = activity.Name,
+                Type = activity.Type,
+                Disabled = activity.Disabled,
+                Meta = JsonSerializer.Serialize(activity.Meta),
+                RetryPolicy = new RetryPolicy
+                {
+                    MaxNmberOfAttempts = activity.RetryPolicy.MaxNumberOfAttempts,
+                    FirstRetryInterval = Duration.FromTimeSpan(activity.RetryPolicy.FirstRetryInterval),
+                    MaxRetryInterval = Duration.FromTimeSpan(activity.RetryPolicy.MaxRetryInterval),
+                    BackoffCoefficient = activity.RetryPolicy.BackoffCoefficient,
+                    RetryTimeout = Duration.FromTimeSpan(activity.RetryPolicy.RetryTimeout)
+                }
+            };
+            node.Wires.AddRange(activity.Wires.Select(wire =>
+            {
+                var wires = new Node.Types.Wire();
+                wires.Guids.AddRange(wire.ConvertAll(w => w.ToString()));
+                return wires;
+            }));
+
+            query.Result.Nodes.Add(node);
+        }
     }
 }
