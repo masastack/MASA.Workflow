@@ -33,9 +33,9 @@ public class RetryPolicyValue : ValueObject
     /// timeout expires.
     /// </summary>
     /// <value>
-    /// Defaults to <see cref="Timeout.InfiniteTimeSpan"/>.
+    /// Defaults to 12 hour,Dapr Default value is <see cref="Timeout.InfiniteTimeSpan"/>.
     /// </value>
-    public TimeSpan RetryTimeout { get; private set; } = Timeout.InfiniteTimeSpan;
+    public TimeSpan RetryTimeout { get; private set; } = TimeSpan.FromHours(12);
 
     protected override IEnumerable<object> GetEqualityValues()
     {

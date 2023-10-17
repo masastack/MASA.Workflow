@@ -25,6 +25,14 @@ public static class ServiceCollectionExtensions
         {
             o.Address = new Uri("https://localhost:6536");
         });
+        services.AddGrpcClient<WorkflowRunner.WorkflowRunnerClient>(o =>
+        {
+            o.Address = new Uri("https://localhost:7129");
+        });
+        services.AddGrpcClient<WorkflowStarter.WorkflowStarterClient>(o =>
+        {
+            o.Address = new Uri("https://localhost:7129");
+        });
     }
 
     private static WorkflowActivitiesRegistered FindActivitiesInAssembly(Assembly assembly)

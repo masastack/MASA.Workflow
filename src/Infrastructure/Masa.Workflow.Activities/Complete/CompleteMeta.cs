@@ -1,6 +1,7 @@
-﻿namespace Masa.Workflow.Activities.Complete;
+﻿
+namespace Masa.Workflow.Activities.Complete;
 
-public class CompleteMeta : MetaBase
+public class CompleteMeta : ActivotyMeta
 {
     public Guid[]? DependentIds { get; set; }
 }

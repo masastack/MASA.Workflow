@@ -21,6 +21,8 @@ public partial class Workspace : IAsyncDisposable
 
     [Inject] private WorkflowAgent.WorkflowAgentClient WorkflowAgentClient { get; set; } = null!;
 
+    [Inject] private WorkflowRunner.WorkflowRunnerClient WorkflowRunnerClient { get; set; } = null!;
+
     [Parameter] public Guid WorkflowId { get; set; }
 
     private MDrawflow _drawflow = null!;
@@ -244,6 +246,14 @@ public partial class Workspace : IAsyncDisposable
             Disabled = false,
             IsDraft = !publish,
             NodeJson = await _drawflow.ExportAsync(indented: true)
+        });
+    }
+
+    private async Task Run()
+    {
+        await WorkflowRunnerClient.RunAsync(new WorkflowId
+        {
+            Id = "51A4F68A-1CDE-4324-6F34-08DBCBB9851E"
         });
     }
 

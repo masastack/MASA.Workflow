@@ -9,20 +9,15 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
         //Cron 
         //立即执行
         //触发执行
-        Console.WriteLine("------------MasaWorkFlow Run");
-
         return await CallActivity(workflowInstance.StartActivity.ActivityId);
 
         async Task<RunWorkflowResult> CallActivity(Guid activityId)
         {
             var activity = workflowInstance.Activities.FirstOrDefault(a => a.Id == activityId)
                 ?? throw new Exception($"Not found activity ID={activityId}");
-            ActivityProvider.TryGet(activity.Type, out string? activityName);
-            if (string.IsNullOrEmpty(activityName))
-            {
-                throw new Exception($"ActivityProvider not contain a key {activity.Type}");
-            }
-            Console.WriteLine($"------------MasaWorkFlow Start Activity  {activity.Type}  [{activityName}]");
+
+            Console.WriteLine($"------------MasaWorkFlow start {activity.Type} activity");
+            var activityName = $"{activity.Type}Activity";
             var activityResult = await context.CallActivityAsync<ActivityExecutionResult>(activityName, activity.Meta, new WorkflowTaskOptions()
             {
                 RetryPolicy = activity.RetryPolicy.Adapt<WorkflowRetryPolicy>()
