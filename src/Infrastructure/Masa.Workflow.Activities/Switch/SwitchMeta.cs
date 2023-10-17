@@ -1,12 +1,10 @@
 ﻿namespace Masa.Workflow.Activities.Switch;
 
-public class SwitchMeta : MetaBase
+public class SwitchMeta : ActivotyMeta
 {
     public string Property { get; set; } = "Payload";
 
     public List<Rule> Rules { get; set; } = new();
-
-    public List<List<Guid>> Wires { get; set; } = new();
 
     public SwitchMode SwitchMode { get; set; } = SwitchMode.All;
 }

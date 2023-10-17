@@ -22,9 +22,6 @@ public class CommandHandler
             throw new UserFriendlyException($"The workflow with id {command.WorkflowId} does not exist");
         }
 
-        await Console.Out.WriteLineAsync("--------------workflowDefinition");
-        await Console.Out.WriteLineAsync(JsonSerializer.Serialize(workflowDefinition));
-
         //todo change mapster
         var workflowInstance = Convert(workflowDefinition);
         await Console.Out.WriteLineAsync("--------------workflowInstance");
@@ -51,7 +48,7 @@ public class CommandHandler
                 Disabled = node.Disabled,
                 Type = node.Type,
                 //RetryPolicy = node.RetryPolicy.Adapt<Core.Models.RetryPolicy>(),
-                Meta = JsonSerializer.Deserialize<MetaBase>(node.Meta)
+                Meta = node.Meta
             });
         }
 

@@ -8,12 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<PackageReference Include="Dapr.Workflow" Version="1.11.0" />
-	<PackageReference Include="Grpc.AspNetCore" Version="2.56.0" />
+	<PackageReference Include="Dapr.Workflow" Version="1.12.0" />
+	<PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
 	<PackageReference Include="Mapster" Version="7.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.10" />
-	<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.10" />
-	<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.10" />
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.12" />
+	<PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="7.0.12" />
+	<PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.3.12" />
 	<PackageReference Include="Masa.Contrib.ReadWriteSplitting.Cqrs" Version="$(MASAFrameworkVersion)" />
 	<PackageReference Include="Masa.Contrib.Dispatcher.Events" Version="$(MASAFrameworkVersion)" />
 	<PackageReference Include="Masa.Contrib.Development.DaprStarter.AspNetCore" Version="$(MASAFrameworkVersion)" />

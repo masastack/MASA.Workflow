@@ -1,6 +1,7 @@
-﻿namespace Masa.Workflow.Activities.Console;
+﻿
+namespace Masa.Workflow.Activities.Console;
 
-public class ConsoleMeta : MetaBase
+public class ConsoleMeta : ActivotyMeta
 {
     public string Text { get; set; }
 }

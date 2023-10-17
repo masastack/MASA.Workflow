@@ -1,6 +1,6 @@
 ﻿namespace Masa.Workflow.Core;
 
-public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, ActivityExecutionResult> where TMeta : MetaBase
+public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, ActivityExecutionResult> where TMeta : ActivotyMeta
 {
     protected readonly Msg _msg;
 

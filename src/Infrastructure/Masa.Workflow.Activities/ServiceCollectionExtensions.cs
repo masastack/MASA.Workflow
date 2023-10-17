@@ -4,10 +4,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaWorkflow(this IServiceCollection services)
     {
-        ActivityProvider.Set("Console", "ConsoleActivity");
-        ActivityProvider.Set("Switch", "ConsoleActivity");
-        ActivityProvider.Set("Complete", "ConsoleActivity");
-        ActivityProvider.Set("Debug", "ConsoleActivity");
         services.AddMasaWorkflowCore(Assembly.GetExecutingAssembly());
         services.AddRulesEngine(rulesEngineOptions =>
         {

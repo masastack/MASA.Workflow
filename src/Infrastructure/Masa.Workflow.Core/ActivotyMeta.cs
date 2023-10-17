@@ -1,8 +1,8 @@
 ﻿namespace Masa.Workflow.Core;
 
-public abstract class MetaBase
+public abstract class ActivotyMeta
 {
-    public Guid ActivityId { get; } = Guid.NewGuid();
+    public Guid ActivityId { get; } = Guid.Empty;
 
     public List<List<Guid>> Wires { get; } = new();
 }
