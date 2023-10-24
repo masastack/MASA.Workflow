@@ -17,7 +17,9 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
                 ?? throw new Exception($"Not found activity ID={activityId}");
 
             Console.WriteLine($"------------MasaWorkFlow start {activity.Type} activity");
-            var activityName = $"{activity.Type}Activity";
+            var activityName = $"{ConvertTypeName(activity.Type)}Activity";
+            Console.WriteLine($"CallActivityAsync {activityName}");
+            Console.WriteLine($"Activity meta is {JsonSerializer.Serialize(activity.Meta)}");
             var activityResult = await context.CallActivityAsync<ActivityExecutionResult>(activityName, activity.Meta, new WorkflowTaskOptions()
             {
                 RetryPolicy = activity.RetryPolicy.Adapt<WorkflowRetryPolicy>()
@@ -27,25 +29,39 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
             {
                 await context.CreateTimer(TimeSpan.FromSeconds(1));
                 context.ContinueAsNew(activity.Meta);
-            }
+            } 
             if (activityResult.Status == ActivityStatus.Faulted)
             {
                 return new RunWorkflowResult(context.InstanceId, new Exception($"Activity {activityName}[id:{activityResult.ActivityId}] call error"), WorkflowStatus.Faulted);
             }
 
-            if (activityResult.Wires.Any())
+            foreach (var wires in activityResult.Wires)
             {
-                foreach (var wires in activityResult.Wires)
+                foreach (var wire in wires)
                 {
-                    foreach (var wire in wires)
-                    {
-                        await CallActivity(wire);
-                    }
+                    await CallActivity(wire);
                 }
             }
-
             return new RunWorkflowResult(context.InstanceId, null, WorkflowStatus.Finished);
         }
+    }
+
+    string ConvertTypeName(string type)
+    {
+        StringBuilder resultBuilder = new StringBuilder();
+        // 分割字符串
+        string[] words = type.Split('-', '_');
+        foreach (string word in words)
+        {
+            // 忽略空单词
+            if (string.IsNullOrEmpty(word))
+                continue;
+
+            // 转换为 Pascal 命名法
+            string pascalWord = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(word.ToLower());
+            resultBuilder.Append(pascalWord);
+        }
+        return resultBuilder.ToString();
     }
 
     Task IEventHandler<CompleteEvent>.HandleAsync(CompleteEvent @event, CancellationToken cancellationToken)

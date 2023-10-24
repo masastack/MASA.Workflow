@@ -8,7 +8,7 @@ public class ActivityDefinition
 
     public string Name { get; set; }
 
-    public string Meta { get; set; }
+    public object Meta { get; set; }
 
     public RetryPolicy RetryPolicy { get; set; }
 

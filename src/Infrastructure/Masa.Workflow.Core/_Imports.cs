@@ -1,7 +1,6 @@
 ﻿global using Dapr.Workflow;
 global using Mapster;
 global using Masa.BuildingBlocks.Dispatcher.Events;
-global using Masa.Workflow.Activities.Contracts;
 global using Masa.Workflow.Core.Models;
 global using Microsoft.AspNetCore.SignalR;
 global using Microsoft.Extensions.DependencyInjection;
@@ -10,5 +9,8 @@ global using System.Collections.Concurrent;
 global using System.Diagnostics;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Dynamic;
+global using System.Globalization;
 global using System.Reflection;
+global using System.Text;
+global using System.Text.Json;
 global using System.Text.Json.Serialization;
