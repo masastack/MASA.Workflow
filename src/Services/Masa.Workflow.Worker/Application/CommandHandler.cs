@@ -24,10 +24,11 @@ public class CommandHandler
 
         //todo change mapster
         var workflowInstance = Convert(workflowDefinition);
-        await Console.Out.WriteLineAsync("--------------workflowInstance");
+        await Console.Out.WriteLineAsync("--------------WorkflowInstance");
         await Console.Out.WriteLineAsync(JsonSerializer.Serialize(workflowInstance));
 
-        await _daprClient.StartWorkflowAsync(DaprWorkflowComponent, nameof(MasaWorkFlow), command.WorkflowId, workflowInstance);
+        var workflowResponse = await _daprClient.StartWorkflowAsync(DaprWorkflowComponent, nameof(MasaWorkFlow), command.WorkflowId, workflowInstance);
+
     }
 
     private WorkflowInstance Convert(WorkflowDefinition workflowDefinition)
@@ -41,14 +42,28 @@ public class CommandHandler
 
         foreach (var node in workflowDefinition.Nodes)
         {
+            var meta = JsonSerializer.Deserialize<JsonObject>(node.Meta);
+            //db save meta data not contains ActivityId and Wires
+            meta.Add("ActivityId", node.Id);
+            var wires = new JsonArray();
+            foreach (var wire in node.Wires)
+            {
+                var wireArray = new JsonArray();
+                foreach (var wireId in wire.Guids)
+                {
+                    wireArray.Add(wireId);
+                }
+                wires.Add(wireArray);
+            }
+            meta.Add("Wires", wires);
             workflowInstance.Activities.Add(new ActivityDefinition
             {
                 Id = Guid.Parse(node.Id),
                 Name = node.Name,
                 Disabled = node.Disabled,
                 Type = node.Type,
-                //RetryPolicy = node.RetryPolicy.Adapt<Core.Models.RetryPolicy>(),
-                Meta = node.Meta
+                RetryPolicy = node.RetryPolicy.Adapt<Core.Models.RetryPolicy>(),
+                Meta = meta
             });
         }
 

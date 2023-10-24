@@ -29,7 +29,7 @@ public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, Acti
     {
         var result = new ActivityExecutionResult();
         result.Status = ActivityStatus.Finished;
-        result.Wires = (Wires)meta.Wires;
+        result.Wires = meta.Wires;
         result.ActivityId = meta.ActivityId.ToString();
         return Task.FromResult(result);
     }

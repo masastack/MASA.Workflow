@@ -14,6 +14,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchMeta>
 
     public override async Task<ActivityExecutionResult> RunAsync(SwitchMeta meta)
     {
+        System.Console.WriteLine("SwitchActivity start run.");
         var _rules = new List<object>();
         int i = 0;
         foreach (var rule in meta.Rules)
@@ -55,16 +56,14 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchMeta>
             Rules = _rules
         });
         var ruleResults = await _rulesEngineClient.ExecuteAsync(ruleRaw, _msg);
-
         var otherwise = ruleResults.FirstOrDefault(r => r.IsValid && r.RuleName == Operator.Otherwise.ToString());
-        var passResults = ruleResults.Where(r => r.IsValid && r.RuleName != Operator.Otherwise.ToString()).Select(r => r.ActionResult.Output as List<Guid>).ToList();
-
+        var passResults = ruleResults.Where(r => r.IsValid && r.RuleName != Operator.Otherwise.ToString()).Select(r => r.ActionResult.Output as List<Guid>)
+            .Where(r => r != null).ToList();
         var result = new ActivityExecutionResult()
         {
             ActivityId = meta.ActivityId.ToString(),
             Status = ActivityStatus.Finished
         };
-
         if (passResults.Count > 0)
         {
             if (meta.SwitchMode == SwitchMode.FirstMatch)

@@ -6,7 +6,7 @@ public class ActivityExecutionResult
 
     public string ActivityId { get; set; }
 
-    public Wires Wires { get; set; } = new Wires();
+    public List<List<Guid>> Wires { get; set; } = new();
 }
 
 public enum ActivityStatus
