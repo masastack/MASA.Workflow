@@ -1,0 +1,26 @@
+﻿@inherits Masa.Workflow.ActivityCore.Components.ActivityNode<Masa.Workflow.Activities.Contracts.Function.FunctionMeta>
+
+@base.BuildRenderTree
+
+@code {
+
+    private object Options = new
+    {
+        language = "csharp",
+        automaticLayout = true
+    };
+
+    protected override void DrawerContent(RenderTreeBuilder __builder)
+    {
+        <MSheet Outlined
+                Style="padding: 1px"
+                Rounded="true"
+                Height="@("100%")">
+            <MMonacoEditor @bind-Value="@FormModel.MetaData.Code"
+                           Height="@("calc(100vh - 220px)")"
+                           EditorOptions="Options">
+            </MMonacoEditor>
+        </MSheet>
+    }
+
+}

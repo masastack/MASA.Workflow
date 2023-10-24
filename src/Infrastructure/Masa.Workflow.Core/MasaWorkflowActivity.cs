@@ -1,6 +1,7 @@
 ﻿namespace Masa.Workflow.Core;
 
-public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, ActivityExecutionResult> where TMeta : ActivotyMeta
+public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<TInput, ActivityExecutionResult> 
+    where TInput : ActivityInput
 {
     protected readonly Msg _msg;
 
@@ -9,7 +10,7 @@ public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, Acti
         _msg = msg;
     }
 
-    public sealed override async Task<ActivityExecutionResult> RunAsync(WorkflowActivityContext context, TMeta meta)
+    public sealed override async Task<ActivityExecutionResult> RunAsync(WorkflowActivityContext context, TInput meta)
     {
         ActivityExecutionResult result = new();
         await ActivityExecuting(meta.ActivityId);
@@ -25,7 +26,7 @@ public abstract class MasaWorkflowActivity<TMeta> : WorkflowActivity<TMeta, Acti
         return result;
     }
 
-    public virtual Task<ActivityExecutionResult> RunAsync(TMeta meta)
+    public virtual Task<ActivityExecutionResult> RunAsync(TInput meta)
     {
         var result = new ActivityExecutionResult();
         result.Status = ActivityStatus.Finished;

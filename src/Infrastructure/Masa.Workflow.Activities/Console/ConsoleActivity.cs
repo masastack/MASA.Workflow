@@ -2,7 +2,7 @@
 
 namespace Masa.Workflow.Activities.Console;
 
-internal class ConsoleActivity : MasaWorkflowActivity<ConsoleMeta>
+internal class ConsoleActivity : MasaWorkflowActivity<Console>
 {
     private readonly TextWriter _output;
 
@@ -11,7 +11,7 @@ internal class ConsoleActivity : MasaWorkflowActivity<ConsoleMeta>
         _output = System.Console.Out;
     }
 
-    public override Task<ActivityExecutionResult> RunAsync(ConsoleMeta meta)
+    public override Task<ActivityExecutionResult> RunAsync(Console meta)
     {
         _output.WriteLine(meta.Text);
         System.Console.WriteLine("------------ConsoleActivity Run");

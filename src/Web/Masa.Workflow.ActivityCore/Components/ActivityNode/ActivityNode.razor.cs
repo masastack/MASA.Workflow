@@ -2,9 +2,8 @@
 
 namespace Masa.Workflow.ActivityCore.Components;
 
-public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
+public partial class ActivityNode<TMeta> : ComponentBase, IActivityNode
     where TMeta : class, new()
-    where T : ActivityMeta<TMeta>, new()
 {
     [Inject] private IJSRuntime JSRuntime { get; set; } = null!;
 
@@ -21,12 +20,12 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
 
     private bool _drawer;
     private StringNumber? _tab;
-    private T _cachedModel = new();
+    private ActivityMeta<TMeta> _cachedModel = new();
 
     private Node? _node;
     private string _prevValue = null!;
 
-    protected T FormModel { get; set; } = new();
+    protected ActivityMeta<TMeta> FormModel { get; set; } = new();
 
     protected override void OnInitialized()
     {
@@ -46,7 +45,7 @@ public partial class ActivityNode<TMeta, T> : ComponentBase, IActivityNode
         {
             _prevValue = Value;
 
-            _cachedModel = JsonSerializer.Deserialize<T>(Value)!;
+            _cachedModel = JsonSerializer.Deserialize<ActivityMeta<TMeta>>(Value)!;
             if (!string.IsNullOrWhiteSpace(_cachedModel.Meta))
             {
                 _cachedModel.MetaData = JsonSerializer.Deserialize<TMeta>(_cachedModel.Meta);
