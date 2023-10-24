@@ -1,4 +1,5 @@
 ﻿namespace Masa.Workflow.Service.Domain.Services;
+using Activity = Masa.Workflow.Service.Domain.Aggregates.Activity;
 
 public class WorkflowDomainService : DomainService
 {
@@ -12,7 +13,7 @@ public class WorkflowDomainService : DomainService
         _workflowRepository = workflowRepository;
     }
 
-    public async Task<Guid> SaveAsync(WorkflowRequest workflowRequest)
+    public async Task<Guid> SaveAsync(WorkflowSaveRequest workflowRequest)
     {
         Flow flow;
         if (workflowRequest.Id.IsNullOrEmpty())

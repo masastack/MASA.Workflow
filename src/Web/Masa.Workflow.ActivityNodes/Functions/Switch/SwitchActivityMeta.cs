@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Activity.Functions.Switch;
+﻿namespace Masa.Workflow.ActivityNodes.Switch;
 
 public class SwitchActivityMeta : ActivityMeta<SwitchMeta>
 {

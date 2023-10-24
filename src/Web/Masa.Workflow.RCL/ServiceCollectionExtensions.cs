@@ -10,7 +10,10 @@ public static class ServiceCollectionExtensions
     public static void AddMasaWorkflowUI(this IServiceCollection services)
     {
         services.AddScoped<DrawflowService>();
-        services.AddMasaBlazor(options => { options.Defaults = GlobalConfig.ComponentDefaults; });
+        services.AddMasaBlazor(options =>
+        {
+            // options.Defaults = GlobalConfig.ComponentDefaults;
+        });
     }
 
     public static void AddMasaWorkflowActivities(this IServiceCollection services, Assembly assembly)

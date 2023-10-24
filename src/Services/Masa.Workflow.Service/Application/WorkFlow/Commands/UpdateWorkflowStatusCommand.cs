@@ -1,5 +1,5 @@
 ﻿namespace Masa.Workflow.Service.Application.WorkFlow.Commands;
 
-public record UpdateWorkflowStatusCommand(WorkflowStatusRequest Request) : Command
+public record UpdateWorkflowStatusCommand(WorkflowUpdateStatusRequest Request) : Command
 {
 }

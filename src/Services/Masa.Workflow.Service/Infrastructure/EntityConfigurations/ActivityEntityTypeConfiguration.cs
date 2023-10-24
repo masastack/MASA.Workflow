@@ -1,8 +1,8 @@
 ﻿namespace Masa.Workflow.Service.Infrastructure.EntityConfigurations;
 
-public class ActivityEntityTypeConfiguration : IEntityTypeConfiguration<Activity>
+public class ActivityEntityTypeConfiguration : IEntityTypeConfiguration<Masa.Workflow.Service.Domain.Aggregates.Activity>
 {
-    public void Configure(EntityTypeBuilder<Activity> builder)
+    public void Configure(EntityTypeBuilder<Masa.Workflow.Service.Domain.Aggregates.Activity> builder)
     {
         builder.HasKey(a => a.Id);
         builder.Property(a => a.Name).HasMaxLength(50).IsRequired();

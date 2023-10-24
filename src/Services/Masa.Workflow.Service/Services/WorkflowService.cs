@@ -25,7 +25,7 @@ public class WorkflowService : WorkflowAgent.WorkflowAgentBase
         return query.Result;
     }
 
-    public override async Task<WorkflowReply> GetList(WorkflowListRequest request, ServerCallContext context)
+    public override async Task<PagedWorkflowList> GetList(WorkflowListRequest request, ServerCallContext context)
     {
         var query = new WorkflowListQuery(request);
         await _eventBus.PublishAsync(query);
@@ -40,14 +40,14 @@ public class WorkflowService : WorkflowAgent.WorkflowAgentBase
         return new Empty();
     }
 
-    public override async Task<WorkflowId> Save(WorkflowRequest request, ServerCallContext context)
+    public override async Task<WorkflowId> Save(WorkflowSaveRequest request, ServerCallContext context)
     {
         var command = new SaveWorkflowCommand(request);
         await _eventBus.PublishAsync(command);
         return new WorkflowId { Id = command.Id.ToString() };
     }
 
-    public override async Task<Empty> Status(WorkflowStatusRequest request, ServerCallContext context)
+    public override async Task<Empty> UpdateStatus(WorkflowUpdateStatusRequest request, ServerCallContext context)
     {
         var command = new UpdateWorkflowStatusCommand(request);
         await _eventBus.PublishAsync(command);

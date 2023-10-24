@@ -1,8 +1,0 @@
-{
-  "type": "debug",
-  "name": "Debug",
-  "color": "#c0edc0",
-  "icon": "mdi-format-align-justify",
-  "iconRight": false,
-  "tag": "common"
-}

@@ -17,7 +17,7 @@ public class QueryHandler
 
         var data = await _workflowRepository.GetPaginatedListAsync(condition, new PaginatedOptions { Page = query.Request.Page, PageSize = query.Request.PageSize });
 
-        var result = new WorkflowReply
+        var result = new PagedWorkflowList()
         {
             Total = data.Total,
             TotalPage = data.TotalPages
@@ -25,7 +25,7 @@ public class QueryHandler
 
         foreach (var item in data.Result)
         {
-            result.Workflows.Add(new WorkflowItem
+            result.Items.Add(new WorkflowItem
             {
                 Name = item.Name,
                 Id = item.Id.ToString()
@@ -66,14 +66,14 @@ public class QueryHandler
         query.Result.EnvironmentVariables.Add(workflow.EnvironmentVariables);
         foreach (var activity in workflow.Activities)
         {
-            var node = new Node
+            var node = new Activity
             {
                 Id = activity.Id.ToString(),
                 Name = activity.Name,
                 Type = activity.Type,
                 Disabled = activity.Disabled,
                 Meta = JsonSerializer.Serialize(activity.Meta),
-                RetryPolicy = new RetryPolicy
+                RetryPolicy = new Activity.Types.RetryPolicy
                 {
                     MaxNmberOfAttempts = activity.RetryPolicy.MaxNumberOfAttempts,
                     FirstRetryInterval = Duration.FromTimeSpan(activity.RetryPolicy.FirstRetryInterval),
@@ -84,12 +84,12 @@ public class QueryHandler
             };
             node.Wires.AddRange(activity.Wires.Select(wire =>
             {
-                var wires = new Node.Types.Wire();
+                var wires = new Activity.Types.Wire();
                 wires.Guids.AddRange(wire.ConvertAll(w => w.ToString()));
                 return wires;
             }));
 
-            query.Result.Nodes.Add(node);
+            query.Result.Activities.Add(node);
         }
     }
 }
