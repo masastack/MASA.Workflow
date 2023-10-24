@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Activity.Functions.Switch;
+﻿namespace Masa.Workflow.Activities.Contracts.Switch;
 
 public class SwitchMeta
 {
@@ -8,6 +8,7 @@ public class SwitchMeta
 
     public SwitchMode SwitchMode { get; set; } = SwitchMode.All;
 }
+
 public class Rule
 {
     public Rule()
@@ -28,5 +29,5 @@ public class Rule
 
     public string? Value { get; set; }
 
-    public int HashCode => this.GetHashCode();
+    public int HashCode => GetHashCode();
 }

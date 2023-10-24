@@ -1,0 +1,8 @@
+{
+  "type": "function",
+  "name": "Function",
+  "color": "#EF9A9A",
+  "icon": "mdi-function",
+  "iconRight": false,
+  "tag": "func"
+}

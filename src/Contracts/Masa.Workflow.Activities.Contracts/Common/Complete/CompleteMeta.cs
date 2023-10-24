@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Activity.Common.Complete;
+﻿namespace Masa.Workflow.Activities.Contracts.Complete;
 
 public class CompleteMeta
 {

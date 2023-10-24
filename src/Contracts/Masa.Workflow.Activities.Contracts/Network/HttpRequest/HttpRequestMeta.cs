@@ -1,4 +1,4 @@
-﻿namespace Masa.Workflow.Activity.Network.HttpRequest;
+﻿namespace Masa.Workflow.Activities.Contracts.HttpRequest;
 
 public class HttpRequestMeta
 {

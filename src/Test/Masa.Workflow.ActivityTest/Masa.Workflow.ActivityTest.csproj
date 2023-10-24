@@ -23,4 +23,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\Masa.Workflow.Activities\Masa.Workflow.Activities.csproj" />
+  </ItemGroup>
+
 </Project>
