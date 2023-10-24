@@ -1,6 +1,3 @@
-using Masa.Workflow.Worker;
-using System.Text.Json.Serialization;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // dapr run --app-id masa-workflow --app-port 7129 --dapr-http-port 3501 dotnet run
@@ -15,7 +12,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.Configure<JsonSerializerOptions>(s => s.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddMasaWorkflow();
 builder.Services.AddEventBus();
 builder.Services.AddGrpc(options =>
