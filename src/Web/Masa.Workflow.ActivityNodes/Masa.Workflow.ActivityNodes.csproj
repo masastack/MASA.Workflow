@@ -4,7 +4,6 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>Masa.Workflow.Activity</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,17 +22,5 @@
   <ItemGroup>
     <EmbeddedResource Include="*\*\.workflow\**" />
   </ItemGroup>
-
-  <ItemGroup>
-	  <Folder Include="Common\" />
-	  <Folder Include="Functions\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AdditionalFiles Include="Common\Debug\Debug.razor" />
-    <AdditionalFiles Include="Common\Complete\Complete.razor" />
-    <AdditionalFiles Include="Functions\Switch\Switch.razor" />
-  </ItemGroup>
-
 
 </Project>

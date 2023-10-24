@@ -2,7 +2,7 @@
 
 namespace Masa.Workflow.Activities.Complete;
 
-public class CompleteActivity : MasaWorkflowActivity<Console.Console>
+public class CompleteActivity : MasaWorkflowActivity<Console.ConsoleInput>
 {
     public CompleteActivity(Msg msg) : base(msg)
     {
