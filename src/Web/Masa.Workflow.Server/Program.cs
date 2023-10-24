@@ -1,4 +1,4 @@
-using Masa.Workflow.Activity.Functions.Switch;
+using Masa.Workflow.ActivityNodes.Switch;
 using Masa.Workflow.RCL.Hubs;
 using Microsoft.AspNetCore.ResponseCompression;
 

@@ -238,7 +238,7 @@ public partial class Workspace : IAsyncDisposable
 
     private async Task Save(bool publish)
     {
-        await WorkflowAgentClient.SaveAsync(new WorkflowRequest
+        await WorkflowAgentClient.SaveAsync(new WorkflowSaveRequest
         {
             Id = "",//tod0 id
             Name = WorkflowName,

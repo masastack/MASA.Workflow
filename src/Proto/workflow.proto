@@ -12,7 +12,7 @@ import "model.proto";
 
 service WorkflowAgent
 {
-	rpc GetList (WorkflowListRequest) returns (WorkflowReply){
+	rpc GetList (WorkflowListRequest) returns (PagedWorkflowList){
 		option (google.api.http) = {
 			get: "/v1/workflow/{page}/{page_size}"
 		};
@@ -30,7 +30,7 @@ service WorkflowAgent
 		};
 	}
 
-	rpc Save (WorkflowRequest) returns (WorkflowId){
+	rpc Save (WorkflowSaveRequest) returns (WorkflowId){
 		option (google.api.http) = {
 			post: "/v1/workflow/save",
 			body:"*"
@@ -43,9 +43,9 @@ service WorkflowAgent
 		};
 	}
 
-	rpc Status(WorkflowStatusRequest) returns (google.protobuf.Empty){
+	rpc UpdateStatus(WorkflowUpdateStatusRequest) returns (google.protobuf.Empty){
 		option (google.api.http) = {
-			get: "/v1/workflow/status/{id}"
+			put: "/v1/workflow/status/{id}"
 		};
 	}
 } 
@@ -54,14 +54,15 @@ message WorkflowListRequest {
 	int32 page = 1; 
 	int32 page_size = 2; 
 	string name = 3;
+	WorkflowStatus status = 4;
 } 
 
-message WorkflowStatusRequest{
+message WorkflowUpdateStatusRequest{
 	string id=1;
 	WorkflowStatus status = 2;
 }
 
-message WorkflowRequest { 
+message WorkflowSaveRequest { 
 	string id = 1;
 	string name = 2;
 	string description = 3;
@@ -71,11 +72,11 @@ message WorkflowRequest {
 	string node_json = 10;
 } 
 
-message WorkflowReply { 
+message PagedWorkflowList { 
 	int64 total = 1;
 	int32 total_page = 2;
-	repeated WorkflowItem Workflows = 3; 
-} 
+	repeated WorkflowItem Items = 3; 
+}
 
 message WorkflowItem { 
 	string id = 1;
@@ -107,10 +108,10 @@ message WorkflowDefinition{
 	string id = 1; 
 	string name = 2; 
 	map<string, string> environment_variables = 5;
-	repeated Node nodes = 6;
+	repeated Activity activities = 6;
 }
 
-message Node{
+message Activity {
 	string id= 1;
 	string name = 2;
 	string type = 3;
@@ -123,12 +124,12 @@ message Node{
 	message Wire {
 		repeated string guids = 1;
 	}
-}
 
-message RetryPolicy{
-	int32 max_nmber_of_attempts = 1;
-	google.protobuf.Duration first_retry_interval = 2;
-	double backoff_coefficient = 3;
-	google.protobuf.Duration retry_timeout = 4;
-	google.protobuf.Duration max_retry_interval = 5;
+    message RetryPolicy{
+        int32 max_nmber_of_attempts = 1;
+        google.protobuf.Duration first_retry_interval = 2;
+        double backoff_coefficient = 3;
+        google.protobuf.Duration retry_timeout = 4;
+        google.protobuf.Duration max_retry_interval = 5;
+    }
 }

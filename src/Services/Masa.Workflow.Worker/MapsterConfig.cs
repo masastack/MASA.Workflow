@@ -6,17 +6,17 @@ public sealed class MapsterConfig
     {
         TypeAdapterConfig<WorkflowDefinition, WorkflowInstance>
             .NewConfig()
-            .Map(dest => dest.Activities, src => src.Nodes);
+            .Map(dest => dest.Activities, src => src.Activities);
 
         TypeAdapterConfig<RetryPolicy, Core.Models.RetryPolicy>
             .NewConfig()
             .MapWith(src => new Core.Models.RetryPolicy()
             {
-                MaxNumberOfAttempts = src.MaxNmberOfAttempts,
+                MaxNumberOfAttempts = src.MaxNumberOfAttempts, 
                 BackoffCoefficient = src.BackoffCoefficient,
-                FirstRetryInterval = src.FirstRetryInterval.ToTimeSpan(),
-                MaxRetryInterval = src.MaxRetryInterval.ToTimeSpan(),
-                RetryTimeout = src.RetryTimeout.ToTimeSpan()
+                FirstRetryInterval = src.FirstRetryInterval,
+                MaxRetryInterval = src.MaxRetryInterval,
+                RetryTimeout = src.RetryTimeout
             });
     }
 }

@@ -26,7 +26,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution items", "solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Service", "src\Services\Masa.Workflow.Service\Masa.Workflow.Service.csproj", "{63FFF880-FE34-4E4E-A35F-35AFB47EE82D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.Activity", "src\Web\Masa.Workflow.Activity\Masa.Workflow.Activity.csproj", "{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Workflow.ActivityNodes", "src\Web\Masa.Workflow.ActivityNodes\Masa.Workflow.ActivityNodes.csproj", "{C0E6E30C-313B-43BD-A7DE-C9AC3A186978}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Masa.Blazor", "..\MASA.Blazor\src\Masa.Blazor\Masa.Blazor.csproj", "{581C8A81-D51D-4E01-8BFC-6DB376F877D8}"
 EndProject

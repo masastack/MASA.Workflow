@@ -1,0 +1,35 @@
+﻿@page "/"
+@page "/workflows"
+
+<PDataFilter OnSearch="HandleOnSearch">
+    <HighFrequencyContent>
+        <MTextField @bind-Value="_query.Name" Label="i18n.workflow.name" Outlined></MTextField>
+    </HighFrequencyContent>
+    <LowFrequencyContent>
+        <MTextField @bind-Value="_query.Name" Label="i18n.workflow.name" Outlined></MTextField>
+    </LowFrequencyContent>
+</PDataFilter>
+
+<MDataTable Headers="_headers"
+            Items="_pagedWorkflowList?.Items"
+            OnOptionsUpdate="@HandleOnDataTableOptionsUpdate"
+            ServerItemsLength="@((int)(_pagedWorkflowList?.Total ?? 0))"
+            Page="_query.Page"
+            ItemsPerPage="_query.PageSize"
+            Loading="_loading">
+    <ItemColContent>
+        @if (context.Header.Value == "actions")
+        {
+            <MButton Icon Href="@($"/workflows/{context.Item.Id}")">
+                <MIcon>mdi-cog</MIcon>
+            </MButton>
+            <MButton Icon>
+                <MIcon>mdi-list-box-outline</MIcon>
+            </MButton>
+        }
+        else
+        {
+            @context.Value
+        }
+    </ItemColContent>
+</MDataTable>

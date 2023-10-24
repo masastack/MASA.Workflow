@@ -37,10 +37,10 @@ public class CommandHandler
         {
             Id = Guid.Parse(workflowDefinition.Id),
             Name = workflowDefinition.Name,
-            StartActivity = new StartActivity(Guid.Parse(workflowDefinition.Nodes.First().Id))
+            StartActivity = new StartActivity(Guid.Parse(workflowDefinition.Activities.First().Id))
         };
 
-        foreach (var node in workflowDefinition.Nodes)
+        foreach (var node in workflowDefinition.Activities)
         {
             var meta = JsonSerializer.Deserialize<JsonObject>(node.Meta);
             //db save meta data not contains ActivityId and Wires

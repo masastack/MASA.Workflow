@@ -1,6 +1,6 @@
 ﻿using BlazorComponent.I18n;
 
-namespace Masa.Workflow.Activity;
+namespace Masa.Workflow.ActivityNodes;
 
 [Obsolete("delete this use masa stack component")]
 public class EnumSelect<TValue> : MSelect<KeyValuePair<string, TValue>, TValue, TValue> where TValue : struct, Enum
