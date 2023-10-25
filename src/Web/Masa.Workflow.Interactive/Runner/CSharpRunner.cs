@@ -32,6 +32,10 @@ internal class CSharpRunner : IRunner
             }
             metadataReferences.AddRange(await metadataReferenceProvider.GetMetaDataReferencesAsync(packageNames.ToArray()));
         }
+        //support dyanmic globals
+        metadataReferences.Add(MetadataReference.CreateFromFile(typeof(Microsoft.CSharp.RuntimeBinder.RuntimeBinderException).GetTypeInfo().Assembly.Location));
+        metadataReferences.Add(MetadataReference.CreateFromFile(typeof(DynamicAttribute).GetTypeInfo().Assembly.Location));
+
         var scriptOptions = ScriptOptions.Default.AddImports(Namespaces.ImportedNamespaces)
                 .AddReferences(metadataReferences)
                 .WithEmitDebugInformation(true)

@@ -1,3 +1,6 @@
+using System.Dynamic;
+
+
 namespace Masa.Workflow.InteractiveTest;
 
 public class RunnerTest
@@ -41,10 +44,31 @@ public class RunnerTest
 
         Assert.Equal(3, obj);
     }
+
+    [Fact]
+    public async void ExpandoObjectTest()
+    {
+        var msg = new Msg();
+        msg.Payload.Name = "Masa";
+        var code = """
+            return Payload.Name;
+            """;
+
+        var _cSharpRunner = new CSharpRunner(null);
+        var name = await _cSharpRunner.RunAsync<string>(code, globals: msg);
+
+        Assert.Equal("Masa", name);
+    }
 }
 
 public class Globals
 {
     public int X;
     public int Y;
+}
+
+public class Msg
+{
+    public dynamic Payload { get; set; } = new ExpandoObject();
+
 }
