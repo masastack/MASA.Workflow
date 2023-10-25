@@ -37,7 +37,7 @@ internal class CSharpRunner : IRunner
                 .WithEmitDebugInformation(true)
                 .WithOptimizationLevel(OptimizationLevel.Debug)
                 .WithLanguageVersion(LanguageVersion.Latest);
-        var script = CSharpScript.Create<T>(code, options: scriptOptions);
+        var script = CSharpScript.Create<T>(code, options: scriptOptions, globalsType: globals?.GetType());
 
         var compilation = script.GetCompilation();
 
