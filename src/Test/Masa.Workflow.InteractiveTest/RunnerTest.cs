@@ -29,4 +29,22 @@ public class RunnerTest
         var obj = await _cSharpRunner.RunAsync<string>(code, packages: new List<string> { "Newtonsoft.Json,13.0.3" });
         Assert.True(obj.Length > 0);
     }
+
+    [Fact]
+    public async void ParamterTest()
+    {
+        var code = """
+            return X + Y;
+        """;
+        var _cSharpRunner = new CSharpRunner(null);
+        var obj = await _cSharpRunner.RunAsync<int>(code, globals: new Globals { X = 1, Y = 2 });
+
+        Assert.Equal(3, obj);
+    }
+}
+
+public class Globals
+{
+    public int X;
+    public int Y;
 }
