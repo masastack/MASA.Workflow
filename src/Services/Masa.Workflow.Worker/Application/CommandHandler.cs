@@ -62,7 +62,7 @@ public class CommandHandler
                 Name = node.Name,
                 Disabled = node.Disabled,
                 Type = node.Type,
-                RetryPolicy = node.RetryPolicy.Adapt<Core.Models.RetryPolicy>(),
+                RetryPolicy = node.RetryPolicy.Adapt<RetryPolicy>(),
                 Meta = meta
             });
         }

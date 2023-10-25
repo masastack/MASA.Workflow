@@ -75,7 +75,7 @@ public class QueryHandler
                 Meta = JsonSerializer.Serialize(activity.Meta),
                 RetryPolicy = new Activity.Types.RetryPolicy
                 {
-                    MaxNmberOfAttempts = activity.RetryPolicy.MaxNumberOfAttempts,
+                    MaxNumberOfAttempts = activity.RetryPolicy.MaxNumberOfAttempts,
                     FirstRetryInterval = Duration.FromTimeSpan(activity.RetryPolicy.FirstRetryInterval),
                     MaxRetryInterval = Duration.FromTimeSpan(activity.RetryPolicy.MaxRetryInterval),
                     BackoffCoefficient = activity.RetryPolicy.BackoffCoefficient,
