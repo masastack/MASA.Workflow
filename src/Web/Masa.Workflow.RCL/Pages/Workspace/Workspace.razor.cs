@@ -27,7 +27,7 @@ public partial class Workspace : IAsyncDisposable
 
     private MDrawflow _drawflow = null!;
 
-    private object? _workflowInstance;
+    private WorkflowDetail? _workflowDetail;
     private Guid _testMqttInGuid = Guid.NewGuid(); // TODO: just for test mqtt in demo, remove it later
 
     private List<StringNumber>? _selectedGroups;
@@ -104,12 +104,6 @@ public partial class Workspace : IAsyncDisposable
 
         if (firstRender)
         {
-            if (WorkflowId != default)
-            {
-                //TODO: fetch data from http
-                // await _drawflow.ImportAsync();
-                _workflowInstance = new { };
-            }
 
             // TODO: 多个窗口会问题吗？共享的是同一个 drawflow 吗？
             DrawflowService.SetDrawflow(_drawflow);
@@ -118,6 +112,15 @@ public partial class Workspace : IAsyncDisposable
 
             _nodeGroups = _nodes.GroupBy(u => u.Tag).ToList();
             _selectedGroups = _nodeGroups.Select(g => (StringNumber)g.Key).ToList();
+
+            if (WorkflowId != default)
+            {
+                _workflowDetail = await WorkflowAgentClient.GetDetailAsync(new WorkflowId
+                {
+                    Id = WorkflowId.ToString()
+                });
+                await ImportWorkflow(_workflowDetail.NodeJson);
+            }
 
             StateHasChanged();
         }
@@ -240,7 +243,7 @@ public partial class Workspace : IAsyncDisposable
     {
         await WorkflowAgentClient.SaveAsync(new WorkflowSaveRequest
         {
-            Id = "",//tod0 id
+            Id = WorkflowId.ToString(),
             Name = WorkflowName,
             Description = WorkflowDescription,
             Disabled = false,
@@ -270,12 +273,11 @@ public partial class Workspace : IAsyncDisposable
 
     internal async Task ImportWorkflow(string json)
     {
-        await _drawflow.ImportAsync(json);
-
         if (string.IsNullOrWhiteSpace(json))
         {
             return;
         }
+        await _drawflow.ImportAsync(json);
 
         _tree[0].Children!.Clear();
 

@@ -126,7 +126,7 @@ message Activity {
 	}
 
     message RetryPolicy{
-        int32 max_nmber_of_attempts = 1;
+        int32 max_number_of_attempts = 1;
         google.protobuf.Duration first_retry_interval = 2;
         double backoff_coefficient = 3;
         google.protobuf.Duration retry_timeout = 4;

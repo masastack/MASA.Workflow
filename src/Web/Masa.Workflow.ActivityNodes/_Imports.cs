@@ -1,7 +1,5 @@
 ﻿global using Masa.Blazor;
-global using Masa.Workflow.Activities.Contracts;
 global using Masa.Workflow.Activities.Contracts.Complete;
-global using Masa.Workflow.Activities.Contracts.Debug;
 global using Masa.Workflow.Activities.Contracts.Function;
 global using Masa.Workflow.Activities.Contracts.HttpRequest;
 global using Masa.Workflow.Activities.Contracts.MqttIn;

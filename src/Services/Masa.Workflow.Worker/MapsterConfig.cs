@@ -8,15 +8,15 @@ public sealed class MapsterConfig
             .NewConfig()
             .Map(dest => dest.Activities, src => src.Activities);
 
-        TypeAdapterConfig<RetryPolicy, Core.Models.RetryPolicy>
+        TypeAdapterConfig<Activity.Types.RetryPolicy, RetryPolicy>
             .NewConfig()
-            .MapWith(src => new Core.Models.RetryPolicy()
+            .MapWith(src => new RetryPolicy()
             {
-                MaxNumberOfAttempts = src.MaxNumberOfAttempts, 
+                MaxNumberOfAttempts = src.MaxNumberOfAttempts,
                 BackoffCoefficient = src.BackoffCoefficient,
-                FirstRetryInterval = src.FirstRetryInterval,
-                MaxRetryInterval = src.MaxRetryInterval,
-                RetryTimeout = src.RetryTimeout
+                FirstRetryInterval = src.FirstRetryInterval.ToTimeSpan(),
+                MaxRetryInterval = src.MaxRetryInterval.ToTimeSpan(),
+                RetryTimeout = src.RetryTimeout.ToTimeSpan()
             });
     }
 }
