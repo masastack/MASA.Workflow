@@ -1,1 +1,1 @@
-﻿[assembly: InternalsVisibleTo("Masa.Workflow.InteractiveTest")]
+﻿// [assembly: InternalsVisibleTo("Masa.Workflow.InteractiveTest")]

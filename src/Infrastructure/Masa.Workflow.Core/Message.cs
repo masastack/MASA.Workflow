@@ -14,8 +14,6 @@ public sealed class Message : DynamicObject
 
     public long Timestamp { get; set; }
 
-    public dynamic Payload { get; set; } = new ExpandoObject();
-
     public object? this[string key]
     {
         get
@@ -30,14 +28,11 @@ public sealed class Message : DynamicObject
         set
         {
             key = key.ToLower();
-            if (_dictionary[key] != value)
-            {
-#pragma warning disable CS8601 // 引用类型赋值可能为 null。
-                _dictionary[key] = value;
-#pragma warning restore CS8601 // 引用类型赋值可能为 null。
-            }
+            _dictionary[key] = value;
         }
     }
+
+    public dynamic Payload { get; set; } = new ExpandoObject();
 
     public override bool TryGetMember(GetMemberBinder binder, out object? result)
     {

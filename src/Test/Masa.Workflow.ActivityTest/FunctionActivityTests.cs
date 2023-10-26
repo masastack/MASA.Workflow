@@ -10,8 +10,6 @@ public class FunctionActivityTests
     [Fact]
     public async Task Test()
     {
-        var services = new ServiceCollection();
-        services.AddMasaWorkflow();
         var functionActivity = new FunctionActivity();
 
         dynamic message = new Message();

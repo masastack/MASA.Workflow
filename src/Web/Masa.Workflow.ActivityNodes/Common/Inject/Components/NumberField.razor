@@ -1,0 +1,23 @@
+﻿<MTextField Type="number"
+            Value="internalValue"
+            ValueChanged="@InternalValueChanged"
+            TValue="double">
+</MTextField>
+
+@code {
+
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    private double internalValue;
+
+    private void InternalValueChanged(double value)
+    {
+        internalValue = value;
+        ValueChanged.InvokeAsync(value.ToString());
+    }
+
+}
