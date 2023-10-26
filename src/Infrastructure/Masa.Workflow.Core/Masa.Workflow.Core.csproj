@@ -20,4 +20,8 @@
 		<PackageReference Include="Masa.BuildingBlocks.Dispatcher.Events" Version="1.0.0" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Web\Masa.Workflow.Interactive\Masa.Workflow.Interactive.csproj" />
+	</ItemGroup>
+
 </Project>

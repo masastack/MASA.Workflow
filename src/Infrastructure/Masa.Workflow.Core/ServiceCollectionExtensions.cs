@@ -4,7 +4,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddMasaWorkflowCore(this IServiceCollection services, Assembly assembly)
     {
-        services.AddScoped<Msg>();
         services.AddDaprWorkflow(options =>
         {
             options.RegisterWorkflow<MasaWorkFlow>();

@@ -9,7 +9,7 @@ public class RunnerTest
     [InlineData("return 2 * 3;")]
     public async void CSharpCodeTest(string code)
     {
-        var _cSharpRunner = new CSharpRunner(null);
+        var _cSharpRunner = new CSharpRunner();
         var obj = await _cSharpRunner.RunAsync<int>(code);
         Assert.Equal(6, obj);
     }
@@ -39,7 +39,7 @@ public class RunnerTest
         var code = """
             return X + Y;
         """;
-        var _cSharpRunner = new CSharpRunner(null);
+        var _cSharpRunner = new CSharpRunner();
         var obj = await _cSharpRunner.RunAsync<int>(code, globals: new Globals { X = 1, Y = 2 });
 
         Assert.Equal(3, obj);
@@ -54,7 +54,7 @@ public class RunnerTest
             return Payload.Name;
             """;
 
-        var _cSharpRunner = new CSharpRunner(null);
+        var _cSharpRunner = new CSharpRunner();
         var name = await _cSharpRunner.RunAsync<string>(code, globals: msg);
 
         Assert.Equal("Masa", name);

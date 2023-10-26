@@ -23,9 +23,9 @@ namespace Masa.Workflow.ActivityTest
         [InlineData("adg256")]
         public async void Test(object payload)
         {
-            var msg = _services.BuildServiceProvider().GetRequiredService<Msg>();
+            var msg = new Message();
             msg.Payload = payload;
-            var _switchActivity = new SwitchActivity(msg, _services.BuildServiceProvider().GetRequiredService<IRulesEngineClient>());
+            var _switchActivity = new SwitchActivity(_services.BuildServiceProvider().GetRequiredService<IRulesEngineClient>());
             var input = new SwitchInput()
             {
                 Meta = new SwitchMeta()

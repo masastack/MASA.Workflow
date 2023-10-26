@@ -3,13 +3,6 @@
 public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<TInput, ActivityExecutionResult>
     where TInput : ActivityInput
 {
-    protected readonly Msg _msg;
-
-    public MasaWorkflowActivity(Msg msg)
-    {
-        _msg = msg;
-    }
-
     public sealed override async Task<ActivityExecutionResult> RunAsync(WorkflowActivityContext context, TInput meta)
     {
         ActivityExecutionResult result = new();
