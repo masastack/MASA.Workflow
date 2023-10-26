@@ -3,6 +3,7 @@
 public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<TInput, ActivityExecutionResult>
     where TInput : ActivityInput
 {
+    // TODO: comment that do not use this method
     public sealed override async Task<ActivityExecutionResult> RunAsync(WorkflowActivityContext context, TInput meta)
     {
         ActivityExecutionResult result = new();
@@ -19,12 +20,12 @@ public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<TInput, Ac
         return result;
     }
 
-    public virtual Task<ActivityExecutionResult> RunAsync(TInput meta)
+    public virtual Task<ActivityExecutionResult> RunAsync(TInput input)
     {
         var result = new ActivityExecutionResult();
         result.Status = ActivityStatus.Finished;
-        result.Wires = meta.Wires;
-        result.ActivityId = meta.ActivityId.ToString();
+        result.Wires = input.Wires;
+        result.ActivityId = input.ActivityId.ToString();
         return Task.FromResult(result);
     }
 

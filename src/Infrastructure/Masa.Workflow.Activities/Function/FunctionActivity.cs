@@ -14,6 +14,7 @@ public class FunctionActivity : MasaWorkflowActivity<FunctionInput>
         {
             ActivityId = input.ActivityId.ToString(),
             Status = ActivityStatus.Finished,
+            Wires = input.Wires
         };
 
         if (messages is Message[] list)
@@ -21,13 +22,11 @@ public class FunctionActivity : MasaWorkflowActivity<FunctionInput>
             for (var i = 0; i < list.Length; i++)
             {
                 result.Messages.Add(list[i]);
-                result.Wires.Add(input.Wires[i]);
             }
         }
         else if (messages is Message msg)
         {
             result.Messages.Add(msg);
-            result.Wires.Add(input.Wires[0]);
         }
         else
         {

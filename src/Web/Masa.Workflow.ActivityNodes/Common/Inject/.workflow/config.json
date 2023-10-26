@@ -1,0 +1,8 @@
+{
+  "type": "inject",
+  "name": "Inject",
+  "color": "#B39DDB",
+  "icon": "mdi-play",
+  "iconRight": false,
+  "tag": "common"
+}

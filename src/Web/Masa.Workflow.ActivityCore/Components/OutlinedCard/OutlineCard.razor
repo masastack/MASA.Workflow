@@ -4,7 +4,9 @@
     <span class="@Block.Element("title").AddClass(TitleClass)">
         @Title
     </span>
-    @ChildContent
+    <MDefaultsProvider Defaults="GlobalConfig.OutlinedCardDefaults">
+        @ChildContent
+    </MDefaultsProvider>
 </div>
 
 @code {

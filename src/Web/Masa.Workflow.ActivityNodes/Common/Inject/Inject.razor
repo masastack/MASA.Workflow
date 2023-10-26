@@ -1,0 +1,89 @@
+﻿@using Masa.Workflow.ActivityNodes.Common.Inject.Components
+
+@namespace Masa.Workflow.ActivityNodes.Inject
+
+@inherits Masa.Workflow.ActivityCore.Components.ActivityNode<InjectMeta>
+
+@base.BuildRenderTree
+
+@code {
+
+    protected override void DrawerContent(RenderTreeBuilder __builder)
+    {
+        <OutlineCard Title="1i8n.message">
+            @foreach (var item in FormModel.MetaData.MessageItems)
+            {
+                <div class="d-flex align-center mb-2">
+                    <MTextField @bind-Value="@item.Key"
+                                TValue="string"
+                                Prefix="msg."
+                                Style="max-width: 156px;">
+                    </MTextField>
+                    <MIcon Small>mdi-equal</MIcon>
+                    <EnumSelect TValue="MessageItemType"
+                                TItem="KeyValuePair<string, MessageItemType>"
+                                TItemValue="MessageItemType"
+                                @bind-Value="@item.Type"
+                                Class="mr-1"
+                                Style="max-width: 100px;"
+                                Filled="false"
+                                Outlined
+                                Clearable="false"
+                                OnSelectedItemUpdate="(selected) => OnMessageItemTypeSelect(selected, item)">
+                    </EnumSelect>
+                    @if (item.Type == MessageItemType.Boolean)
+                    {
+                        <BooleanSelect @bind-Value="@item.Value"></BooleanSelect>
+                    }
+                    else if (item.Type == MessageItemType.Number)
+                    {
+                        <NumberField @bind-Value="@item.Value"></NumberField>
+                    }
+                    else
+                    {
+                        <MTextField @bind-Value="@item.Value"
+                                    Disabled="@(item.Type != MessageItemType.String)">
+                        </MTextField>
+                    }
+                    <MButton Disabled="@(item.Key == "Payload")"
+                             Icon 
+                             OnClick="@(() => RemoveMessageItem(item))">
+                        <MIcon>$cancel</MIcon>
+                    </MButton>
+                </div>
+            }
+            <MButton Block Tile OnClick="@AddMessageItem">New item</MButton>
+        </OutlineCard>
+    }
+
+    private void RemoveMessageItem(MessageItem item)
+    {
+        FormModel.MetaData.MessageItems.Remove(item);
+    }
+
+    private void AddMessageItem()
+    {
+        FormModel.MetaData.MessageItems.Add(new MessageItem());
+    }
+
+    private void OnMessageItemTypeSelect(KeyValuePair<string, MessageItemType> selected, MessageItem item)
+    {
+        if (selected.Value == MessageItemType.String)
+        {
+            item.Value = null;
+        }
+        else if (selected.Value == MessageItemType.Boolean)
+        {
+            item.Value = "True";
+        }
+        else if (selected.Value == MessageItemType.Number)
+        {
+            item.Value = "0";
+        }
+        else if (selected.Value == MessageItemType.Timestamp)
+        {
+            item.Value = "Timestamp";
+        }
+    }
+
+}

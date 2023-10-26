@@ -1,0 +1,17 @@
+﻿<MSelect Value="@Value"
+         ValueChanged="@ValueChanged"
+         Items="@_items"
+         ItemValue="u => u"
+         ItemText="u => u">
+</MSelect>
+
+@code {
+
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    private readonly IList<string> _items = new string[] { "True", "False" };
+}
