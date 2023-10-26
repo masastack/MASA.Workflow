@@ -4,6 +4,16 @@ public sealed class Msg : DynamicObject
 {
     Dictionary<string, object> _dictionary = new Dictionary<string, object>();
 
+    public Msg()
+    {
+        Id = Guid.NewGuid();
+        Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+    }
+
+    public Guid Id { get; set; }
+
+    public long Timestamp { get; set; }
+
     public dynamic Payload { get; set; } = new ExpandoObject();
 
     public object? this[string key]

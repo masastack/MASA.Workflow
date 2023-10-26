@@ -11,7 +11,7 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
         //触发执行
         return await CallActivity(workflowInstance.StartActivity.ActivityId);
 
-        async Task<RunWorkflowResult> CallActivity(Guid activityId)
+        async Task<RunWorkflowResult> CallActivity(Guid activityId, Msg? msg = null)
         {
             var activity = workflowInstance.Activities.FirstOrDefault(a => a.Id == activityId)
                 ?? throw new Exception($"Not found activity ID={activityId}");
@@ -20,26 +20,39 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
             var activityName = $"{ConvertTypeName(activity.Type)}Activity";
             Console.WriteLine($"CallActivityAsync {activityName}");
             Console.WriteLine($"Activity meta is {JsonSerializer.Serialize(activity.Meta)}");
-            var activityResult = await context.CallActivityAsync<ActivityExecutionResult>(activityName, activity.Meta, new WorkflowTaskOptions()
+
+            var activityInput = (activity.Meta as ActivityInput);
+            activityInput.Msg = msg;
+
+            var activityResult = await context.CallActivityAsync<ActivityExecutionResult>(activityName, activityInput, new WorkflowTaskOptions()
             {
                 RetryPolicy = activity.RetryPolicy.Adapt<WorkflowRetryPolicy>()
             });
+
+            if (activityResult.Wires.Count != activityResult.Msgs.Count)
+            {
+                return new RunWorkflowResult(context.InstanceId, new Exception($"Activity {activityName}[id:{activityResult.ActivityId}] return data wires and msgs not matched"), WorkflowStatus.Faulted);
+            }
 
             if (activityResult.Status == ActivityStatus.Suspended)
             {
                 await context.CreateTimer(TimeSpan.FromSeconds(1));
                 context.ContinueAsNew(activity.Meta);
-            } 
+            }
             if (activityResult.Status == ActivityStatus.Faulted)
             {
                 return new RunWorkflowResult(context.InstanceId, new Exception($"Activity {activityName}[id:{activityResult.ActivityId}] call error"), WorkflowStatus.Faulted);
             }
 
-            foreach (var wires in activityResult.Wires)
+            for (int i = 0; i < activityResult.Wires.Count; i++)
             {
-                foreach (var wire in wires)
+                var m = activityResult.Msgs[i];
+                if (m != null)
                 {
-                    await CallActivity(wire);
+                    foreach (var wire in activityResult.Wires[i])
+                    {
+                        await CallActivity(wire, m);
+                    }
                 }
             }
             return new RunWorkflowResult(context.InstanceId, null, WorkflowStatus.Finished);

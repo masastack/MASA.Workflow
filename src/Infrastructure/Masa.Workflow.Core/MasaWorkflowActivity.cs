@@ -1,6 +1,6 @@
 ﻿namespace Masa.Workflow.Core;
 
-public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<TInput, ActivityExecutionResult> 
+public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<TInput, ActivityExecutionResult>
     where TInput : ActivityInput
 {
     protected readonly Msg _msg;
