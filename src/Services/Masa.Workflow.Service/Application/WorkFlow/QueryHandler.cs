@@ -14,6 +14,7 @@ public class QueryHandler
     {
         Expression<Func<Flow, bool>> condition = flow => true;
         condition = condition.And(!string.IsNullOrEmpty(query.Request.Name), flow => flow.Name.Contains(query.Request.Name));
+        // todo: status condition
 
         var data = await _workflowRepository.GetPaginatedListAsync(condition, new PaginatedOptions { Page = query.Request.Page, PageSize = query.Request.PageSize });
 

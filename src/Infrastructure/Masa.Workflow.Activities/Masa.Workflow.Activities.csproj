@@ -12,6 +12,7 @@
 
 	<ItemGroup>
     <ProjectReference Include="..\..\Contracts\Masa.Workflow.Activities.Contracts\Masa.Workflow.Activities.Contracts.csproj" />
+    <ProjectReference Include="..\..\Web\Masa.Workflow.Interactive\Masa.Workflow.Interactive.csproj" />
     <ProjectReference Include="..\Masa.Workflow.Core\Masa.Workflow.Core.csproj" />
   </ItemGroup>
 

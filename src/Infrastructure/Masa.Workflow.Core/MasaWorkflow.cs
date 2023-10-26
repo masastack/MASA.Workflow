@@ -11,7 +11,7 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
         //触发执行
         return await CallActivity(workflowInstance.StartActivity.ActivityId);
 
-        async Task<RunWorkflowResult> CallActivity(Guid activityId, Msg? msg = null)
+        async Task<RunWorkflowResult> CallActivity(Guid activityId, Message? msg = null)
         {
             var activity = workflowInstance.Activities.FirstOrDefault(a => a.Id == activityId)
                 ?? throw new Exception($"Not found activity ID={activityId}");
@@ -22,14 +22,14 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
             Console.WriteLine($"Activity meta is {JsonSerializer.Serialize(activity.Meta)}");
 
             var activityInput = (activity.Meta as ActivityInput);
-            activityInput.Msg = msg;
+            activityInput.Message = msg;
 
             var activityResult = await context.CallActivityAsync<ActivityExecutionResult>(activityName, activityInput, new WorkflowTaskOptions()
             {
                 RetryPolicy = activity.RetryPolicy.Adapt<WorkflowRetryPolicy>()
             });
 
-            if (activityResult.Wires.Count != activityResult.Msgs.Count)
+            if (activityResult.Wires.Count != activityResult.Messages.Count)
             {
                 return new RunWorkflowResult(context.InstanceId, new Exception($"Activity {activityName}[id:{activityResult.ActivityId}] return data wires and msgs not matched"), WorkflowStatus.Faulted);
             }
@@ -46,7 +46,7 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
 
             for (int i = 0; i < activityResult.Wires.Count; i++)
             {
-                var m = activityResult.Msgs[i];
+                var m = activityResult.Messages[i];
                 if (m != null)
                 {
                     foreach (var wire in activityResult.Wires[i])

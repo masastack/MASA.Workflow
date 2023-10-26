@@ -1,6 +1,6 @@
 ﻿namespace Masa.Workflow.Interactive;
 
-internal class NuGetMetadataReferenceProvider : IMetadataReferenceProvider
+public class NuGetMetadataReferenceProvider : IMetadataReferenceProvider
 {
     SourceCacheContext _cache = new SourceCacheContext();
     SourceRepository _repository = Repository.Factory.GetCoreV3("https://api.nuget.org/v3/index.json");

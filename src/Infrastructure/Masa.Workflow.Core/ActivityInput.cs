@@ -6,7 +6,7 @@ public class ActivityInput
 
     public List<List<Guid>> Wires { get; set; } = new();
 
-    public Msg Msg { get; set; } = new();
+    public Message Message { get; set; } = new();
 }
 
 public class ActivityInput<TMeta> : ActivityInput

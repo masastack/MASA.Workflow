@@ -8,7 +8,7 @@ public class ActivityExecutionResult
 
     public List<List<Guid>> Wires { get; set; } = new();
 
-    public List<Msg?> Msgs { get; set; } = new();
+    public List<Message?> Messages { get; set; } = new();
 }
 
 public enum ActivityStatus

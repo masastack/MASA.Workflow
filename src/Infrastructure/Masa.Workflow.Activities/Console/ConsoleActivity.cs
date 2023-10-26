@@ -6,15 +6,15 @@ internal class ConsoleActivity : MasaWorkflowActivity<ConsoleInput>
 {
     private readonly TextWriter _output;
 
-    public ConsoleActivity(Msg msg) : base(msg)
+    public ConsoleActivity()
     {
         _output = System.Console.Out;
     }
 
-    public override Task<ActivityExecutionResult> RunAsync(ConsoleInput meta)
+    public override Task<ActivityExecutionResult> RunAsync(ConsoleInput input)
     {
-        _output.WriteLine(meta.Text);
+        _output.WriteLine(input.Text);
         System.Console.WriteLine("------------ConsoleActivity Run");
-        return base.RunAsync(meta);
+        return base.RunAsync(input);
     }
 }

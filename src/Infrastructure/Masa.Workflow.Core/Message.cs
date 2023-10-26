@@ -1,10 +1,10 @@
 ﻿namespace Masa.Workflow.Core;
 
-public sealed class Msg : DynamicObject
+public sealed class Message : DynamicObject
 {
-    Dictionary<string, object> _dictionary = new Dictionary<string, object>();
+    readonly Dictionary<string, object?> _dictionary = new();
 
-    public Msg()
+    public Message()
     {
         Id = Guid.NewGuid();
         Timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -20,7 +20,7 @@ public sealed class Msg : DynamicObject
     {
         get
         {
-            if (_dictionary.TryGetValue(key, out var value))
+            if (_dictionary.TryGetValue(key.ToLower(), out var value))
             {
                 return value;
             }
@@ -29,6 +29,7 @@ public sealed class Msg : DynamicObject
         }
         set
         {
+            key = key.ToLower();
             if (_dictionary[key] != value)
             {
 #pragma warning disable CS8601 // 引用类型赋值可能为 null。

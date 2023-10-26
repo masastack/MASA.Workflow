@@ -6,8 +6,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchInput>
 {
     IRulesEngineClient _rulesEngineClient;
 
-    public SwitchActivity(Msg msg, IRulesEngineClient rulesEngineClient)
-        : base(msg)
+    public SwitchActivity(IRulesEngineClient rulesEngineClient)
     {
         _rulesEngineClient = rulesEngineClient;
     }
@@ -55,7 +54,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchInput>
         {
             Rules = _rules
         });
-        var ruleResults = await _rulesEngineClient.ExecuteAsync(ruleRaw, _msg);
+        var ruleResults = await _rulesEngineClient.ExecuteAsync(ruleRaw, input.Message);
         var otherwise = ruleResults.FirstOrDefault(r => r.IsValid && r.RuleName == Operator.Otherwise.ToString());
         var passResults = ruleResults.Where(r => r.IsValid && r.RuleName != Operator.Otherwise.ToString()).Select(r => r.ActionResult.Output as List<Guid>)
             .Where(r => r != null).ToList();
