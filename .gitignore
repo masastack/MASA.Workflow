@@ -225,3 +225,5 @@ packages/
 
 .idea
 .DS_Store
+
+!**/Common/Debug/
