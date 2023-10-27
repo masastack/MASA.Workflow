@@ -1,21 +1,18 @@
-﻿using Masa.Workflow.Activities.Contracts.Inject;
-using Masa.Workflow.Core.Models;
+﻿namespace Masa.Workflow.Activities.Inject;
 
-namespace Masa.Workflow.Activities.Inject;
-
-public class InjectActivity : MasaWorkflowActivity<InjectInput>
+public class InjectActivity : MasaWorkflowActivity<InjectMeta>
 {
-    public override Task<ActivityExecutionResult> RunAsync(InjectInput input)
+    public override Task<ActivityExecutionResult> RunAsync(InjectMeta meta, Message msg)
     {
         var result = new ActivityExecutionResult()
         {
-            ActivityId = input.ActivityId.ToString(),
+            ActivityId = ActivityId.ToString(),
             Status = ActivityStatus.Finished,
-            Wires = input.Wires
+            Wires = Wires
         };
 
         Message message = new();
-        foreach (var item in input.Meta.MessageItems)
+        foreach (var item in meta.MessageItems)
         {
             if (string.IsNullOrWhiteSpace(item.Key))
             {

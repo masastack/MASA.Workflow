@@ -1,20 +1,21 @@
-﻿using Masa.Workflow.Core.Models;
+﻿using Masa.Workflow.Activities.Contracts.Function;
+using Masa.Workflow.Core.Models;
 using Masa.Workflow.Interactive.Runner;
 
 namespace Masa.Workflow.Activities.Function;
 
-public class FunctionActivity : MasaWorkflowActivity<FunctionInput>
+public class FunctionActivity : MasaWorkflowActivity<FunctionMeta>
 {
-    public override async Task<ActivityExecutionResult> RunAsync(FunctionInput input)
+    public async override Task<ActivityExecutionResult> RunAsync(FunctionMeta meta, Message msg)
     {
         var runner = new CSharpRunner(typeof(Message).Assembly);
-        var messages = await runner.RunWithMessageAsync<object>(input.Meta.Code, input.Message);
+        var messages = await runner.RunWithMessageAsync<object>(meta.Code, msg);
 
         var result = new ActivityExecutionResult()
         {
-            ActivityId = input.ActivityId.ToString(),
+            ActivityId = ActivityId.ToString(),
             Status = ActivityStatus.Finished,
-            Wires = input.Wires
+            Wires = Wires
         };
 
         if (messages is Message[] list)
@@ -24,9 +25,9 @@ public class FunctionActivity : MasaWorkflowActivity<FunctionInput>
                 result.Messages.Add(list[i]);
             }
         }
-        else if (messages is Message msg)
+        else if (messages is Message m)
         {
-            result.Messages.Add(msg);
+            result.Messages.Add(m);
         }
         else
         {

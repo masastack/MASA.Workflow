@@ -1,5 +1,5 @@
 ﻿namespace Masa.Workflow.Activities.Complete;
 
-public class CompleteActivity : MasaWorkflowActivity<CompleteInput>
+public class CompleteActivity : MasaWorkflowActivity<CompleteMeta>
 {
 }

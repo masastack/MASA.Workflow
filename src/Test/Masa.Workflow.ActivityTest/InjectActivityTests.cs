@@ -1,5 +1,4 @@
-﻿using Masa.Workflow.Activities;
-using Masa.Workflow.Activities.Contracts.Inject;
+﻿using Masa.Workflow.Activities.Contracts.Inject;
 using Masa.Workflow.Activities.Inject;
 
 namespace Masa.Workflow.ActivityTest;
@@ -11,18 +10,9 @@ public class InjectActivityTests
     {
         var injectActivity = new InjectActivity();
 
-        var injectInput = new InjectInput()
+        var injectMeta = new InjectMeta()
         {
-            Wires = new()
-            {
-                new List<Guid>()
-                {
-                    Guid.NewGuid()
-                }
-            },
-            Meta = new InjectMeta()
-            {
-                MessageItems = new List<MessageItem>()
+            MessageItems = new List<MessageItem>()
                 {
                     new MessageItem()
                     {
@@ -36,10 +26,9 @@ public class InjectActivityTests
                         Type = MessageItemType.Timestamp
                     }
                 }
-            }
         };
 
-        var result = await injectActivity.RunAsync(injectInput);
+        var result = await injectActivity.RunAsync(injectMeta, null);
         dynamic message = result.Messages[0];
         Assert.Equal("banana", message["Topic"]);
         Assert.Equal("banana", message.Topic);

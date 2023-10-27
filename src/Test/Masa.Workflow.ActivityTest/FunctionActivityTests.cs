@@ -1,5 +1,4 @@
-﻿using Masa.Workflow.Activities;
-using Masa.Workflow.Activities.Contracts.Function;
+﻿using Masa.Workflow.Activities.Contracts.Function;
 using Masa.Workflow.Activities.Function;
 using Masa.Workflow.Core;
 
@@ -14,13 +13,10 @@ public class FunctionActivityTests
 
         dynamic message = new Message();
         message.Topic = "banana";
-        
-        var functionInput = new FunctionInput()
+
+        var functionMeta = new FunctionMeta()
         {
-            Message = message,
-            Meta = new FunctionMeta()
-            {
-                Code = """
+            Code = """
                        if (msg.Topic == "banana") {
                            return new Message[] { null, msg };
                        }
@@ -28,22 +24,10 @@ public class FunctionActivityTests
                             return new Message[] { msg, null };                       
                        }
                        """
-            },
-            Wires = new List<List<Guid>>()
-            {
-                new List<Guid>()
-                {
-                    Guid.NewGuid(),
-                },
-                new List<Guid>()
-                {
-                    Guid.NewGuid(),
-                }
-            }
         };
 
-        var result = await functionActivity.RunAsync(functionInput);
-        Assert.Equal(2, result.Messages.Count);;
+        var result = await functionActivity.RunAsync(functionMeta, message);
+        Assert.Equal(2, result.Messages.Count); ;
         Assert.Equal(null, result.Messages[0]);
         Assert.Equal(message.topic, result.Messages[1]["Topic"]);
     }

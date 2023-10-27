@@ -19,12 +19,18 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
             Console.WriteLine($"------------MasaWorkFlow start {activity.Type} activity");
             var activityName = $"{ConvertTypeName(activity.Type)}Activity";
             Console.WriteLine($"CallActivityAsync {activityName}");
-            Console.WriteLine($"Activity meta is {JsonSerializer.Serialize(activity.Meta)}");
 
-            var activityInput = (activity.Meta as ActivityInput);
-            activityInput.Message = msg;
+            var messageInput = new ActivityInfo
+            {
+                Msg = msg,
+                Input = activity.Meta,
+                ActivityId = activityId,
+                Wires = activity.Wires,
+            };
 
-            var activityResult = await context.CallActivityAsync<ActivityExecutionResult>(activityName, activityInput, new WorkflowTaskOptions()
+            Console.WriteLine($"ActivityMessageInput is {JsonSerializer.Serialize(messageInput)}");
+
+            var activityResult = await context.CallActivityAsync<ActivityExecutionResult>(activityName, messageInput, new WorkflowTaskOptions()
             {
                 RetryPolicy = activity.RetryPolicy.Adapt<WorkflowRetryPolicy>()
             });
