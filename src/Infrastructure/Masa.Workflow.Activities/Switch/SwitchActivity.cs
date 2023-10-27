@@ -1,8 +1,6 @@
-﻿using Masa.Workflow.Core.Models;
+﻿namespace Masa.Workflow.Activities.Switch;
 
-namespace Masa.Workflow.Activities.Switch;
-
-public class SwitchActivity : MasaWorkflowActivity<SwitchInput>
+public class SwitchActivity : MasaWorkflowActivity<SwitchMeta>
 {
     IRulesEngineClient _rulesEngineClient;
 
@@ -11,12 +9,12 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchInput>
         _rulesEngineClient = rulesEngineClient;
     }
 
-    public async override Task<ActivityExecutionResult> RunAsync(SwitchInput input, Message msg)
+    public async override Task<ActivityExecutionResult> RunAsync(SwitchMeta meta, Message msg)
     {
         System.Console.WriteLine("SwitchActivity start run.");
         var _rules = new List<object>();
         int i = 0;
-        foreach (var rule in input.Meta.Rules)
+        foreach (var rule in meta.Rules)
         {
             _rules.Add(new
             {
@@ -27,7 +25,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchInput>
                 //        Expression=$"{i}"
                 //    }
                 //},
-                Expression = GetExpressionString(input.Meta.Property, rule),
+                Expression = GetExpressionString(meta.Property, rule),
                 Actions = new
                 {
                     OnSuccess = new
@@ -65,7 +63,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchInput>
         };
         if (passResults.Count > 0)
         {
-            if (input.Meta.SwitchMode == SwitchMode.FirstMatch)
+            if (meta.SwitchMode == SwitchMode.FirstMatch)
             {
                 result.Wires.Add(passResults.First()!);
             }

@@ -26,11 +26,9 @@ namespace Masa.Workflow.ActivityTest
             var msg = new Message();
             msg.Payload = payload;
             var _switchActivity = new SwitchActivity(_services.BuildServiceProvider().GetRequiredService<IRulesEngineClient>());
-            var input = new SwitchInput()
+            var meta = new SwitchMeta()
             {
-                Meta = new SwitchMeta()
-                {
-                    Rules = new List<Rule>
+                Rules = new List<Rule>
                     {
                         new Rule(Operator.Eq, "1"),
                         new Rule(Operator.Lt, "2"),
@@ -42,20 +40,8 @@ namespace Masa.Workflow.ActivityTest
                         new Rule(Operator.IsType, "string"),
                         new Rule(Operator.Contains, "2")
                     },
-                },
-                Wires = new List<List<Guid>>
-                {
-                    new List<Guid> { Guid.NewGuid() },
-                    new List<Guid> { Guid.NewGuid() },
-                    new List<Guid> { Guid.NewGuid() },
-                    new List<Guid> { Guid.NewGuid() },
-                    new List<Guid> { Guid.NewGuid() },
-                    new List<Guid> { Guid.NewGuid() },
-                    new List<Guid> { Guid.NewGuid() },
-                    new List<Guid> { Guid.NewGuid() }
-                }
             };
-            var result = await _switchActivity.RunAsync(input);
+            var result = await _switchActivity.RunAsync(meta, null);
             Assert.NotNull(result);
             //Assert.True(result.Count > 0);
         }

@@ -1,9 +1,10 @@
-﻿global using Dapr.Workflow;
-global using Masa.BuildingBlocks.RulesEngine;
-global using Masa.Workflow.Activities.Contracts;
+﻿global using Masa.BuildingBlocks.RulesEngine;
+global using Masa.Workflow.Activities.Contracts.Complete;
+global using Masa.Workflow.Activities.Contracts.Inject;
 global using Masa.Workflow.Activities.Contracts.Switch;
 global using Masa.Workflow.Activities.Switch;
 global using Masa.Workflow.Core;
+global using Masa.Workflow.Core.Models;
 global using Microsoft.Extensions.DependencyInjection;
 global using System.Collections;
 global using System.Reflection;

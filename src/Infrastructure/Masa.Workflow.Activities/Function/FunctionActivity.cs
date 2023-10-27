@@ -1,14 +1,15 @@
-﻿using Masa.Workflow.Core.Models;
+﻿using Masa.Workflow.Activities.Contracts.Function;
+using Masa.Workflow.Core.Models;
 using Masa.Workflow.Interactive.Runner;
 
 namespace Masa.Workflow.Activities.Function;
 
-public class FunctionActivity : MasaWorkflowActivity<FunctionInput>
+public class FunctionActivity : MasaWorkflowActivity<FunctionMeta>
 {
-    public async override Task<ActivityExecutionResult> RunAsync(FunctionInput input, Message msg)
+    public async override Task<ActivityExecutionResult> RunAsync(FunctionMeta meta, Message msg)
     {
         var runner = new CSharpRunner(typeof(Message).Assembly);
-        var messages = await runner.RunWithMessageAsync<object>(input.Meta.Code, msg);
+        var messages = await runner.RunWithMessageAsync<object>(meta.Code, msg);
 
         var result = new ActivityExecutionResult()
         {
