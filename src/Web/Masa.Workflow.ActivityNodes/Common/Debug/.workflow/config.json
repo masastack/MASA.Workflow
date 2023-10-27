@@ -2,7 +2,9 @@
   "type": "debug",
   "name": "Debug",
   "color": "#c0edc0",
-  "icon": "mdi-format-align-justify",
-  "iconRight": false,
+  "icon": "mdi-bug-outline",
+  "iconRight": true,
+  "minInput": 1,
+  "minOutput": 0,
   "tag": "common"
 }

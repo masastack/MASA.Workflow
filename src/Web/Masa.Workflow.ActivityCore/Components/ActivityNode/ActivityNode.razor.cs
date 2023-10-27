@@ -25,11 +25,13 @@ public partial class ActivityNode<TMeta> : ComponentBase, IActivityNode
     private Node? _node;
     private string _prevValue = null!;
 
+    private bool _defaultSet;
+
     protected ActivityMeta<TMeta> FormModel { get; set; } = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        await base.OnInitializedAsync();
         DeserializeValue();
     }
 
@@ -37,6 +39,13 @@ public partial class ActivityNode<TMeta> : ComponentBase, IActivityNode
     {
         base.OnParametersSet();
         DeserializeValue();
+
+        if (!_defaultSet && !string.IsNullOrEmpty(NodeId))
+        {
+            _defaultSet = true;
+            _cachedModel.Meta = JsonSerializer.Serialize(_cachedModel.MetaData);
+            _ = DrawflowService.UpdateNodeDataFromIdAsync(NodeId, new { data = JsonSerializer.Serialize(_cachedModel) });
+        }
     }
 
     private void DeserializeValue()

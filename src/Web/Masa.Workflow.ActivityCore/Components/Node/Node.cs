@@ -63,13 +63,13 @@ public class Node : ComponentBase
 
         builder.AddMultipleAttributes(1, AdditionalAttributes);
 
-        builder.AddAttribute(2, "class", Block.Modifier("draggable", _draggable).Add(Inactive).Build());
+        builder.AddAttribute(2, "class", Block.Modifier("draggable", _draggable).Add(Inactive).Add("right", IconRight).Build());
         builder.AddAttribute(3, "style", $"background-color:{Color}");
 
         RenderFragment childContent = builder2 =>
         {
             builder2.OpenElement(0, "div");
-            builder2.AddAttribute(1, "class", @Block.Element("icon").Modifier("right", IconRight).Build());
+            builder2.AddAttribute(1, "class", @Block.Element("icon").Build());
             builder2.AddContent(2, iconInnerBuilder =>
             {
                 iconInnerBuilder.OpenComponent<MIcon>(0);

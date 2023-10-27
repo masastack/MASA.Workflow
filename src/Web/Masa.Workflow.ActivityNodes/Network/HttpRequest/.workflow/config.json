@@ -4,5 +4,7 @@
   "color": "#e7e7ae",
   "icon": "mdi-earth",
   "iconRight": false,
+  "minInput": 1,
+  "minOutput": 1,
   "tag": "net"
 }
