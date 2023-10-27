@@ -22,8 +22,9 @@ public class WorkflowDomainService : DomainService
         }
         else
         {
-            flow = await _workflowRepository.FindAsync(Guid.Parse(workflowRequest.Id))
+            flow = await _workflowRepository.GetAsync(Guid.Parse(workflowRequest.Id),nameof(Flow.Activities),nameof(Flow.Versions))
                 ?? throw new UserFriendlyException("workflow id not find");
+            flow.UpdateInfo(workflowRequest.Name, workflowRequest.Description);
         }
         flow.AddVersion(workflowRequest.NodeJson);
         flow.SetActivities(ResolveJson(workflowRequest.NodeJson));

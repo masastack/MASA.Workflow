@@ -28,6 +28,12 @@ public class Flow : FullAggregateRoot<Guid, Guid>
         Description = description;
     }
 
+    public void UpdateInfo(string name, string description)
+    {
+        Name = name;
+        Description = description;
+    }
+
     public void SetStatus(WorkflowStatus status)
     {
         var flowTask = _flowTasks.LastOrDefault();

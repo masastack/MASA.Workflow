@@ -4,6 +4,8 @@
   "color": "#d8bfd8",
   "icon": "mdi-access-point",
   "iconRight": false,
+  "minInput": 0,
+  "minOutput": 1,
   "tag": "net",
   "states": [
     {

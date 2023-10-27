@@ -1,0 +1,45 @@
+﻿<PModal @bind-Value="_visible"
+        Title="i18n.workflow.update"
+        Width="500"
+        OnSave="HandleOnSave">
+    <MForm @ref="_form">
+        <MTextField @bind-Value="_name"
+                    Label="i18n.workflow.name"
+                    Required>
+        </MTextField>
+        <MTextField @bind-Value="_desc"
+                    Label="i18n.workflow.desc">
+        </MTextField>
+    </MForm>
+</PModal>
+
+@code {
+
+    [Parameter]
+    public EventCallback<(string name, string desc)> OnSave { get; set; }
+
+    private bool _visible;
+    private MForm? _form;
+
+    private string? _name;
+    private string? _desc;
+
+    internal void Open(string name, string desc)
+    {
+        _name = name;
+        _desc = desc;
+        _visible = true;
+        StateHasChanged();
+    }
+
+    internal void HandleOnSave()
+    {
+        if (_form?.Validate() is true)
+        {
+            OnSave.InvokeAsync((_name!, _desc ?? string.Empty));
+
+            _visible = false;
+        }
+    }
+
+}

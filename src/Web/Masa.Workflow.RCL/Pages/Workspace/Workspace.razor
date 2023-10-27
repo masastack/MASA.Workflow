@@ -1,13 +1,26 @@
-﻿@namespace Masa.Workflow.RCL.Pages.Workspace
+﻿@using Masa.Workflow.RCL.Pages.Workspace.Components
 
-@page "/workflow/{WorkflowId:guid?}"
+@namespace Masa.Workflow.RCL.Pages.Workspace
+
+@page "/workspace/{WorkflowId:guid?}"
 
 <div class="mw-flow__header">
+    <PBlockText Primary="@WorkflowName"
+                Secondary="@WorkflowDescription">
+        <PrimaryContent>
+            <span>
+                @WorkflowName
+                <MButton Icon XSmall OnClick="OpenWorkflowFormModal">
+                    <MIcon XSmall>mdi-square-edit-outline</MIcon>
+                </MButton>
+            </span>
+        </PrimaryContent>
+    </PBlockText>
     <MSpacer />
     <MButton OnClick="@TestHub">Update mqtt state(TEST)</MButton>
-    <MButton Color="primary" OnClick="()=>Save(false)">i18n.workflow.save</MButton>
-    <MButton Color="primary" OnClick="()=>Save(true)">i18n.workflow.publish</MButton>
-    <MButton Color="primary" OnClick="()=>Run()">i18n.workflow.run</MButton>
+    <MButton Color="primary" OnClick="() => Save(false)">i18n.workflow.save</MButton>
+    <MButton Color="primary" OnClick="() => Save(true)">i18n.workflow.publish</MButton>
+    <MButton Color="primary" OnClick="() => Run()">i18n.workflow.run</MButton>
     <MMenu OffsetY>
         <ActivatorContent>
             <MButton Icon @attributes="@context.Attrs">
@@ -52,7 +65,8 @@
                             <DragNode Name="@node.Type"
                                       Label="@node.Name"
                                       Color="@node.Color"
-                                      Icon="@node.Icon" />
+                                      Icon="@node.Icon"
+                                      IconRight="@node.IconRight" />
                         }
                     </MExpansionPanelContent>
                 </MExpansionPanel>
@@ -126,6 +140,10 @@
 <PDrawer @bind-Value="_helpDrawer">
     <MMarkdownIt Source="@_helpMarkdown"></MMarkdownIt>
 </PDrawer>
+
+<WorkflowFormModal @ref="_workflowFormModal"
+                   OnSave="@HandleOnWorkflowInfoSave">
+</WorkflowFormModal>
 
 <CascadingValue Value="this" IsFixed>
     <ExportDialog @ref="_exportDialog"></ExportDialog>

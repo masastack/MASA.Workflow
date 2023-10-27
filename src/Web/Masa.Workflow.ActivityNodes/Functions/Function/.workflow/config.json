@@ -4,5 +4,7 @@
   "color": "#EF9A9A",
   "icon": "mdi-function",
   "iconRight": false,
+  "minInput": 1,
+  "minOutput": 1,
   "tag": "func"
 }

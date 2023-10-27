@@ -8,5 +8,7 @@ public record ActivityNodeConfig(
     string Color,
     string Icon,
     bool IconRight,
+    int MinInput,
+    int MinOutput,
     string Tag,
     IReadOnlyList<NodeStateInfo>? States);

@@ -8,6 +8,9 @@
     <LowFrequencyContent>
         <MTextField @bind-Value="_query.Name" Label="i18n.workflow.name" Outlined></MTextField>
     </LowFrequencyContent>
+    <ActionsContent>
+        <MButton Color="primary" Href="/workspace">i18n.workflow.new</MButton>
+    </ActionsContent>
 </PDataFilter>
 
 <MDataTable Headers="_headers"
@@ -20,7 +23,7 @@
     <ItemColContent>
         @if (context.Header.Value == "actions")
         {
-            <MButton Icon Href="@($"/workflow/{context.Item.Id}")">
+            <MButton Icon Href="@($"/workspace/{context.Item.Id}")">
                 <MIcon>mdi-cog</MIcon>
             </MButton>
             <MButton Icon>

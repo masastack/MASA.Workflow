@@ -17,6 +17,10 @@
   border-width: thin;
 }
 
+.mw-activity-node--right {
+  flex-direction: row-reverse;
+}
+
 .mw-activity-node__icon {
   background-color: rgb(0 0 0 / 5%);
   border-radius: 8px 0 0 8px;
@@ -24,7 +28,7 @@
   width: 56px;
 }
 
-.mw-activity-node__icon.mw-activity-node__right {
+.mw-activity-node--right .mw-activity-node__icon {
   border-radius: 0 8px 8px 0;
 }
 

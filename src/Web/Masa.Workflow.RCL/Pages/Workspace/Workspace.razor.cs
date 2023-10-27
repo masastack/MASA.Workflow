@@ -1,5 +1,6 @@
 ﻿using BlazorComponent.I18n;
 using Masa.Workflow.ActivityCore.Components;
+using Masa.Workflow.RCL.Pages.Workspace.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Options;
 
@@ -26,6 +27,8 @@ public partial class Workspace : IAsyncDisposable
     [Parameter] public Guid WorkflowId { get; set; }
 
     private MDrawflow _drawflow = null!;
+
+    private WorkflowFormModal? _workflowFormModal;
 
     private WorkflowDetail? _workflowDetail;
     private Guid _testMqttInGuid = Guid.NewGuid(); // TODO: just for test mqtt in demo, remove it later
@@ -67,8 +70,8 @@ public partial class Workspace : IAsyncDisposable
         }
     }
 
-    internal string WorkflowName => "Workflow"; // TODO: workflow name 
-    internal string WorkflowDescription => ""; // TODO: workflow description 
+    internal string? WorkflowName { get; set; }
+    internal string? WorkflowDescription { get; set; }
 
     private HubConnection _hubConnection;
 
@@ -104,7 +107,6 @@ public partial class Workspace : IAsyncDisposable
 
         if (firstRender)
         {
-
             // TODO: 多个窗口会问题吗？共享的是同一个 drawflow 吗？
             DrawflowService.SetDrawflow(_drawflow);
 
@@ -119,7 +121,16 @@ public partial class Workspace : IAsyncDisposable
                 {
                     Id = WorkflowId.ToString()
                 });
+
+                WorkflowName = _workflowDetail.Name;
+                WorkflowDescription = _workflowDetail.Description;
+
                 await ImportWorkflow(_workflowDetail.NodeJson);
+            }
+            else
+            {
+                WorkflowName = "New workflow";
+                WorkflowDescription = string.Empty;
             }
 
             StateHasChanged();
@@ -147,15 +158,12 @@ public partial class Workspace : IAsyncDisposable
             activityId = _testMqttInGuid;
         }
 
-        // TODO: get init meta of node
-        var minInput = 1;
-        var minOutput = 1;
-        var metaNode = new Node2(activityId, node.Type, node.Color, node.Icon, node.IconRight, false, node.States, minInput, minOutput, "");
+        var metaNode = new Node2(activityId, node.Type, node.Color, node.Icon, node.IconRight, false, node.States, node.MinInput, node.MinOutput, "");
 
         var id = await _drawflow.AddNodeAsync(
             nodeType,
-            minInput,
-            minOutput,
+            node.MinInput,
+            node.MinOutput,
             clientX: args.ClientX,
             clientY: args.ClientY,
             offsetX: args.DataTransfer.Data.OffsetX,
@@ -243,13 +251,15 @@ public partial class Workspace : IAsyncDisposable
     {
         await WorkflowAgentClient.SaveAsync(new WorkflowSaveRequest
         {
-            Id = WorkflowId.ToString(),
+            Id = WorkflowId == Guid.Empty ? "" : WorkflowId.ToString(),
             Name = WorkflowName,
             Description = WorkflowDescription,
             Disabled = false,
             IsDraft = !publish,
             NodeJson = await _drawflow.ExportAsync(indented: true)
         });
+        
+        await PopupService.EnqueueSnackbarAsync("Saved", AlertTypes.Success);
     }
 
     private async Task Run()
@@ -277,6 +287,7 @@ public partial class Workspace : IAsyncDisposable
         {
             return;
         }
+
         await _drawflow.ImportAsync(json);
 
         _tree[0].Children!.Clear();
@@ -317,6 +328,17 @@ public partial class Workspace : IAsyncDisposable
         {
             // delete workflow from http
         }
+    }
+
+    private void OpenWorkflowFormModal()
+    {
+        _workflowFormModal?.Open(WorkflowName, WorkflowDescription);
+    }
+
+    private void HandleOnWorkflowInfoSave((string name, string description) model)
+    {
+        WorkflowName = model.name;
+        WorkflowDescription = model.description;
     }
 
     public record Node2(
