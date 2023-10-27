@@ -1,15 +1,6 @@
 ﻿namespace Masa.Workflow.Core;
 
-public class ActivityInput
-{
-    public Guid ActivityId { get; set; } = Guid.Empty;
-
-    public List<List<Guid>> Wires { get; set; } = new();
-
-    public Message Message { get; set; } = new();
-}
-
-public class ActivityInput<TMeta> : ActivityInput
+public class ActivityInput<TMeta>
     where TMeta : class, new()
 {
     public TMeta Meta { get; set; } = new();

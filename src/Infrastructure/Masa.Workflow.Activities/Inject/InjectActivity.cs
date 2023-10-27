@@ -5,13 +5,13 @@ namespace Masa.Workflow.Activities.Inject;
 
 public class InjectActivity : MasaWorkflowActivity<InjectInput>
 {
-    public override Task<ActivityExecutionResult> RunAsync(InjectInput input)
+    public override Task<ActivityExecutionResult> RunAsync(InjectInput input, Message msg)
     {
         var result = new ActivityExecutionResult()
         {
-            ActivityId = input.ActivityId.ToString(),
+            ActivityId = ActivityId.ToString(),
             Status = ActivityStatus.Finished,
-            Wires = input.Wires
+            Wires = Wires
         };
 
         Message message = new();

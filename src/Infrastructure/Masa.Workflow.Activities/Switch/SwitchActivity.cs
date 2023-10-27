@@ -11,7 +11,7 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchInput>
         _rulesEngineClient = rulesEngineClient;
     }
 
-    public override async Task<ActivityExecutionResult> RunAsync(SwitchInput input)
+    public async override Task<ActivityExecutionResult> RunAsync(SwitchInput input, Message msg)
     {
         System.Console.WriteLine("SwitchActivity start run.");
         var _rules = new List<object>();
@@ -54,13 +54,13 @@ public class SwitchActivity : MasaWorkflowActivity<SwitchInput>
         {
             Rules = _rules
         });
-        var ruleResults = await _rulesEngineClient.ExecuteAsync(ruleRaw, input.Message);
+        var ruleResults = await _rulesEngineClient.ExecuteAsync(ruleRaw, msg);
         var otherwise = ruleResults.FirstOrDefault(r => r.IsValid && r.RuleName == Operator.Otherwise.ToString());
         var passResults = ruleResults.Where(r => r.IsValid && r.RuleName != Operator.Otherwise.ToString()).Select(r => r.ActionResult.Output as List<Guid>)
             .Where(r => r != null).ToList();
         var result = new ActivityExecutionResult()
         {
-            ActivityId = input.ActivityId.ToString(),
+            ActivityId = ActivityId.ToString(),
             Status = ActivityStatus.Finished
         };
         if (passResults.Count > 0)

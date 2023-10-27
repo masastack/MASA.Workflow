@@ -8,9 +8,11 @@ public class ActivityDefinition
 
     public string Name { get; set; }
 
-    public object Meta { get; set; }
+    public string Meta { get; set; }
 
     public RetryPolicy RetryPolicy { get; set; }
 
     public bool Disabled { get; set; }
+
+    public List<List<Guid>> Wires { get; set; } = new List<List<Guid>>();
 }

@@ -42,20 +42,16 @@ public class CommandHandler
 
         foreach (var node in workflowDefinition.Activities)
         {
-            var meta = JsonSerializer.Deserialize<JsonObject>(node.Meta);
-            //db save meta data not contains ActivityId and Wires
-            meta.Add("ActivityId", node.Id);
-            var wires = new JsonArray();
+            List<List<Guid>> wires = new();
             foreach (var wire in node.Wires)
             {
-                var wireArray = new JsonArray();
+                var wireList = new List<Guid>();
                 foreach (var wireId in wire.Guids)
                 {
-                    wireArray.Add(wireId);
+                    wireList.Add(Guid.Parse(wireId));
                 }
-                wires.Add(wireArray);
+                wires.Add(wireList);
             }
-            meta.Add("Wires", wires);
             workflowInstance.Activities.Add(new ActivityDefinition
             {
                 Id = Guid.Parse(node.Id),
@@ -63,7 +59,8 @@ public class CommandHandler
                 Disabled = node.Disabled,
                 Type = node.Type,
                 RetryPolicy = node.RetryPolicy.Adapt<RetryPolicy>(),
-                Meta = meta
+                Meta = node.Meta,
+                Wires = wires
             });
         }
 

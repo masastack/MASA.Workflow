@@ -11,10 +11,10 @@ internal class ConsoleActivity : MasaWorkflowActivity<ConsoleInput>
         _output = System.Console.Out;
     }
 
-    public override Task<ActivityExecutionResult> RunAsync(ConsoleInput input)
+    public override Task<ActivityExecutionResult> RunAsync(ConsoleInput input, Message msg)
     {
         _output.WriteLine(input.Text);
         System.Console.WriteLine("------------ConsoleActivity Run");
-        return base.RunAsync(input);
+        return base.RunAsync(input, msg);
     }
 }
