@@ -6,6 +6,8 @@ public class Activity : Entity<Guid>
 
     public Flow Flow { get; private set; } = default!;
 
+    public string ActivityId { get; set; } = "";
+
     public string Type { get; init; } = string.Empty;
 
     public string Name { get; private set; } = string.Empty;
@@ -23,13 +25,13 @@ public class Activity : Entity<Guid>
     /// </summary>
     public Wires Wires { get; private set; }
 
-    public Activity(Guid id, string name, string type, string? description) : this(id, name, type, description, null, null)
+    public Activity(string activityId, string name, string type, string? description) : this(activityId, name, type, description, null, null)
     {
     }
 
-    public Activity(Guid id, string name, string type, string? description, Wires? wires, MetaData? meta)
+    public Activity(string activityId, string name, string type, string? description, Wires? wires, MetaData? meta)
     {
-        Id = id;
+        ActivityId = activityId;
         Name = name;
         Description = description ?? "";
         Type = type;

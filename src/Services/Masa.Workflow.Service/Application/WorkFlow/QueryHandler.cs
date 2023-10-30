@@ -69,7 +69,7 @@ public class QueryHandler
         {
             var node = new Activity
             {
-                Id = activity.Id.ToString(),
+                Id = activity.ActivityId,
                 Name = activity.Name,
                 Type = activity.Type,
                 Disabled = activity.Disabled,

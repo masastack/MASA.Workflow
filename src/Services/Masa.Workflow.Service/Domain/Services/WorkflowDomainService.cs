@@ -22,7 +22,7 @@ public class WorkflowDomainService : DomainService
         }
         else
         {
-            flow = await _workflowRepository.GetAsync(Guid.Parse(workflowRequest.Id),nameof(Flow.Activities),nameof(Flow.Versions))
+            flow = await _workflowRepository.GetAsync(Guid.Parse(workflowRequest.Id), nameof(Flow.Activities))
                 ?? throw new UserFriendlyException("workflow id not find");
             flow.UpdateInfo(workflowRequest.Name, workflowRequest.Description);
         }
@@ -55,7 +55,7 @@ public class WorkflowDomainService : DomainService
 
                 var data = JsonDocument.Parse(node.GetProperty("data").GetProperty("data").GetString()).RootElement;
 
-                data.GetProperty("Id").TryGetGuid(out var id);
+                var activityId = data.GetProperty("Id").GetString();
 
                 var name = data.GetProperty("Name").GetString();
                 var description = data.TryGetProperty("Description", out var descProperty) ? descProperty.GetString() : null;
@@ -78,7 +78,7 @@ public class WorkflowDomainService : DomainService
                 }
 
                 var metaData = JsonSerializer.Deserialize<MetaData>(data.GetProperty("Meta").GetString());
-                result.Add(new Activity(id, name, type, description, wires, metaData));
+                result.Add(new Activity(activityId, name, type, description, wires, metaData));
             }
             return result;
         }

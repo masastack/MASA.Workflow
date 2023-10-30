@@ -58,12 +58,12 @@ public class Flow : FullAggregateRoot<Guid, Guid>
 
     public void SetActivities(IEnumerable<Activity> activities)
     {
-        var activitiesIds = activities.Select(x => x.Id).ToList();
-        _activities.RemoveAll(x => !activitiesIds.Contains(x.Id));
+        var activitiesIds = activities.Select(x => x.ActivityId).ToList();
+        _activities.RemoveAll(x => !activitiesIds.Contains(x.ActivityId));
 
         foreach (var activity in activities)
         {
-            var oldActivity = _activities.FirstOrDefault(x => x.Id == activity.Id);
+            var oldActivity = _activities.FirstOrDefault(x => x.ActivityId == activity.ActivityId);
             if (oldActivity == null)
             {
                 _activities.Add(activity);
