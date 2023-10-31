@@ -29,6 +29,7 @@ public class QueryHandler
             result.Items.Add(new WorkflowItem
             {
                 Name = item.Name,
+                Description = item.Description,
                 Id = item.Id.ToString()
                 //todo
             });

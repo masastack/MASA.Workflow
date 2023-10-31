@@ -82,7 +82,8 @@ message WorkflowItem {
 	string id = 1;
 	WorkflowStatus status = 2;
 	string name = 3; 
-	bool is_publish = 4;
+	string description = 4;
+	bool is_publish = 5;
 
 	google.protobuf.Timestamp create_dateTime_stamp = 10; 
 	string create_user = 11;

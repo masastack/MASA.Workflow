@@ -37,4 +37,8 @@
 		<Protobuf Include="..\..\Proto\file.proto" Link="Protos/file.proto" GrpcServices="Server" />
 		<Protobuf Include="..\..\Proto\model.proto" Link="Protos/model.proto" GrpcServices="Server" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Infrastructure\Masa.Workflow.Core\Masa.Workflow.Core.csproj" />
+	</ItemGroup>
 </Project>

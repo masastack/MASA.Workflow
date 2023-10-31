@@ -2,6 +2,8 @@
 
 public class ActivityInfo
 {
+    public Guid WorkflowId { get; set; }
+
     public string Input { get; set; }
 
     public Message Msg { get; set; } = new();

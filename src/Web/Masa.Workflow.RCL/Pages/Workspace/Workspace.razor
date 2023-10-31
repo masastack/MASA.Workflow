@@ -17,10 +17,23 @@
         </PrimaryContent>
     </PBlockText>
     <MSpacer />
-    <MButton OnClick="@TestHub">Update mqtt state(TEST)</MButton>
-    <MButton Color="primary" OnClick="() => Save(false)">i18n.workflow.save</MButton>
-    <MButton Color="primary" OnClick="() => Save(true)">i18n.workflow.publish</MButton>
-    <MButton Color="primary" OnClick="() => Run()">i18n.workflow.run</MButton>
+    <MButton Color="primary"
+             OnClick="@OpenDebugDialog">
+        i18n.workflow.debug-window
+    </MButton>
+    <MButton Color="primary"
+             OnClick="@SaveAsync">
+        i18n.workflow.save
+    </MButton>
+    <MButton Color="primary"
+             OnClick="@PublishAsync">
+        i18n.workflow.publish
+    </MButton>
+    <MButton Color="primary"
+             Disabled="@(_workflowDetail?.Id is null)"
+             OnClick="@RunAsync">
+        i18n.workflow.run
+    </MButton>
     <MMenu OffsetY>
         <ActivatorContent>
             <MButton Icon @attributes="@context.Attrs">
@@ -86,7 +99,7 @@
     <div class="mw-flow__sidebar" style="width: 352px;">
         <MTabs @bind-Value="_node" @bind-Value:after="TabChanged">
             <MTab>i18n.node-info</MTab>
-            <MTab>i18n.node-debug</MTab>
+            <MTab>i18n.node-help</MTab>
         </MTabs>
         <MTabsItems Value="_node">
             <MTabItem Transition="">
@@ -131,7 +144,6 @@
                 }
             </MTabItem>
             <MTabItem Transition="">
-                <Debugging @ref="_debugging"></Debugging>
             </MTabItem>
         </MTabsItems>
     </div>
@@ -144,6 +156,8 @@
 <WorkflowFormModal @ref="_workflowFormModal"
                    OnSave="@HandleOnWorkflowInfoSave">
 </WorkflowFormModal>
+
+<DebugDrawer @ref="_debugDrawer"></DebugDrawer>
 
 <CascadingValue Value="this" IsFixed>
     <ExportDialog @ref="_exportDialog"></ExportDialog>

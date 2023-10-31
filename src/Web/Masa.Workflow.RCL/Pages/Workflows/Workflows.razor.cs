@@ -17,9 +17,9 @@ public partial class Workflows
 
     private List<DataTableHeader<WorkflowItem>> _headers = new()
     {
-        new() { Text = "Id", Value = nameof(WorkflowItem.Id), Sortable = false},
-        new() { Text = "Status", Value = nameof(WorkflowItem.Status), Sortable = false },
         new() { Text = "Name", Value = nameof(WorkflowItem.Name), Sortable = false },
+        new() { Text = "Description", Value = nameof(WorkflowItem.Description), Sortable = false },
+        new() { Text = "Status", Value = nameof(WorkflowItem.Status), Sortable = false },
         new() { Text = "UpdatedAt", Value = nameof(WorkflowItem.UpdateDateTimeStamp) },
         new() { Text = "Actions", Value = "actions", Sortable = false, Width = 120 }
     };

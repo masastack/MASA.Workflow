@@ -31,12 +31,27 @@ public static class DrawflowJsonHelper
         var root = document.RootElement;
         var rawText = root.GetProperty("drawflow").GetProperty("Home").GetProperty("data").GetProperty(nodeId).GetProperty("data")
                           .GetProperty("data");
-        var st  = rawText.GetString();
-        Console.Out.WriteLine("rawText = {0}", st);
-        return JsonSerializer.Deserialize<T>(st, new JsonSerializerOptions()
+        return JsonSerializer.Deserialize<T>(rawText.GetString(), new JsonSerializerOptions()
         {
             PropertyNameCaseInsensitive = false
         })!;
     }
 
+    /// <summary>
+    /// Check if the json contains the node named "debug"
+    /// </summary>
+    /// <param name="json">Json exported from drawflow</param>
+    /// <returns></returns>
+    public static bool ContainsDebugNode(string json)
+    {
+        using var objectEnumerator = GetJsonElementObjectEnumerator(json);
+        return objectEnumerator.Any(o => o.Value.GetProperty("name").GetString() == "debug");
+    }
+    
+    private static JsonElement.ObjectEnumerator GetJsonElementObjectEnumerator(string json)
+    {
+        var document = JsonDocument.Parse(json);
+        var root = document.RootElement;
+        return root.GetProperty("drawflow").GetProperty("Home").GetProperty("data").EnumerateObject();
+    }
 }

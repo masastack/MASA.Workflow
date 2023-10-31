@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Masa.Workflow.Core.Hubs;
+
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddGrpc(options =>
 {

@@ -11,6 +11,8 @@ public class FunctionActivity : MasaWorkflowActivity<FunctionMeta>
         var runner = new CSharpRunner(typeof(Message).Assembly);
         var messages = await runner.RunWithMessageAsync<object>(meta.Code, msg);
 
+        Console.Out.WriteLine("messages = {0}", JsonSerializer.Serialize(messages));
+
         var result = new ActivityExecutionResult()
         {
             ActivityId = ActivityId.ToString(),

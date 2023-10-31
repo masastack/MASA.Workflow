@@ -2,6 +2,8 @@
 
 public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<ActivityInfo, ActivityExecutionResult>
 {
+    public Guid WorkflowId { get; private set; }
+
     public Guid ActivityId { get; private set; }
 
     public List<List<Guid>> Wires { get; private set; }
@@ -9,6 +11,7 @@ public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<ActivityIn
     // TODO: comment that do not use this method
     public sealed override async Task<ActivityExecutionResult> RunAsync(WorkflowActivityContext context, ActivityInfo activityInfo)
     {
+        WorkflowId = activityInfo.WorkflowId;
         ActivityId = activityInfo.ActivityId;
         Wires = activityInfo.Wires;
         var inputObj = Convert(activityInfo.Input);
@@ -22,6 +25,7 @@ public abstract class MasaWorkflowActivity<TInput> : WorkflowActivity<ActivityIn
         {
             //await _workflowHub.BroadcastStepAsync(new ExecuteStep(meta.ActivityId, ExecuteStatus.Fail));
         }
+
         await ActivityExecuted(ActivityId);
         return result;
     }

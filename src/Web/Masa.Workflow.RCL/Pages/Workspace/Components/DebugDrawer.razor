@@ -1,0 +1,108 @@
+﻿@using Masa.Workflow.Activities.Contracts
+<PDrawer @bind-Value="_visible">
+    <MVirtualScroll Class="mw-flow__debugging"
+                    Items="_logs">
+        <ItemContent>
+            <div class="mw-flow__debugging-item">
+                <div class="mw-flow__debugging-extra">
+                    <MChip Small Label Color="grey lighten-2">@context.DebugAt</MChip>
+                    <MButton Icon Small OnClick="@(() => OpenDetailDialog(context))">
+                        <MIcon Small>mdi-arrow-expand</MIcon>
+                    </MButton>
+                </div>
+                @{
+                    var log = context.Log.Length > 120 ? context.Log.Substring(0, 120) : context.Log;
+                }
+                <MSyntaxHighlight Inline Class="mw-flow__debugging-log" Code="@log" Language="json"></MSyntaxHighlight>
+                <MDivider Class="my-1" />
+            </div>
+        </ItemContent>
+    </MVirtualScroll>
+
+    <PModal @bind-Value="_detailDialog"
+            @bind-Value:after="DialogChanged"
+            Title="i18n.workflow.debugging-title"
+            Width="770"
+            Class="mw-flow__debugging-detail"
+            SaveText="i18n.workflow.debugging-copy"
+            OnSave="CopyDebugLog">
+        <div class="mb-2">
+            <MChip Small Label Color="grey lighten-2">@_selectedLog?.DebugAt</MChip>
+        </div>
+        <MMonacoEditor Value="@_selectedLog?.Log" EditorOptions="monacoOptions"></MMonacoEditor>
+    </PModal>
+
+</PDrawer>
+
+@code {
+
+    [Inject]
+    private IJSRuntime JSRuntime { get; set; } = null!;
+
+    [Inject]
+    private IPopupService PopupService { get; set; } = null!;
+
+    private readonly List<DebugResult> _logs = new();
+
+    private bool _visible;
+
+    private bool _detailDialog;
+
+    private DebugResult? _selectedLog;
+
+    private object? monacoOptions = new
+    {
+        language = "json",
+        readOnly = true,
+    };
+
+    internal void Open()
+    {
+        _visible = true;
+        StateHasChanged();
+    }
+
+    internal void AddLog(DebugResult debugResult)
+    {
+        _logs.Add(debugResult);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void OpenDetailDialog(DebugResult value)
+    {
+        _selectedLog = value;
+
+        if (!string.IsNullOrWhiteSpace(value.Log))
+        {
+            try
+            {
+                using var doc = JsonDocument.Parse(value.Log);
+                _selectedLog.Log = doc.ToJsonString();
+
+                Console.Out.WriteLine("_selectedLog.Log = {0}", _selectedLog.Log);
+            }
+            catch (JsonException)
+            {
+                // ignored
+            }
+        }
+
+        _detailDialog = true;
+    }
+
+    private void DialogChanged()
+    {
+        if (!_detailDialog)
+        {
+            _selectedLog = null;
+        }
+    }
+
+    private async Task CopyDebugLog()
+    {
+        await JSRuntime.InvokeVoidAsync(JsInteropConstants.Copy, _selectedLog);
+
+        await PopupService.EnqueueSnackbarAsync("i18n.workflow.copy-success", AlertTypes.Success);
+    }
+
+}

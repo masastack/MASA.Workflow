@@ -2,7 +2,13 @@
 
 public class DebugMeta
 {
-    public Guid[]? DependentIds { get; set; }
+    public string? Property { get; set; }
 
-    public bool DebugToConsole { get; set; }
+    public bool LogToDebugWindow { get; set; }
+
+    public DebugMeta()
+    {
+        LogToDebugWindow = true;
+        Property = "Payload";
+    }
 }
