@@ -22,6 +22,7 @@ public sealed class MasaWorkFlow : Workflow<WorkflowInstance, RunWorkflowResult>
 
             var messageInput = new ActivityInfo
             {
+                WorkflowId = workflowInstance.Id,
                 Msg = msg,
                 Input = activity.Meta,
                 ActivityId = activityId,

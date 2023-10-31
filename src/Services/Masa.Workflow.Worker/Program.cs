@@ -1,3 +1,5 @@
+using Masa.Workflow.Core.Hubs;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // dapr run --app-id masa-workflow --app-port 7129 --dapr-http-port 3501 dotnet run
@@ -21,6 +23,8 @@ builder.Services.AddGrpc(options =>
     options.MaxReceiveMessageSize = 3 * 1024 * 1024;
     options.EnableDetailedErrors = !builder.Environment.IsProduction();
 }).AddJsonTranscoding();
+
+builder.Services.AddSignalR();
 
 builder.Services
     .AddGrpcSwagger()
@@ -50,6 +54,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 app.UseHttpsRedirection();
+
+app.MapHub<DebugHub>("/hubs/debug-hub");
 
 app.MapGrpcService<WorkflowRunnerService>();
 app.MapGrpcService<WorkflowStarterService>();

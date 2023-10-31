@@ -1,4 +1,5 @@
 ﻿using BlazorComponent.I18n;
+using Masa.Workflow.Activities.Contracts;
 using Masa.Workflow.ActivityCore.Components;
 using Masa.Workflow.RCL.Pages.Workspace.Components;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -36,9 +37,9 @@ public partial class Workspace : IAsyncDisposable
     private List<StringNumber>? _selectedGroups;
     private StringNumber? _node;
 
-    private Debugging? _debugging;
     private ExportDialog _exportDialog = null!;
     private ImportDialog _importDialog = null!;
+    private DebugDrawer _debugDrawer = null!;
 
     private bool _helpDrawer;
     private string? _helpMarkdown;
@@ -71,35 +72,10 @@ public partial class Workspace : IAsyncDisposable
     }
 
     internal string? WorkflowName { get; set; }
+
     internal string? WorkflowDescription { get; set; }
 
-    private HubConnection _hubConnection;
-
-    private async Task TestHub()
-    {
-        await _hubConnection.SendAsync("UpdateMqttInState", _testMqttInGuid, "connected");
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        _hubConnection = new HubConnectionBuilder().WithUrl(NavigationManager.ToAbsoluteUri("/workflow-client-hub")).Build();
-        _hubConnection.On<Guid, string>("WatchMqttInState", async (id, state) =>
-        {
-            if (_activityNodeIdMap.TryGetValue(id, out string nodeId))
-            {
-                var drawflowData = await _drawflow.ExportAsync();
-                var activityMeta = DrawflowJsonHelper.GetNodeData<ActivityMeta>(drawflowData, nodeId);
-                activityMeta.State = state;
-                await _drawflow.UpdateNodeDataAsync(nodeId, new { data = JsonSerializer.Serialize(activityMeta) });
-            }
-            else
-            {
-                // LOG
-            }
-        });
-
-        await _hubConnection.StartAsync();
-    }
+    private HubConnection? _debugHubConnection;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -126,6 +102,12 @@ public partial class Workspace : IAsyncDisposable
                 WorkflowDescription = _workflowDetail.Description;
 
                 await ImportWorkflow(_workflowDetail.NodeJson);
+
+                // connect to debug hub if debug node exists
+                if (DrawflowJsonHelper.ContainsDebugNode(_workflowDetail.NodeJson))
+                {
+                    await ConnectDebugHubAsync(WorkflowId.ToString());
+                }
             }
             else
             {
@@ -135,6 +117,40 @@ public partial class Workspace : IAsyncDisposable
 
             StateHasChanged();
         }
+    }
+
+    private async Task ConnectDebugHubAsync(string workflowId)
+    {
+        _debugHubConnection = new HubConnectionBuilder()
+                              .WithUrl(
+                                  "https://localhost:7129/hubs/debug-hub",
+                                  cfg =>
+                                  {
+                                      // TODO: auth
+                                      cfg.Headers.Add("Masa-Workflow-Id", workflowId);
+                                  })
+                              .Build();
+
+        _debugHubConnection.On<DebugResult>("Log", async (result) =>
+        {
+            Console.Out.WriteLine("debugHub [Log] result = {0}", JsonSerializer.Serialize(result));
+
+            _debugDrawer.AddLog(result);
+
+            // if (_activityNodeIdMap.TryGetValue(id, out string nodeId))
+            // {
+            //     var drawflowData = await _drawflow.ExportAsync();
+            //     var activityMeta = DrawflowJsonHelper.GetNodeData<ActivityMeta>(drawflowData, nodeId);
+            //     activityMeta.State = state;
+            //     await _drawflow.UpdateNodeDataAsync(nodeId, new { data = JsonSerializer.Serialize(activityMeta) });
+            // }
+            // else
+            // {
+            //     // LOG
+            // }
+        });
+
+        await _debugHubConnection.StartAsync();
     }
 
     private async Task Drop(ExDragEventArgs args)
@@ -247,27 +263,83 @@ public partial class Workspace : IAsyncDisposable
         _helpDrawer = true;
     }
 
-    private async Task Save(bool publish)
+    private async Task<string> SaveOrPublishAsync(string nodeJson, bool publish)
     {
-        await WorkflowAgentClient.SaveAsync(new WorkflowSaveRequest
+        var result = await WorkflowAgentClient.SaveAsync(new WorkflowSaveRequest
         {
             Id = WorkflowId == Guid.Empty ? "" : WorkflowId.ToString(),
             Name = WorkflowName,
             Description = WorkflowDescription,
             Disabled = false,
             IsDraft = !publish,
-            NodeJson = await _drawflow.ExportAsync(indented: true)
+            NodeJson = nodeJson
         });
-        
+
         await PopupService.EnqueueSnackbarAsync("Saved", AlertTypes.Success);
+
+        return result.Id;
     }
 
-    private async Task Run()
+    private async Task SaveAsync()
     {
+        var nodeJson = await _drawflow.ExportAsync();
+        if (nodeJson is null)
+        {
+            return;
+        }
+
+        var workflowId = await SaveOrPublishAsync(nodeJson, publish: false);
+        _workflowDetail ??= new WorkflowDetail { Id = workflowId };
+    }
+
+    private async Task PublishAsync()
+    {
+        var nodeJson = await _drawflow.ExportAsync();
+        if (nodeJson is null)
+        {
+            return;
+        }
+
+        var workflowId = await SaveOrPublishAsync(nodeJson, publish: true);
+
+        _workflowDetail ??= new WorkflowDetail { Id = workflowId };
+
+        if (_debugHubConnection is null)
+        {
+            // connect to debug hub if publish success and debug node exists
+            if (DrawflowJsonHelper.ContainsDebugNode(nodeJson))
+            {
+                await ConnectDebugHubAsync(workflowId);
+            }
+        }
+        else
+        {
+            // disconnect from debug hub if publish success and debug node not exists
+            if (!DrawflowJsonHelper.ContainsDebugNode(nodeJson))
+            {
+                await _debugHubConnection.DisposeAsync();
+                _debugHubConnection = null;
+            }
+        }
+    }
+
+    private async Task RunAsync()
+    {
+        // TODO: draft workflow can't run
+        if (_workflowDetail?.Id is null)
+        {
+            return;
+        }
+
         await WorkflowRunnerClient.RunAsync(new WorkflowId
         {
-            Id = "51A4F68A-1CDE-4324-6F34-08DBCBB9851E"
+            Id = _workflowDetail.Id
         });
+    }
+
+    private void OpenDebugDialog()
+    {
+        _debugDrawer.Open();
     }
 
     private void OpenImportWorkflowDialog()
@@ -355,6 +427,9 @@ public partial class Workspace : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        await _hubConnection.DisposeAsync();
+        if (_debugHubConnection is not null)
+        {
+            await _debugHubConnection.DisposeAsync();
+        }
     }
 }

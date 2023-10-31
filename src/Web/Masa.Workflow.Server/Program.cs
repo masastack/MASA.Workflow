@@ -1,22 +1,13 @@
 using Masa.Workflow.ActivityNodes.Switch;
-using Masa.Workflow.RCL.Hubs;
-using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddServerSideBlazor();
+builder.Services.AddServerSideBlazor(options => { options.RootComponents.RegisterCustomElementsUsedJSCustomElementAttribute(); });
 
 builder.Services.AddMasaWorkflowUI();
 builder.Services.AddMasaWorkflowActivities(typeof(Switch).Assembly);
-
-builder.Services.AddServerSideBlazor(options => { options.RootComponents.RegisterCustomElementsUsedJSCustomElementAttribute(); });
-
-builder.Services.AddResponseCompression(opts =>
-{
-    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" });
-});
 
 var app = builder.Build();
 
@@ -34,10 +25,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseResponseCompression();
-
 app.MapBlazorHub();
-app.MapHub<WorkflowClientHub>("/workflow-client-hub");
 app.MapFallbackToPage("/_Host");
 
 app.Run();
